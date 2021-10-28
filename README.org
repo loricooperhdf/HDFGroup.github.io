@@ -4,3 +4,12 @@ Browse the site by going to [[https://hdfgroup.github.io/]].
 Build the site by running =build.sh=.
 
 Don't forget to commit your changes!
+
+GitHub is sometimes slow to update the pages. Be patient if your changes don't
+show up in an instant.
+
+You can preview your page(s) by opening the =index.html= from the corresponding
+folder in a browser.
+
+For Emacs users, there is the [[https://melpa.org/#/simple-httpd][=simple-httpd=]] package.
+Just =M-x httpd-serve-directory= and enjoy the show!
