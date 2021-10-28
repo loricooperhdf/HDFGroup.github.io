@@ -1,0 +1,3305 @@
+#+TITLE: Call the Doctor - HDF(5) Clinic
+#+STARTUP: overview
+#+OPTIONS: num:nil H:2 toc:t
+#+SETUPFILE: ../themes/theme-readtheorg.setup
+
+* Clinic 2021-10-28
+** Your Questions
+- Q :: ???
+** Last week's highlights
+*** Announcements
+**** [[https://www.youtube.com/playlist?list=PLPyhR4PdEeGYdTX7SVM59LwoNJDgJSNdd][HUG 2021 Videos are showing up on YouTube]]
+**** Submit comments/questions/criticisms to the [[mailto:hug@hdfgroup.org][organizing committee]]
+*** Forum
+**** [[https://forum.hdfgroup.org/t/hdfview-3-1-0-error-displaying-dataset-with-np-float16-data/7974][HDFView 3.1.0 error displaying dataset with np.float16 data]]
+- HDF5 has supported user-defined floating-point types from day one
+- Good example of poor execution on our part!
+- GPUs have rekindled the interest in reduced floating-point representations
+**** [[https://forum.hdfgroup.org/t/announcing-development-of-the-enterprise-support-edition-of-hdf5/4374][Announcing development of the Enterprise Support Edition of HDF5]]
+- Good example of an own goal / publicity disaster
+- One more time: *There is no Enterprise Support Edition of HDF5!*
+  - However, support and consulting agreements are available from The HDF Group
+    for enterprises and other organizations
+- There is only one development line of HDF5 (data model, file format, library)
+  & it is available on [[https://github.com/HDFGroup/hdf5][GitHub]]
+  - Hence, it is nonsensical to speak of 'HDF5 editions'
+- End of story
+**** COMMENT [[https://forum.hdfgroup.org/t/h5dget-chunk-info-performance-for-many-chunks/9079][=H5Dget_chunk_info= performance for many chunks?]]
+- *Task:* Get all of the chunk file offsets + sizes
+- *Solution:* [[https://docs.hdfgroup.org/hdf5/develop/group___h5_d.html#title6][=H5Dchunk_iter=]]
+- *Caveat:* Currently only available in the =development= branch
+- *Note:* We covered this function and an example in our clinic on [2021-08-03 Tue]
+** Tips, tricks, & insights
+*** Who is afraid of =h5debug=?
+- A useful tool to explore the "guts" of the HDF5 file format
+- There's even a nice [[https://docs.hdfgroup.org/hdf5/develop/_f_m_t_d_i_s_c.html][guided tour]] by Quincey Koziol from 2003
+  - HDF5 1.4.5 was released [2003-02-02]
+  - HDF5 1.6.0 was released [2003-07-03]
+- Compiling and running =example1.c= produces this output:
+  #+begin_example
+%h5debug example1.h5
+
+Reading signature at address 0 (rel)
+File Super Block...
+File name (as opened):                             example1.h5
+File name (after resolving symlinks):              example1.h5
+File access flags                                  0x00000000
+File open reference count:                         1
+Address of super block:                            0 (abs)
+Size of userblock:                                 0 bytes
+Superblock version number:                         0
+Free list version number:                          0
+Root group symbol table entry version number:      0
+Shared header version number:                      0
+Size of file offsets (haddr_t type):               8 bytes
+Size of file lengths (hsize_t type):               8 bytes
+Symbol table leaf node 1/2 rank:                   4
+Symbol table internal node 1/2 rank:               16
+Indexed storage internal node 1/2 rank:            32
+File status flags:                                 0x00
+Superblock extension address:                      18446744073709551615 (rel)
+Shared object header message table address:        18446744073709551615 (rel)
+Shared object header message version number:       0
+Number of shared object header message indexes:    0
+Address of driver information block:               18446744073709551615 (rel)
+Root group symbol table entry:
+   Name offset into private heap:                  0
+   Object header address:                          96
+   Cache info type:                                Symbol Table
+   Cached entry information:
+      B-tree address:                              136
+      Heap address:                                680
+  #+end_example
+- It matches the output from 2003 except for
+  - The root group's object header address is 96 (in 2021) vs. 928 (in 2003)
+  - The root's B-tree is at 136 vs. 384
+  - The root group's local heap is at 680 vs. 96
+- Happy HDF5 exploring!
+
+* Clinic 2021-10-19
+** Your Questions
+- Q :: ???
+** Last week's highlights
+*** Announcements
+**** [[https://www.youtube.com/playlist?list=PLPyhR4PdEeGYdTX7SVM59LwoNJDgJSNdd][HUG 2021 Videos are showing up on YouTube]]
+*** Forum
+**** [[https://forum.hdfgroup.org/t/dataset-insert-vector-of-compound-type/9027][Dataset Insert Vector of Compound Type]]
+- Memory-contiguous vs. non-contiguous layout
+  #+begin_src C
+  struct Instruction {
+    float timestamp;
+    Key keys[MAX_KEYS]; // -> H5T_ARRAY
+  };
+
+  struct Instruction {
+    float timestamp;
+    Key* keys; // -> H5T_VLEN
+  };
+  #+end_src
+**** [[https://forum.hdfgroup.org/t/memory-mapping-paging-via-hdf5-vfd/9052][Memory mapping / Paging via HDF5 & VFD?]]
+- ~hid_t H5Dread_mapped(..., void** buf);~
+- Returns a pointer to  a memory-mapped region
+- If the region is writable, changes will be propagated to the file (instead of
+  calling ~H5Dwrite~)
+**** [[https://forum.hdfgroup.org/t/external-links-vfds/9056][External links & VFDs]]
+- What if an external link requires a different VFD for its resolution?
+- Current approach: set it manually via ~H5Pset_elink_fapl()~ after figuring out
+  that that's required. Yikes!
+- Add VFD-plugins and this gets out of hand quickly...
+**** [[https://forum.hdfgroup.org/t/why-increasing-rdcc-nbytes-and-rdcc-nslots-will-result-in-a-decrease-in-indexing-performance/9062][Why increasing =rdcc_nbytes= and =rdcc_nslots= will result in a decrease in indexing performance?]]
+- See [[https://docs.hdfgroup.org/hdf5/rfc/RFC_chunk_cache_functions.pdf][RFC: Setting Raw Data Chunk Cache Parameters in HDF5]] for guidance
+- Potential =h5py= issue
+**** [[https://forum.hdfgroup.org/t/fletcher32-filter-on-variable-length-string-datasets-not-suitable-for-filters/9038][Fletcher32 filter on variable length string datasets (not suitable for filters)]]
+- Triggered by change introduced in 1.12.1
+- *Caution:* Filters and variable-length data
+** Tips, tricks, & insights
+
+- Something's compressed:
+#+begin_src C
+
+#include "hdf5.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+  __label__ fail_file, fail_dtype, fail_dspace, fail_dcpl, fail_dset, fail_write;
+  int retval = EXIT_SUCCESS;
+  hid_t file, dspace, dtype, dcpl, dset;
+
+
+  if ((file = H5Fcreate("vlen.h5", H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT))
+      == H5I_INVALID_HID) {
+    retval = EXIT_FAILURE;
+    goto fail_file;
+  }
+
+  if ((dtype = H5Tvlen_create(H5T_STD_I32LE)) == H5I_INVALID_HID) {
+    retval = EXIT_FAILURE;
+    goto fail_dtype;
+  }
+
+  if ((dspace = H5Screate_simple(1, (hsize_t[]){2048},
+                                 (hsize_t[]){H5S_UNLIMITED})) ==
+      H5I_INVALID_HID) {
+    retval = EXIT_FAILURE;
+    goto fail_dspace;
+  }
+
+  if ((dcpl = H5Pcreate(H5P_DATASET_CREATE)) == H5I_INVALID_HID) {
+    retval = EXIT_FAILURE;
+    goto fail_dcpl;
+  }
+
+  if (H5Pset_chunk(dcpl, 1, (hsize_t[]) {1024}) < 0 ||
+      H5Pset_deflate(dcpl, 1) < 0
+      //H5Pset_fletcher32(dcpl) < 0
+      ) {
+    retval = EXIT_FAILURE;
+    goto fail_dset;
+  }
+
+  if ((dset = H5Dcreate(file, "dset", dtype, dspace, H5P_DEFAULT, dcpl,
+                        H5P_DEFAULT)) == H5I_INVALID_HID) {
+    retval = EXIT_FAILURE;
+    goto fail_dset;
+  }
+
+  {
+    int data[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+    size_t offset[] = {0, 1, 3, 6};
+    hvl_t buf[2048];
+    size_t i;
+
+    // create an array that looks like this:
+    // { {0}, {1,2}, {3,4,5}, {6,7,8,9}, ...}
+    for (i = 0; i < 2048; ++i)
+      {
+        size_t rem = i%4;
+        buf[i].len = 1 + rem;
+        buf[i].p = data + offset[rem];
+      }
+
+    if (H5Dwrite(dset, dtype, H5S_ALL, H5S_ALL, H5P_DEFAULT, buf) < 0)
+      {
+        retval = EXIT_FAILURE;
+        goto fail_write;
+      }
+  }
+
+ fail_write:
+  H5Dclose(dset);
+
+ fail_dset:
+  H5Pclose(dcpl);
+
+ fail_dcpl:
+  H5Sclose(dspace);
+
+ fail_dspace:
+  H5Tclose(dtype);
+
+ fail_dtype:
+  H5Fclose(file);
+
+ fail_file:
+  return retval;
+}
+
+#+end_src
+
+- =h5dump -pBH vlen.h5=
+
+#+begin_example
+
+HDF5 "vlen.h5" {
+SUPER_BLOCK {
+   SUPERBLOCK_VERSION 0
+   FREELIST_VERSION 0
+   SYMBOLTABLE_VERSION 0
+   OBJECTHEADER_VERSION 0
+   OFFSET_SIZE 8
+   LENGTH_SIZE 8
+   BTREE_RANK 16
+   BTREE_LEAF 4
+   ISTORE_K 32
+   FILE_SPACE_STRATEGY H5F_FSPACE_STRATEGY_FSM_AGGR
+   FREE_SPACE_PERSIST FALSE
+   FREE_SPACE_SECTION_THRESHOLD 1
+   FILE_SPACE_PAGE_SIZE 4096
+   USER_BLOCK {
+      USERBLOCK_SIZE 0
+   }
+}
+GROUP "/" {
+   DATASET "dset" {
+      DATATYPE  H5T_VLEN { H5T_STD_I32LE}
+      DATASPACE  SIMPLE { ( 2048 ) / ( H5S_UNLIMITED ) }
+      STORAGE_LAYOUT {
+         CHUNKED ( 1024 )
+         SIZE 5772 (5.677:1 COMPRESSION)
+      }
+      FILTERS {
+         COMPRESSION DEFLATE { LEVEL 1 }
+      }
+      FILLVALUE {
+         FILL_TIME H5D_FILL_TIME_ALLOC
+         VALUE  H5D_FILL_VALUE_DEFAULT
+      }
+      ALLOCATION_TIME {
+         H5D_ALLOC_TIME_INCR
+      }
+   }
+}
+}
+
+#+end_example
+- *N.B.* What's compressed are the in-file counterparts of ~hvl_t~ structures, not the integer sequences!
+- Filtering fails, if we enable Fletcher32
+
+* Clinic 2021-09-28
+** Your Questions
+- Q :: Will the HDF5 1.12.1 file locking changes be brought to 1.10.8?
+  - Did Elena will answer that?
+** Last week's highlights
+*** Announcements
+**** [[https://forum.hdfgroup.org/t/hdf5-user-group-meeting-october-12-15-2021/9003][HUG 2021 Agenda posted]]
+- October 12-15, 2021, 9:00 AM - 1:30 PM (CDT)
+**** [[https://forum.hdfgroup.org/t/webinar-announcement-new-features-in-the-hdf5-1-13-0-release/8950][Webinar Announcement: New Features in the HDF5 1.13.0 Release]]
+- [[https://www.youtube.com/watch?v=14xrbKJ3wk4][Recording]] and [[https://www.hdfgroup.org/wp-content/uploads/2021/09/New-Features-in-HDF5-1.13.0-VFD-and-VOL-Changes-Webinar-9-24-21.pdf][slides]] available now!
+*** Forum
+**** [[https://forum.hdfgroup.org/t/possible-to-change-email-address-here/6738][Possible to change email address here?]]
+- Lori?
+**** [[https://forum.hdfgroup.org/t/retrieve-property-list-from-object/8971][Retrieve property list from object]]
+- Property lists come in several flavors (access, creation, transfer)
+- Only creation property lists are store in the file
+**** [[https://forum.hdfgroup.org/t/dynamic-plugins-require-application-to-link-to-shared-library/8972][Dynamic Plugins require application to link to shared library]]
+- [[https://github.com/HDFGroup/hdf5/issues/1009][GitHub issue]]
+- Plugin loading happens via =dlopen=
+- Calling the HDF5 library from a plugin
+  - Why would applications do that? Element type, chunk size, ...
+  - API shortcomings?
+**** [[https://forum.hdfgroup.org/t/object-timestamps-useful-or-not/8901][Object timestamps - useful or not?]]
+- Only a minority seems to care
+  - Limited implementation
+- Bit-for-bit reproducibility
+- Clear communication before changing defaults is crucial
+** Tips, tricks, & insights
+*** HDF5 references
+- HDF5 datatype
+- Pre-HDF5 1.12.0 referents limited to dataset regions and objects
+- Starting w/ HDF5 1.12.0 referents can be HDF5 attributes
+  - Support for querying and indexing
+  - API clean-up
+- [[https://docs.hdfgroup.org/hdf5/develop/group___h5_r.html][Basic life cycle examples in RM]]
+* Clinic 2021-08-31
+** Your Questions
+- Q :: Will the HDF5 1.12.1 file locking changes be brought to 1.10.8?
+  - Elena will answer that next week!
+
+** Last week's highlights
+*** Announcements
+- I didn't see any
+
+*** Forum
+**** [[https://forum.hdfgroup.org/t/how-many-times-to-call-the-filter-in-writing-a-single-chunk/8906][How many times to call the filter in writing a single chunk]]
+- Provide a [[https://en.wikipedia.org/wiki/Minimal_working_example][Minimal Working Example (MWE)]]!
+
+** Tips, tricks, & insights
+*** Using a custom filter
+
+#+begin_src C
+
+#include "hdf5.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// an identity filter function which just prints "helpful" messages
+size_t filter(unsigned int flags, size_t cd_nelmts,
+              const unsigned int cd_values[], size_t nbytes, size_t *buf_size,
+              void **buf) {
+  buf_size = 0;
+
+  if (flags & H5Z_FLAG_REVERSE) {
+    // read data, e.g., decompress data
+    // ...
+    printf("Decompressing...\n");
+  } else {
+    // write data, e.g., compress data
+    // ...
+    printf("Compressing...\n");
+  }
+
+  return nbytes;
+}
+
+int main()
+{
+  // boilerplate
+  __label__ fail_register, fail_file, fail_dspace, fail_dcpl, fail_dset,
+    fail_write;
+  int retval = EXIT_SUCCESS;
+  hid_t file, dspace, dcpl, dset;
+
+  // custom filter
+  H5Z_class_t cls;
+  cls.version = H5Z_CLASS_T_VERS;
+  cls.id = 256;
+  cls.encoder_present = 1;
+  cls.decoder_present = 1;
+  cls.name = "Identity filter";
+  cls.can_apply = NULL;
+  cls.set_local = NULL;
+  cls.filter = &filter;
+
+  // register the filter
+  if (H5Zregister(&cls) < 0) {
+    retval = EXIT_FAILURE;
+    goto fail_register;
+  }
+
+  if ((file = H5Fcreate("filter.h5", H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT))
+      == H5I_INVALID_HID) {
+    retval = EXIT_FAILURE;
+    goto fail_file;
+  }
+  if ((dspace = H5Screate_simple(1, (hsize_t[]){2048},
+                                 (hsize_t[]){H5S_UNLIMITED})) ==
+      H5I_INVALID_HID) {
+    retval = EXIT_FAILURE;
+    goto fail_dspace;
+  }
+  if ((dcpl = H5Pcreate(H5P_DATASET_CREATE)) == H5I_INVALID_HID) {
+    retval = EXIT_FAILURE;
+    goto fail_dcpl;
+  }
+
+  // play with early chunk allocation and fill time
+  if (H5Pset_filter(dcpl, cls.id, 0|H5Z_FLAG_MANDATORY, 0, NULL) < 0 ||
+      //H5Pset_alloc_time(dcpl, H5D_ALLOC_TIME_EARLY) < 0 ||
+      //H5Pset_fill_time(dcpl, H5D_FILL_TIME_NEVER) < 0 ||
+      H5Pset_chunk(dcpl, 1, (hsize_t[]) {1024}) < 0) {
+    retval = EXIT_FAILURE;
+    goto fail_dset;
+  }
+
+  if ((dset = H5Dcreate(file, "dset", H5T_STD_I32LE, dspace, H5P_DEFAULT,
+                        dcpl, H5P_DEFAULT)) == H5I_INVALID_HID) {
+    retval = EXIT_FAILURE;
+    goto fail_dset;
+  }
+
+  // write something to trigger the "compression" of two chunks
+  {
+    int data[2048];
+
+    if (H5Dwrite(dset, H5T_NATIVE_INT, H5S_ALL, H5S_ALL, H5P_DEFAULT, data)
+        < 0) {
+      retval = EXIT_FAILURE;
+      goto fail_write;
+    }
+  }
+
+  // housekeeping
+ fail_write:
+  H5Dclose(dset);
+ fail_dset:
+  H5Pclose(dcpl);
+ fail_dcpl:
+  H5Sclose(dspace);
+ fail_dspace:
+  H5Fclose(file);
+ fail_file:
+  // unregister the filter
+  if (H5Zunregister(cls.id) < 0) {
+    retval = EXIT_FAILURE;
+  }
+ fail_register:
+  return retval;
+}
+
+#+end_src
+
+* Clinic 2021-08-24
+** Your Questions
+- Q :: Will the HDF5 1.12.1 file locking changes be brought to 1.10.8?
+
+** Last week's highlights
+*** Announcements
+- I didn't see any
+
+*** Forum
+**** [[https://forum.hdfgroup.org/t/append-to-compound-dataset/8885][Append to compound dataset]]
+- It is tempting to think about 1D compound datasets as tables
+**** [[https://forum.hdfgroup.org/t/reference-manual-in-doxygen/8230][Reference Manual in Doxygen]]
+- [[https://docs.hdfgroup.org/hdf5/develop/group___h5_z.html][RM H5Z]]
+- Don't let Word & co. pollute your documentation!
+  - It's  not someone else being evil, it's us acting like fools!
+
+** Tips, tricks, & insights
+*** HDF5 Compound Datasets and (Relational) Tables: Don't be fooled!
+- [[https://forum.hdfgroup.org/t/append-to-compound-dataset/8885][Append to compound dataset]]
+- 'Row' as in 'table row' or 'matrix row' share the same spelling, but that's
+  where the similarity ends!
+  - HDF5 datasets are *not* tables
+
+#+begin_src C
+
+#include "hdf5.h"
+
+#include <stdlib.h>
+
+int main()
+{
+  __label__ fail_file, fail_dspace, fail_dset, fail_extent;
+
+  int retval = EXIT_SUCCESS;
+
+  hid_t file, dspace, dcpl, dset;
+
+  if ((file = H5Fcreate("foo.h5", H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT)) ==
+      H5I_INVALID_HID) {
+    retval = EXIT_FAILURE;
+    goto fail_file;
+  }
+
+  // create a 1D dataspace of indefinite extent, initial extent 0 (elements)
+  if ((dspace = H5Screate_simple(1, (hsize_t[]){0}, (hsize_t[]){H5S_UNLIMITED}))
+      == H5I_INVALID_HID) {
+    retval = EXIT_FAILURE;
+    goto fail_dspace;
+  }
+
+  // allocate space in the file in batches of 1024 dataset elements
+  if ((dcpl = H5Pcreate(H5P_DATASET_CREATE)) == H5I_INVALID_HID) {
+    retval = EXIT_FAILURE;
+    goto fail_dcpl;
+  }
+  if (H5Pset_chunk(dcpl, 1, (hsize_t[]){1024}) < 0) {
+    retval = EXIT_FAILURE;
+    goto fail_dset;
+  }
+
+  // create the dataset
+  // (replace H5T_STD_I32LE with your favorite datatype)
+  if ((dset = H5Dcreate(file, "(4-byte) integers", H5T_STD_I32LE, dspace,
+                        H5P_DEFAULT, dcpl, H5P_DEFAULT)) ==
+      H5I_INVALID_HID) {
+    retval = EXIT_FAILURE;
+    goto fail_dset;
+  }
+
+  // grow from here!
+
+  // "add one row"
+  if (H5Dset_extent(dset, (hsize_t[]){1}) < 0) {
+    retval = EXIT_FAILURE;
+    goto fail_extent;
+  }
+
+  // "add 99 more rows"
+  // 100 = 1 + 99
+  if (H5Dset_extent(dset, (hsize_t[]){100}) < 0) {
+    retval = EXIT_FAILURE;
+    goto fail_extent;
+  }
+
+  // you can also shrink the dataset...
+
+ fail_extent:
+  H5Dclose(dset);
+ fail_dset:
+  H5Pclose(dcpl);
+ fail_dcpl:
+  H5Sclose(dspace);
+ fail_dspace:
+  H5Fclose(file);
+ fail_file:
+
+  return retval;
+}
+
+#+end_src
+
+* Clinic 2021-08-17
+** Your Questions
+- Q :: Will the HDF5 1.12.1 file locking changes be brought to 1.10.8?
+- Q :: Are there or should there be special considerations when preserving HDF-5
+  files for future use? I support a research data repository at University of
+  Michigan and we occasionally receive these files (also netCDF and HDF-5
+  created by MATLAB).
+  - HDF5 feature use
+    - Relative paths, hard-coded paths (e.g., in external links)
+    - Dependencies such as plugins
+  - Metadata
+    - Faceted search, catalog, digest
+    - Check sums
+  - *TODO:* Create some guidance!
+
+** Last week's highlights
+*** Announcements
+**** [[https://forum.hdfgroup.org/t/new-compression-plugin-based-on-snappy-cuda/8848][New compression plugin based on Snappy-CUDA]]
+- A new (de-)compression filter plugin using [[https://github.com/google/snappy][Google's Snappy]] algorithm
+- It runs on GPUs
+- By Mr. HDF5-UDF (Lucas C. Villa Real)
+
+*** Forum
+**** [[https://forum.hdfgroup.org/t/alignment-of-direct-write-chunks/8851][Alignment of Direct Write Chunks]]
+- Store large 1D datasets across multiple HDF5 file
+- Receive compressed chunks w/ fixed number of samples/chunk
+- Want to use direct chunk write
+- *Problem:* Chunks may contain /boundary chunks/ containing samples that belong
+  to different datasets in different files
+- *Sub-optimal solution:* Decompress the chunk, separate the samples, & use some
+  kind of masking value on the next dataset
+- Better solution?
+
+** Tips, tricks, & insights
+*** Virtual Datasets (VDS)
+- Logically, HDF5 datasets have a shape (rank or dimensionality) and an element
+  type
+- Physically, HDF5 datasets have a layout (in a logical HDF5 file): contiguous,
+  chunked, compact, /virtual/
+- A virtual dataset is an HDF5 dataset of virtual layout (- duh!)
+- *Virtual layout:* some or all of the dataset's elements are stored in
+  constituent datasets in the same or other HDF5 files, including other virtual
+  datasets(!)
+- Like any HDF5 dataset, HDF5 datasets of virtual layout have a shape
+  (a.k.a. dataspace) and an element type (a.k.a datatype)
+- Virtual datasets are constructed by specifying how selections(!) on
+  constituent datasets /map/ to regions in the virtual dataset's dataspace
+- Main API call: [[https://docs.hdfgroup.org/hdf5/develop/group___d_c_p_l.html#gadec895092dbbedb94f85d9cacf8924f5][~H5Pset_virtual~]]
+  #+begin_src C -n
+
+  herr_t H5Pset_virtual(hid_t	      vds_dcpl_id,   // VDS creation properties
+                        hid_t       vds_dspace_id, // VDS dataspace
+                        const char* src_file_name, // source file path
+                        const char* src_dset_name, // source dataset path
+                        hid_t       src_space_id); // source dataspace select.
+
+  #+end_src
+- Sometimes multiple calls to ~H5Pset_virtual~ are necessary, but there's
+  support for ~printf~-style format strings to describe multiple source files & datasets
+- Typically, a VDS is just a piece of (HDF5-)metadata
+- How does that lead to a better solution? /Use VDS to correct for data
+  acquisition artifacts!/
+- Two approaches
+  1. Write the "boundary chunk" to both datasets/files
+  2. Write the "boundary chunk" to only one dataset/file
+- In either case, we use VDS as a mechanism to construct the correct
+  (time-delineated) datasets
+- Main practical differences between 1. and 2.:
+  - Unless the data is WORM (write-once/read-many), there is a potential
+    coherence problem in 1. because we have two copies of the halo data
+  - When accessing a dataset whose boundary chunk ended up in another file,
+    under 2., the HDF5 library has to open another file and dataset, and locate
+    the chunk
+- The canonical VDS reference is [[https://docs.hdfgroup.org/hdf5/rfc/HDF5-VDS-requirements-use-cases-2014-12-10.pdf][RFC: HDF5 Virtual Dataset]]
+  - Good source of use cases and examples
+  - Not everything described in the RFC was implemented, e.g., datatype
+    conversion
+  - ~h5py~ has a nice [[https://docs.h5py.org/en/stable/vds.html][interface for VDS]]
+
+* Clinic 2021-08-10
+** Your Questions
+- Q :: Will the HDF5 1.12.1 file locking changes be brought to 1.10.8?
+
+** Last week's highlights
+*** Announcements
+**** [[https://forum.hdfgroup.org/t/the-highly-scalable-data-service-hsds-is-now-available-on-microsoft-azure/8830][The Highly Scalable Data Service (HSDS) is now available on Microsoft Azure]]
+- Get started in the [[https://azuremarketplace.microsoft.com/en-us/marketplace/apps/thehdfgroup1616725197741.hsdsazurevm?tab=overview][Azure Marketplace]]
+**** [[https://forum.hdfgroup.org/t/vfd-swmr-beta-1-release/8824][VFD SWMR beta 1 release]]
+- [[https://github.com/HDFGroup/hdf5/tree/feature/vfd_swmr_beta_1][GitHub branch]]
+- [[https://www.youtube.com/watch?v=QDoKuJojkGI][The movie]]
+- [[https://docs.hdfgroup.org/hdf5/rfc/VFD_SWMR_RFC_191027.pdf][The VFD SWMR RFC]]
+*** Forum
+- [[https://forum.hdfgroup.org/t/problem-compiling-hdf5-using-cmake-with-hdf5-enable-parallel/8823][Problem compiling HDF5 using CMake with =HDF5_ENABLE_PARALLEL=]]
+  * Affects HDF5 1.12.1
+  * Discovered by Jan-Willem Blokland & turns out to be a goof-up in our CMake
+    files
+  - Fixed in [[https://github.com/HDFGroup/hdf5/pull/843][PR #843]]
+** Tips, tricks, & insights
+*** What is SWMR & what's new w/ VFD SWMR?
+- SWMR = Single Writer Multiple Readers
+- Use case: "Process collaboration w/o communication"
+  - Read from an HDF5 file that is actively being written
+  - "w/o communication"  = no inter-process communication (IPC) required
+- That's a big ask!
+  - How do we ensure that the readers don't read invalid, inconsistent, or corrupt data?
+  - How do we ensure that readers eventually see updates?
+    - Can we bound that delay?
+  - Does this require any special HW/SW support?
+- Initial release in HDF5 1.10.0 (March 30 2016)
+
+**** Limitations of the first implementation
+- No support for new items, e.g., objects, attributes, etc., no deletion
+  - Dataset append only
+- Reliance on strict write ordering and atomic write guarantee as per POSIX semantics
+  - Many file systems don't do that, e.g., NFS
+- Implementation touches most parts of the HDF5 library: high maintenance cost
+
+**** What VFD SWMR brings
+- Arbitrary item and object creation/deletion
+- Configurable bound (maximum time) between write and read
+- Easier to maintain because of VFD-level implementation
+- Relaxed storage requirements, i.e., the implementation can be modified to support NFS or object stores
+
+**** How is it done?
+- Writer generates periodic snapshots of metadata at points when it's known to be in a consistent state
+  - These snapshot live outside the HDF5 file proper
+- Readers' MD requests are satisfied from snapshots or unchanged MD in the HDF5 file
+- Devil's in the detail, e.g., to guarantee time between write and read, we need to bound the maximum size of MD changes and use page buffering
+  - See the [[https://docs.hdfgroup.org/hdf5/rfc/VFD_SWMR_RFC_191027.pdf][RFC]] for the details
+
+* Clinic 2021-08-03
+** Your Questions
+- Q :: Will the HDF5 1.12.1 file locking changes be brought to 1.10.8?
+
+- Q :: I’m interested in PyDarshan and its analysis of HDF5 Darshan Logs. The current resource that I have is [[https://nbviewer.jupyter.org/github/HDFGroup/hdf5-iotest/blob/master/examples/pydarshan-hdf5-tutorial.ipynb][this]]. Any other reference or documentation that you could point out? Thank you (Marta Garcia, ANL)
+
+** Last week's highlights
+*** Announcements
+**** [[https://forum.hdfgroup.org/t/release-of-hdfview-3-1-3-newsletter-179-the-hdf-group/8789][HDFView 3.1.3]] was released
+*** Forum
+**** [[https://forum.hdfgroup.org/t/check-all-members-of-compound-datatype-are-present/8795][Check all members of compound datatype are present?]]
+- Error is in the eye of the beholder
+- ~H5Tequal~ is of limited use
+- Provide or modify symbolic information in a single place
+- Use named datatypes for documentation
+**** [[https://forum.hdfgroup.org/t/phdf5-1-12-data-transform-in-combination-with-compression-filter/8799][pHDF5 1.12: data transform in combination with compression filter]]
+- Poor documentation (on our part)
+  - Who reads release notes?
+- Dropped feature in "rush to the release"
+- Will add a note to ~H5Pset_compressionX~ calls
+** Tips, tricks, & insights
+*** New function ~H5Dchunk_iter~
+:PROPERTIES:
+:CUSTOM_ID: chunk_analyzer.c
+:header-args: :tangle ./tangle/chunk_analyzer.c :main no
+:END:
+
+- Lets you iterate over dataset chunks, for example, to explore variability in
+  compression
+- Currently in the =develop= branch
+
+/Let's write a simple "chunk analyzer!"/
+
+**** Basic idea
+
+Provide an HDF5 file name as the single argument.
+
+#+begin_src C
+
+#include "hdf5.h"
+
+#include <stdlib.h>
+#include <stdio.h>
+
+static herr_t visit_cb(hid_t obj, const char *name, const H5O_info2_t *info,
+                       void *op_data);
+
+int main(int argc, char **argv)
+{
+  int retval = EXIT_SUCCESS;
+  hid_t file;
+  char path[] = {"/"};
+
+  if (argc < 2) {
+    printf("HDF5 file name required!");
+    return EXIT_FAILURE;
+  }
+
+  if ((file = H5Fopen(argv[1], H5F_ACC_RDONLY, H5P_DEFAULT)) ==
+      H5I_INVALID_HID) {
+    retval = EXIT_FAILURE;
+    goto fail_file;
+  }
+
+  // let's visit all objects in the file
+  if (H5Ovisit(file, H5_INDEX_NAME , H5_ITER_NATIVE , &visit_cb, path,
+               H5O_INFO_BASIC) < 0) {
+    retval = EXIT_FAILURE;
+    goto fail_visit;
+  }
+
+ fail_visit:
+  H5Fclose(file);
+ fail_file:
+  return retval;
+}
+
+#+end_src
+
+**** Callback for ~H5Ovisit~
+
+#+begin_src C
+
+static int chunk_cb(const hsize_t *offset, uint32_t filter_mask, haddr_t addr,
+                    uint32_t nbytes, void *op_data);
+
+herr_t visit_cb(hid_t obj, const char *name, const H5O_info2_t *info,
+                void *op_data)
+{
+  herr_t retval = 0;
+  char* base_path = (char*) op_data;
+
+  if (info->type == H5O_TYPE_DATASET)  // current object is a dataset
+    {
+      hid_t dset, dcpl;
+      if ((dset = H5Dopen(obj, name, H5P_DEFAULT)) == H5I_INVALID_HID) {
+        retval = -1;
+        goto func_leave;
+      }
+      if ((dcpl = H5Dget_create_plist(dset)) == H5I_INVALID_HID) {
+        retval = -1;
+        goto fail_dcpl;
+      }
+      if (H5Pget_layout(dcpl) == H5D_CHUNKED) // dataset is chunked
+        {
+          __label__ fail_dtype, fail_dspace, fail_fig;
+          hid_t dspace, dtype;
+          size_t size, i;
+          int rank;
+          hsize_t cdims[H5S_MAX_RANK];
+
+          // get resources
+          if ((dtype = H5Dget_type(dset)) < 0) {
+            retval = -1;
+            goto fail_dtype;
+          }
+          if ((dspace = H5Dget_space(dset)) < 0) {
+            retval = -1;
+            goto fail_dspace;
+          }
+          // get the figures
+          if ((size = H5Tget_size(dtype)) == 0 ||
+              (rank = H5Sget_simple_extent_ndims(dspace)) < 0 ||
+              H5Pget_chunk(dcpl, H5S_MAX_RANK, cdims) < 0) {
+            retval = -1;
+            goto fail_fig;
+          }
+          // calculate the nominal chunk size
+          size = 1;
+          for (i = 0; i < (size_t) rank; ++i)
+            size *= cdims[i];
+          // print dataset info
+          printf("%s%s : nominal chunk size %lu [B] \n", base_path, name,
+                 size);
+          // get the allocated chunk sizes
+          if (H5Dchunk_iter(dset, H5P_DEFAULT, &chunk_cb, NULL) < 0) {
+            retval = -1;
+            goto fail_fig;
+          }
+
+        fail_fig:
+          H5Sclose(dspace);
+        fail_dspace:
+          H5Tclose(dtype);
+        fail_dtype:;
+        }
+
+      H5Pclose(dcpl);
+    fail_dcpl:
+      H5Dclose(dset);
+    }
+
+ func_leave:
+  return retval;
+}
+
+#+end_src
+
+**** Callback for ~H5Dchunk_iter~
+
+#+begin_src C
+
+int chunk_cb(const hsize_t *offset, uint32_t filter_mask, haddr_t addr,
+             uint32_t nbytes, void *op_data)
+{
+  // for now we care only about the allocated chunk size
+  printf("%d\n", nbytes);
+  return EXIT_SUCCESS;
+}
+
+#+end_src
+
+* Clinic 2021-07-27
+** Your Questions
+- Q :: Will the HDF5 1.12.1 file locking changes be brought to 1.10.8?
+
+- Q :: Is there any experience using HDF5 for MPI output with compression on a
+  progressively striped Lustre system? We’re seeing some file corruption and we
+  are wondering where the problem lies. - Sean Freeman
+- A :: Nothing comes to mind that's related to that, but it might be good to
+  see what MPI and MPI I/O backend the user is using, since we've had issues
+  with ROMIO in the past for example. - [[mailto:jhenderson@hdfgroup.org][Jordan Henderson]]
+  - HPE MPT from SGI, not using ROMIO
+  - Maybe an MVE?
+** Last week's highlights
+*** Announcements
+**** [[https://forum.hdfgroup.org/t/2021-hdf5-user-group-hug21-call-for-papers/8301][2021 HDF5 User Group Call for Papers]]
+- Format: "Paper and Presentation" or "Presentation"
+- Deadline for presentation abstracts: [2021-08-01 Sun]
+- Event: 12-15 October 2021
+**** [[https://docs.hdfgroup.org/hdf5/develop/_r_f_c.html][HDF5 RFCs]]
+- All RFCs in one place
+*** Forum
+**** [[https://forum.hdfgroup.org/t/h5i-dec-ref-hangs/8104][H5i_dec_ref hangs]]
+- Parallel HDF5 "misbehavior" can be subtle
+- [[https://portal.hdfgroup.org/display/HDF5/Collective+Calling+Requirements+in+Parallel+HDF5+Applications][Collective Calling Requirements in Parallel HDF5 Applications]]
+  - Allocation time, fill behavior, etc., are less visible, but included
+  - Always ask if an operation has the potential to create any "metadata
+    disparity?"
+**** [[https://forum.hdfgroup.org/t/how-to-read-a-utf-8-string/6125][How to read a UTF-8 string]]
+- =H5T_CSET_UTF8= for character encoding
+- The is currently a subtle bug in string handling [[https://github.com/HDFGroup/hdf5/issues/544][Inconsistent behaviour with variable-length strings and character encoding #544]]
+  - ASCII is a proper subset of UTF-8 with byte-identical encodings
+  - The HDF5 library is blissfully ignorant about that...
+**** [[https://forum.hdfgroup.org/t/when-should-mpi-barrier-be-used-when-using-parallel-hdf5/8761][When should MPI barrier be used when using Parallel HDF5?]]
+- Only if you want to achieve a certain consistency semantics ("processes
+  communicating through a file")
+  - See [[https://docs.hdfgroup.org/hdf5/rfc/RFC%20PHDF5%20Consistency%20Semantics%20MC%20120328.docx.pdf][Enabling a Strict Consistency Semantics Model in Parallel HDF5]]
+****  [[https://forum.hdfgroup.org/t/hug-2021-hdf5-wishlist/8545][Make a wish!]]
+- What small changes would make a big difference in your HDF5 workflow?
+- Chime in!
+** Tips, tricks, & insights
+*** User-defined Properties
+- *Use case:* You want to pass property list-like things (dictionaries) around,
+  your language doesn't have dictionaries, and you don't want to re-invent the
+  wheel
+  - You want to stay close to the "HDF5 way of doing things"
+- See [[https://docs.hdfgroup.org/hdf5/develop/group___g_p_l_o_a.html][General Property List Operations (Advanced)]]
+- You can define your own property list classes w/ pre-defined or "permanent"
+  properties
+- You can insert "temporary" (= non-permanent) properties into any property list
+- *WARNING:* Permanent or temporary, /none/ of this is persisted in the HDF5
+  file!
+  - These property lists (and properties) get copied between APIs provided
+    you've implemented the necessary callbacks
+  - Depending on the property value types, make sure you implement proper
+    resource management, or memory leaks might occur
+- It's an esoteric/advanced/infrequently used feature, but might be just what
+  you need in certain circumstances
+* Clinic 2021-07-20
+** Your Questions
+- Q :: Will the HDF5 1.12.1 file locking changes be brought to 1.10.8?
+
+- Q ::   Named types, what are the benefits?
+  - A :: Documentation and convenience. You don't have to (re-)create the
+    datatype over and over. Just open it and pass the handle to attribute and
+    dataset creations!
+
+** Last week's highlights
+*** Announcements
+**** [[https://forum.hdfgroup.org/t/2021-hdf5-user-group-hug21-call-for-papers/8301][2021 HDF5 User Group Call for Papers]]
+- Format: "Paper and Presentation" or "Presentation"
+- Deadline for presentation abstracts: [2021-08-01 Sun]
+- Event: 12-15 October 2021
+*** Forum
+**** [[https://forum.hdfgroup.org/t/migrating-pandas-and-local-hf5-to-hsds/8721][Migrating pandas and local HF5 to HSDS ]]
+- John Readey posted a nice comment referencing an article that shows how to map
+  pandas dataframes to HDF5 via =h5py=
+- The same will also work w/ =h5pyd=
+**** [[https://forum.hdfgroup.org/t/local-hsds-performance-vs-local-hdf5-files/8652][Local HSDS performance vs local HDF5 files]]
+- Interesting exchange of benchmark results
+- Data (response) preparation in HSDS seems to be slow
+- The big question is why HSDS is sending data at a 10x lower rate than a
+  vanilla REST API (339 MB/s versus 4,384 MB/s)
+**** [[https://forum.hdfgroup.org/t/mpi-io-file-info-actually-used/8751][MPI-IO file info actually used]]
+- The ~MPI_Info~ object returned by ~H5Pget_fapl_mpio~ does not return the full
+  set of hints seen by MPI
+****  [[https://forum.hdfgroup.org/t/hug-2021-hdf5-wishlist/8545][Make a wish!]]
+- What small changes would make a big difference in your HDF5 workflow?
+- Chime in!
+
+** Tips, tricks, & insights
+*** HDF5 File Images
+- Use cases
+  - In-memory I/O
+  - Share HDF5 data between processes w/o a file system
+  - Transmit HDF5 data packets over a network
+- See also Vijay Kartik's (DESY) [[https://youtu.be/E3bIeFw02dc][presentation]] and [[https://www.hdfgroup.org/wp-content/uploads/2021/07/VijayKartik_HDF5_Serialization.pdf][slides]] from HUG 2021 Europe
+- Starting point: HDF5 core VFD
+  - Replace the file (logical byte sequence) with a memory buffer
+  - ~read~, ~write~ -> ~memcpy~
+- HDF5 file images generalize that concept
+  - Memory buffer + management interface (callbacks)
+  - Reference: [[https://docs.hdfgroup.org/hdf5/rfc/HDF5FileImageOperations.pdf][HDF5 File Image Operations]]
+- HDF5 file images can be exchanged between processes via IPC (shared memory
+  segment) or a TCP connection
+- See section 4 (Examples) in the reference
+
+  #+begin_example
+ +++ Process A +++                          +++ Process B +++
+
+ <Open and construct the desired file       hid_t file_;
+ with the Core file driver>
+
+ H5Fflush(fid);
+ size = H5Fget_file_image(fid, NULL, 0);
+ buffer_ptr = malloc(size);
+ H5Fget_file_image(fid, buffer_ptr, size);
+
+ <transmit size>                           <receive size>
+                                           buffer_ptr = malloc(size)
+ <transmit *buffer_ptr>                    <receive image in *buffer_ptr>
+ free(buffer_ptr);
+ <close core file>                         file_id = H5LTopen_file_image
+                                                     (
+                                                      buf,
+                                                      buf_len,
+                                                      H5LT_FILE_IMAGE_DONT_COPY
+                                                     );
+
+                                           <read data from file, then close.
+                                            note that the Core file driver
+                                            will discard the buffer on close>
+   #+end_example
+
+* Clinic 2021-07-13
+** Your Questions
+- Q :: Will the HDF5 1.12.1 file locking changes be brought to 1.10.8?
+
+** Last week's highlights
+*** HUG 2021 Europe
+- The presentations from the European HUG 2021 event are now available on [[https://www.youtube.com/watch?v=NRS8oV7T9BE&list=PLPyhR4PdEeGbiXGJ4ykBf3JEw6to8rmB3][YouTube]]
+*** Announcements
+**** [[https://forum.hdfgroup.org/t/2021-hdf5-user-group-hug21-call-for-papers/8301][2021 HDF5 User Group Call for Papers]]
+- Format: "Paper and Presentation" or "Presentation"
+- Deadline for presentation abstracts: [2021-08-01 Sun]
+- Event: 12-15 October 2021
+*** Forum
+**** [[https://forum.hdfgroup.org/t/hdf5-specs-unclear-b-tree-v2-and-fractal-heap/8723][HDF5 specs unclear: B-tree v2 and fractal heap ]]
+- There was a lot of interest in accessing HDF5 files directly, i.e., w/o the
+  HDF5 library
+- Good clarity test for the [[https://docs.hdfgroup.org/hdf5/develop/_f_m_t3.html][file format spec]].
+- Someone is extending the [[https://github.com/jjhelmus/pyfive][=pyfive=]] pure Python HDF5 reader and asked for heap
+  ID clarification
+
+**** [[https://forum.hdfgroup.org/t/building-rest-vol-on-windows-10/8654][Building REST VOL on Windows 10]]
+- REST VOL = access HSDS via the HDF5 library, converts HDF5 library calls into
+  RESTful requests (and back)
+- Requires =libcurl= and massaging the linker flags
+
+**** [[https://forum.hdfgroup.org/t/file-storage-on-aws-s3/8715][File storage on AWS S3]]
+- Where did the data go?
+- The documentation can be found [[https://github.com/HDFGroup/hsds/blob/master/docs/design/obj_store_schema/obj_store_schema_v2.md][here]]
+
+**** [[https://forum.hdfgroup.org/t/migrating-pandas-and-local-hf5-to-hsds/8721][Migrating pandas and local HF5 to HSDS ]]
+- Using [[https://www.digitalocean.com/products/spaces/][DigitalOcean and spaces]] instead of AWS S3
+- Using [[https://pandas.pydata.org/][=pandas=]]
+  - Will that work?
+
+**** [[https://forum.hdfgroup.org/t/local-hsds-performance-vs-local-hdf5-files/8652][Local HSDS performance vs local HDF5 files]]
+- User observed a 10x slowdown for reads
+- What to expect?
+  - Several sources for slowdown (e.g., compression, IPC)
+- John Ready is working on a comprehensive performance test suite
+
+**** [[https://forum.hdfgroup.org/t/start-list-of-vol-plugins/8714][Start list of VOL plugins?]]
+- [[https://portal.hdfgroup.org/display/support/Registered+VOL+Connectors][List of VOL Connectors Registered with The HDF Group]]
+
+**** [[https://forum.hdfgroup.org/t/h5diff-and-ignoring-attributes/8553][h5diff and ignoring attributes]]
+- Now in HDF5 =develop= as =--exclude-attribute= option for =h5diff=
+
+****  [[https://forum.hdfgroup.org/t/hug-2021-hdf5-wishlist/8545][Make a wish!]]
+- What small changes would make a big difference in your HDF5 workflow?
+- Chime in!
+** Tips, tricks, & insights
+*** HDF5 documentation updates
+- [[http://docs.hdfgroup.org.s3-website.us-east-2.amazonaws.com/hdf5/develop/index.html][docs.hdfgroup.org/hdf5/develop/]]
+
+* Clinic 2021-07-06
+** Your Questions
+- Q :: Will the HDF5 1.12.1 file locking changes be brought to 1.10.8?
+
+** Last week's highlights
+*** Announcements
+**** [[https://forum.hdfgroup.org/t/european-hdf-users-group-hug-summer-2021-july-7-8-2021/8632][European HDF Users Group (HUG) Summer 2021 July 7-8, 2021]]
+- [[https://zoom.us/meeting/register/tJUpde6srTwqGtPry8kfJthku8Eg2JZDrv28][Register for tomorrow's event!]]
+**** [[https://forum.hdfgroup.org/t/2021-hdf5-user-group-hug21-call-for-papers/8301][2021 HDF5 User Group Call for Papers]]
+- Format: "Paper and Presentation" or "Presentation"
+- Deadline for presentation abstracts: [2021-08-01 Sun]
+- Event: 12-15 October 2021
+**** [[https://forum.hdfgroup.org/t/reference-manual-in-doxygen/8230][Reference Manual in Doxygen]]
+- New permanent home for HDF5 documentation
+- [[https://docs.hdfgroup.org/hdf5/develop/][https://docs.hdfgroup.org/hdf5/develop/]]
+- [[https://docs.hdfgroup.org/hdf5/v1_12/][https://docs.hdfgroup.org/hdf5/v1_12/]]
+*** Forum
+****  [[https://forum.hdfgroup.org/t/hug-2021-hdf5-wishlist/8545][Make a wish!]]
+- What small changes would make a big difference in your HDF5 workflow?
+- Chime in!
+**** [[https://forum.hdfgroup.org/t/problems-with-hdf5-and-swmr-on-nfs-mounted-network-disk/8672][Problems with HDF5 and SWMR on NFS mounted network disk]]
+- Current SWMR implementation depends on POSIX write semantics (esp. order
+  preservation)
+- NFS & co. don't do that
+- VFD SWMR might change that
+**** [[https://forum.hdfgroup.org/t/save-related-data/8680][Save related data]]
+
+** Tips, tricks, & insights
+*** HDF5 ecosystem: HDFql
+- HDFql = Hierarchical Data Format query language
+- High-level and /declarative/
+- SQL is the gold standard for simplicity and power
+  - Adapted to HDF5
+- A single /guest/ language (HDFql) for multiple /host/ languages (C, C++, Java,
+  Python, C#, Fortran, R)
+- Seamless parallelism (multiple cores, MPI)
+**** Example
+- Host language: Fortran
+- Find all datasets existing in an HDF5 file named =data.h5= that start with
+  =temperature= and are of data type =float=
+- For each dataset found, print its name and read its data
+- Write the data into a file named =output.txt= in an ascending order
+- Each value (belonging to the data) is written in a new line using a UNIX-based
+  end of line (EOL) terminator
+
+#+begin_src fortran
+
+      PROGRAM Example
+      USE HDFql
+      INTEGER :: state
+      state = hdfql_execute("USE FILE data.h5")
+      state = hdfql_execute(
+      "SHOW DATASET LIKE **/^temperature WHERE DATA TYPE == FLOAT")
+D     O WHILE(hdfql_cursor_next() .EQ. HDFQL_SUCCESS)
+      WRITE(*, *) "Dataset found: ", hdfql_cursor_get_char()
+      state = hdfql_execute(
+      "SELECT FROM " // hdfql_cursor_get_char() //
+      " ORDER ASC INTO UNIX FILE output.txt SPLIT 1")
+      END DO
+      state = hdfql_execute("CLOSE FILE")
+      END PROGRAM
+
+#+end_src
+
+#+begin_src sql
+
+CREATE FILE my_file.h5
+
+CREATE FILE experiment.h5 IN PARALLEL
+
+CREATE GROUP countries
+
+CREATE DATASET values AS FLOAT(20, 40) ENABLE ZLIB
+
+INSERT INTO measurements VALUES FROM EXCEL FILE values.xlsx
+
+INSERT INTO dset(0:::1) VALUES FROM MEMORY 0
+
+SHOW ATTRIBUTE group2 LIKE **/1|3
+
+#+end_src
+
+- Links
+  - [[https://www.hdfql.com/][HDFql home]]
+    - Binaries for Linux, Windows, and macOS
+  - [[https://www.hdfql.com/examples/][HDFql examples]]
+  - [[https://www.hdfql.com/resources/LICENSE.txt][HDFql license]]
+
+** Coming soon
+*** What happens to open HDF5 handles/IDs when your program ends?
+- Suggested by Quincey Koziol (LBNL)
+- We'll take it in pieces
+  - Current behavior
+  - How async I/O changes  that picture
+*** Other topics of interest?
+* Clinic 2021-06-29
+** Your Questions
+- Q :: Will the HDF5 1.12.1 file locking changes be brought to 1.10.8?
+
+** Last week's highlights
+*** Announcements
+- [[https://forum.hdfgroup.org/t/european-hdf-users-group-hug-summer-2021-july-7-8-2021/8632][European HDF Users Group (HUG) Summer 2021 July 7-8, 2021]]
+  - [[https://www.hdfgroup.org/hug/europeanhug21/propose-a-presentation/][Propose a presentation]]–let us know you’re interested as soon as possible.
+  - [[https://www.hdfgroup.org/hug/europeanhug21/submit-your-abstract/][Finalize your presentation]] by sending in your abstract by June 30
+  - [[https://www.hdfgroup.org/hug/europeanhug21/submit-your-slide-deck-and-other-materials/][Submit your PPT]] and other materials by July 6
+  - [[https://zoom.us/meeting/register/tJUpde6srTwqGtPry8kfJthku8Eg2JZDrv28][Attendee and Speaker Registration]]
+
+- [[https://forum.hdfgroup.org/t/2021-hdf5-user-group-hug21-call-for-papers/8301][2021 HDF5 User Group Call for Papers]]
+  - Format: "Paper and Presentation" or "Presentation"
+  - Deadline for presentation abstracts: [2021-08-01 Sun]
+  - Event: 12-15 October 2021
+*** Forum
+****  [[https://forum.hdfgroup.org/t/hug-2021-hdf5-wishlist/8545][Make a wish!]]
+- What small changes would make a big difference in your HDF5 workflow?
+- Chime in!
+**** [[https://forum.hdfgroup.org/t/hdf5-performance/8622][HDF5 Performance]]
+- User is seeing decent performance w/ packet tables =H5PT=
+- Issue w/ deleting links (?)
+**** [[https://forum.hdfgroup.org/t/local-hsds-performance-vs-local-hdf5-files/8652][Local HSDS performance vs local HDF5 files]]
+**** [[https://forum.hdfgroup.org/t/hdfview-should-default-to-read-only-open/4584][HDFView should default to read-only open]]
+- Yes!
+- Too many options? Sloppy testing?
+**** [[https://forum.hdfgroup.org/t/hdf-port-to-rust/8639][HDF - port to Rust]]
+- Not a bad idea: a BIG job
+- Perhaps not a replacement for the C implementation (How many systems have a
+  Rust compiler?)
+- I understand that that's not the point, but there are reasonably mature [[https://github.com/aldanor/hdf5-rust][Rust
+  language bindings for HDF5]]
+
+** Tips, tricks, & insights
+*** How do I delete an HDF5 item?
+- HDF5 item = something a user created and that gets stored in an HDF5 file
+****  High-level view
+- Attributes - [[https://portal.hdfgroup.org/display/HDF5/H5A_DELETE][=H5Adelete*=]]
+- Objects (groups, datasets, named datatypes) - [[https://portal.hdfgroup.org/display/HDF5/H5L_DELETE][=H5Ldelete*=]]
+**** Low-level view
+- Objects are /reference-counted/ (in the object OHDR in the file!)
+- A positive reference count means the object is considered /in-use/ or
+  referenced
+- A zero reference count signals to the HDF5 library free space availability
+- If that free space can be used or reclaimed depends on several factors
+  - Position of the gap (middle of the file, end of the file)
+  - Intervening file closure
+  - Library version free-space management and tracking support
+  - Virtual File Driver support
+- A detailed description of file space management (including free space) can be
+  found in [[https://support.hdfgroup.org/HDF5/docNewFeatures/FileSpace/RFC-Paged_Aggregation.pdf][this RFC]]
+- Highlights:
+  - Pre-HDF5 1.10.x
+    - Free space info is *not* persisted across file open/close epochs
+      - Typical symptom: deleting an object in another epoch will not reduce
+        file size
+    - Use =h5stat= to discover the amount of free-/unused space
+    - =h5repack= is the cheapest way to recover unused space
+      - May not be practical for large files
+  - HDF5 1.10.x+
+    - Free space info can be persisted across file open/close epochs
+      - Needs to be enabled in file creation property list
+      - Set threshold on smallest quanta to be tracked
+      - Combine with paged allocation!
+- The story too involved for most users
+- Summary
+  - Don't create (in the file) what you don't need
+  - Use =h5stat= to assess and =h5repack= to reclaim free space: don't obsess
+    over a few KB!
+  - If you really want to get into file space management, use HDF5 1.10.x+ and
+    come back next time with a _question_!
+** Coming soon
+*** What happens to open HDF5 handles/IDs when your program ends?
+- Suggested by Quincey Koziol (LBNL)
+- We'll take it in pieces
+  - Current behavior
+  - How async I/O changes  that picture
+*** Other topics of interest?
+* Clinic 2021-06-22
+** Your Questions
+- Q :: What is the CacheVOL and what can I do with it? How can I use node-local
+  storage on an HPC system?
+  - Complexity is hidden from users
+  - Use in conjunction w/ Async VOL
+  - Data migration to and from the remote storage is performed in the background
+  - Developed by NERSC w/ Huihuo Zheng as the lead developer
+  - No official release yet
+  - See this [[https://www.exascaleproject.org/wp-content/uploads/2021/01/ECP-HDF5-Comm-BOF-All-Slides.pdf][ECP BoF presentation]] (around slide 29)
+  - [[https://github.com/hpc-io/vol-cache][GitHub]]
+  - [[https://github.com/HDFGroup/hdf-spack][Spack integration]]
+- Q :: Will the HDF5 1.12.1 file locking changes be brought to 1.10.8?
+** Last week's highlights
+*** Announcements
+- [[https://forum.hdfgroup.org/t/european-hdf-users-group-hug-summer-2021-july-7-8-2021/8632][European HDF Users Group (HUG) Summer 2021 July 7-8, 2021]]
+  - [[https://www.hdfgroup.org/hug/europeanhug21/propose-a-presentation/][Propose a presentation]]–let us know you’re interested as soon as possible.
+  - [[https://www.hdfgroup.org/hug/europeanhug21/submit-your-abstract/][Finalize your presentation]] by sending in your abstract by June 30
+  - [[https://www.hdfgroup.org/hug/europeanhug21/submit-your-slide-deck-and-other-materials/][Submit your PPT]] and other materials by July 6
+  - [[https://zoom.us/meeting/register/tJUpde6srTwqGtPry8kfJthku8Eg2JZDrv28][Attendee and Speaker Registration]]
+
+- [[https://forum.hdfgroup.org/t/2021-hdf5-user-group-hug21-call-for-papers/8301][2021 HDF5 User Group Call for Papers]]
+  - Format: "Paper and Presentation" or "Presentation"
+  - Deadline for presentation abstracts: [2021-08-01 Sun]
+  - Event: 12-15 October 2021
+- [[https://forum.hdfgroup.org/t/hdf5-udf-2-1-released-with-support-for-windows-and-macos/8631][HDF5-UDF 2.1 released – with support for Windows and macOS!]]
+*** Forum
+****  [[https://forum.hdfgroup.org/t/hug-2021-hdf5-wishlist/8545][Make a wish!]]
+- What small changes would make a big difference in your HDF5 workflow?
+- Chime in!
+**** [[https://forum.hdfgroup.org/t/hdf5-performance/8622][HDF5 Performance]]
+- Slowdown w/ a lot of attributes (10K, 100K, ...)
+- Slight improvement w/ a low-level fix (see below)
+- The customer is always right, but maybe this is not such a good idea
+** Tips, tricks, & insights
+*** How do I use a newer HDF5 file format?
+- Versions
+  - HDF5 library
+  - File format specification
+- HDF5 library /forward- and backward-compatibility/
+  - Backward :: The latest version of the library can read HDF5 files created
+    with all earlier library versions
+  - Forward :: A given version of the library can read all (objects in) HDF5
+    files created by later versions as long as they are compatible with this
+    version.
+- By default, newer HDF5 library versions use settings compatible with the
+  earliest library version
+
+#+begin_src C
+
+#include "hdf5.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+  __label__ fail_fapl, fail_file;
+  int ret_val = EXIT_SUCCESS;
+  hid_t fapl, file;
+
+  {
+    unsigned maj, min, rel;
+    if (H5get_libversion(&maj, &min, &rel) < 0) {
+      ret_val = EXIT_FAILURE;
+      goto fail_fapl;
+    }
+    printf("Welcome to HDF5 %d.%d.%d!\n", maj, min, rel);
+  }
+
+  if ((fapl = H5Pcreate(H5P_FILE_ACCESS)) < 0) {
+    ret_val = EXIT_FAILURE;
+    goto fail_fapl;
+  }
+
+  // bracket the range of LIBRARY VERSIONS for object creation and access,
+  // e.g., min. vers. 1.8, max. version current
+  if (H5Pset_libver_bounds(fapl, H5F_LIBVER_V18, H5F_LIBVER_LATEST) < 0) {
+    ret_val = EXIT_FAILURE;
+    goto fail_file;
+  }
+
+  if ((file = H5Fcreate("my.h5", H5F_ACC_TRUNC, H5P_DEFAULT, fapl)) < 0) {
+    ret_val = EXIT_FAILURE;
+    goto fail_file;
+  }
+
+  // do something useful w/ FILE
+
+  H5Fclose(file);
+
+ fail_file:
+  H5Pclose(fapl);
+ fail_fapl:;
+
+  return ret_val;
+}
+
+#+end_src
+
+** Coming soon
+*** What happens to open HDF5 handles/IDs when your program ends?
+- Suggested by Quincey Koziol (LBNL)
+- We'll take it in pieces
+  - Current behavior
+  - How async I/O changes  that picture
+*** Other topics of interest?
+* Clinic 2021-06-15
+** Your Questions
+- CacheVOL
+  - How to use local storage?
+  - [[https://www.youtube.com/watch?v=KJdXMqfRmS4][Hermes webinar]]
+** Last week's highlights
+*** Announcements
+- [[https://forum.hdfgroup.org/t/2021-hdf5-user-group-hug21-call-for-papers/8301][2021 HDF5 User Group Call for Papers]]
+  - Format: "Paper and Presentation" or "Presentation"
+  - Deadline for presentation abstracts: [2021-08-01 Sun]
+  - Event: 12-15 October 2021
+- [[https://forum.hdfgroup.org/t/hdf5-1-12-1-6-rc2-source-available-for-testing/8583][HDF5 1.12.1-6-rc2 source available for testing]]
+  - You can help!
+*** Forum
+****  [[https://forum.hdfgroup.org/t/hug-2021-hdf5-wishlist/8545][Make a wish!]]
+- What small changes would make a big difference in your HDF5 workflow?
+- Chime in!
+**** [[https://forum.hdfgroup.org/t/issue-unlocking-hdf5-file/8552][Issue unlocking HDF5 file?]]
+**** [[https://forum.hdfgroup.org/t/access-to-miscellaneous-dataset-information-get-size-of-compressed-dataset/8582][Access to ‘miscellaneous dataset information’/get size of compressed dataset]]
+- Aleksandar's =h5py= example:
+  #+begin_src python
+
+  import h5py
+
+  def comp_ratio(name, obj):
+      if isinstance(obj, h5py.Dataset) and obj.chunks is not None:
+          dcpl = obj.id.get_create_plist()
+          if dcpl.get_nfilters():
+              stor_size = obj.id.get_storage_size()
+              if stor_size != 0:
+                  ratio = float(obj.nbytes) / float(stor_size)
+                  print(f'Compression ratio for "{obj.name}": {ratio}')
+
+
+  fname = 'example.h5'
+  with h5py.File(fname, mode='r') as h5f:
+      h5f.visititems(comp_ratio)
+
+  #+end_src
+
+** Tips, tricks, & insights
+*** File Locking (Dana Robinson)
+**** Outline
+
+The basic file locking algorithm is simple:
+- On opening the file, we place the lock as described below. This is true for
+  /all/ file opens, not just SWMR (Single Write Multiple Readers).
+- For SWMR writers, this lock is removed after we flush the file's superblock.
+- All other processes will hold the lock until the file is closed or
+  =H5Fstart_swmr_write()= is called.
+
+**** Architecture
+
+File locking is handled in the native HDF5 virtual object layer (VOL) connector,
+so other VOL connectors (REST, etc.) don't do any locking.
+
+File locking is handled at the library level, not the virtual file level
+(VFL). Virtual file drivers (VFDs) do have to provide an implementation of the
+lock and unlock VFD operations for file locking to work, though. If a VFD
+doesn't provide a lock operation, file locking will be ignored when using that
+VFD. Most of the VFDs provided with the library are based on the POSIX SEC2 VFD
+(the default on all platforms, including Windows) and provide the locking I've
+described.
+
+The stdio VFD only uses =flock(2)= when it's available, it ignores file locking
+when it's not (e.g., on Windows). This is because the stdio VFD is a demo VFD
+that uses very little of the library's helper functions and macros and that's
+where the flock/fcntl/fail code lies.
+
+The MPI-IO VFD, as you might expect, ignores file locking.
+
+**** SWMR
+
+The =H5Fstart_swmr_write()= API call will unlock the file after it flushes
+everything in memory.
+
+Related to the OS-level locking algorithm, if the file was opened by a SWMR
+writer (either by using the =H5F_ACC_SWMR_WRITE= flag at create/open or via
+=H5Fstart_swmr_write()=) it will have its superblock marked as such. This mark
+will prevent readers from opening the file unless they open it with the
+=H5F_ACC_SWMR_READ= flag.
+
+HDF5 1.8.x and earlier do not understand this version of the superblock and will
+return an error code when trying to open the file. This mark is cleared when the
+file is closed. If the writer crashes, you can remove the mark using the
+=h5clear= tool provided with the library.
+
+**** UNIX/Linux, Non-Windows
+
+Compile time option:
+
+#+begin_example
+  --enable-file-locking=(yes|no|best-effort)
+                          Sets the default for whether or not to use file
+                          locking when opening files. Can be overridden with
+                          the HDF5_USE_FILE_LOCKING environment variable and
+                          the H5Pset_file_locking() API call. best-effort
+                          attempts to use file locking but does not fail when
+                          file locks have been disabled on the file system
+                          (useful with Lustre). [default=best-effort]
+#+end_example
+
+You can disable all file locking at runtime by setting an environment variable
+named =HDF5_USE_FILE_LOCKING= to the string ="FALSE"=.
+
+We preferentially use =flock(2)= in POSIX-like environments where it's
+available. If that is not available, we fall back on =fcntl(2)=. If that is not
+found and not best effort, the lock operation uses an internal function that
+simply *fails*.
+
+With =flock(2)=, we use =LOCK_EX= with read/write permissions and =LOCK_SH= with
+read-only. Both are combined with =LOCK_NB= to create non-blocking locks.
+
+With =fcntl(2)=, we lock the entire file. We use =F_WRLCK= with read/write
+permissions and =F_RDLCK= with read-only.
+
+**** Windows
+
+There is no locking on Windows systems since the Windows POSIX layer doesn't
+support that. File locking on Windows is just a no-op (as opposed to failing, as
+we do when neither =flock(2)= nor =fcntl(2)= are found). We'd need a a virtual
+file driver based on Win32 API calls to handle file locking on Windows.
+
+Windows uses the POSIX VFD as the default driver. We do not (yet) have a VFD
+that uses Win32 API calls like =CreateFile()=. The POSIX layer in Windows is
+incomplete, however, and does not include =flock(2)= or =fcntl(2)= so we simply
+skip file locking there for the time being.
+
+See below for an update!
+
+**** Summary
+
+File locking is only implemented to help prevent users from accessing files when
+SWMR write ordering is not turned on (or when we're doing the superblock
+marking). It's not inherent to the SWMR algorithm, which is lock-free and
+instead based on write ordering.
+
+**** Hot off the press
+
+In the 1.12.1-6-rc2 release notes, we find this entry:
+
+#+begin_example
+
+• File locking updates:
+
+File locks now work on Windows
+Adds BEST_EFFORT value to HDF5_USE_FILE_LOCKING environment variable
+Adds H5Pset/get_file_locking() API calls
+Adds --enable-file-locking=(yes|no|best-effort) option to Autotools
+Adds HDF5_USE_FILE_LOCKING and HDF5_IGNORE_DISABLED_FILE_LOCKS to CMake
+
+#+end_example
+
+** Coming soon
+*** What happens to open HDF5 handles/IDs when your program ends?
+- Suggested by Quincey Koziol (LBNL)
+- We'll take it in pieces
+  - Current behavior
+  - How async I/O changes  that picture
+*** Other topics of interest?
+* Clinic 2021-06-08
+** Your Questions
+???
+** Last week's highlights
+*** Announcements
+- [[https://forum.hdfgroup.org/t/2021-hdf5-user-group-hug21-call-for-papers/8301][2021 HDF5 User Group Call for Papers]]
+  - Format: "Paper and Presentation" or "Presentation"
+  - Deadline for presentation abstracts: [2021-08-01 Sun]
+  - Event: 12-15 October 2021
+*** Forum
+****  [[https://forum.hdfgroup.org/t/hug-2021-hdf5-wishlist/8545][Make a wish!]]
+- What small changes would make a big difference in your HDF5 workflow?
+- Great comments already
+  - Revised filter interface
+  - Updates to =HDF5_PLUGIN_PATH=
+  - Amalgamated source
+  - Modern language bindings for Fortran
+- Chime in!
+**** [[https://forum.hdfgroup.org/t/issue-unlocking-hdf5-file/8552][Issue unlocking HDF5 file?]]
+- Case of poor documentation & flip-flopping on our part?
+**** [[https://forum.hdfgroup.org/t/h5i-dec-ref-hangs/8104][=H5I_dec_ref= hangs]]
+** Tips, tricks, & insights
+*** Jam-packed HDF5 Files - The HDF5 User Block
+- "Keeping things together." - mantra
+  - Metadata and data
+  - Stuff - a zip file of ancillary (non-HDF5) data, documentation, etc.
+  - "HDF5 can be on the inside or the outside"
+- User block :: Reserved space at the beginning of an HDF5 file
+  - Fixed size 2^N  bytes, min. size 512 KiB
+  - Ignored by the HDF5 library
+- Tooling [[https://portal.hdfgroup.org/display/HDF5/h5jam+-+h5unjam][=h5jam=, =h5unjam=]]
+
+  #+begin_example
+
+  usage: h5jam -i <in_file.h5> -u <in_user_file> [-o <out_file.h5>] [--clobber]
+
+Adds user block to front of an HDF5 file and creates a new concatenated file.
+
+OPTIONS
+  -i in_file.h5    Specifies the input HDF5 file.
+  -u in_user_file  Specifies the file to be inserted into the user block.
+                   Can be any file format except an HDF5 format.
+  -o out_file.h5   Specifies the output HDF5 file.
+                   If not specified, the user block will be concatenated in
+                   place to the input HDF5 file.
+  --clobber        Wipes out any existing user block before concatenating
+                   the given user block.
+                   The size of the new user block will be the larger of;
+                    - the size of existing user block in the input HDF5 file
+                    - the size of user block required by new input user file
+                   (size = 512 x 2N,  N is positive integer.)
+
+  -h               Prints a usage message and exits.
+  -V               Prints the HDF5 library version and exits.
+
+Exit Status:
+   0   Succeeded.
+   >0  An error occurred.
+
+  #+end_example
+
+  #+begin_example
+
+usage: h5unjam -i <in_file.h5>  [-o <out_file.h5> ] [-u <out_user_file> | --delete]
+
+Splits user file and HDF5 file into two files: user block data and HDF5 data.
+
+OPTIONS
+  -i in_file.h5   Specifies the HDF5 as input.  If the input HDF5 file
+                  contains no user block, exit with an error message.
+  -o out_file.h5  Specifies output HDF5 file without a user block.
+                  If not specified, the user block will be removed from the
+                  input HDF5 file.
+  -u out_user_file
+                  Specifies the output file containing the data from the
+                  user block.
+                  Cannot be used with --delete option.
+  --delete        Remove the user block from the input HDF5 file. The content
+                  of the user block is discarded.
+                  Cannot be used with the -u option.
+
+  -h              Prints a usage message and exits.
+  -V              Prints the HDF5 library version and exits.
+
+  If neither --delete nor -u is specified, the user block from the input file
+  will be displayed to stdout.
+
+Exit Status:
+  0      Succeeded.
+  >0    An error occurred.
+
+    #+end_example
+
+- Let's try this!
+
+** Coming soon
+*** What happens to open HDF5 handles/IDs when your program ends?
+- Suggested by Quincey Koziol (LBNL)
+- We'll take it in pieces
+  - Current behavior
+  - How async I/O changes  that picture
+*** Other topics of interest?
+* Clinic 2021-06-01
+** Your Questions
+
+- Does =h5repack= have any impact on reading?
+  - What can =h5repack= do for you?
+    - Reclaim unused file space
+    - (Down-)Upgrade file format features
+    - Change dataset layout
+    - (Un-)Compress  datasets
+    - ...  (incomplete list! - Run =h5dump --help=!)
+  - Yes, the read performance of a re-packed HDF5 file could be better or worse
+    (or about the same).
+
+- Is there any difference in reading a variable/field if it is compressed or
+  un-compressed? (This question came in at the end of our May 18 session.)
+  - Assuming loss-less compression, no, in terms of value
+  - Yes, most likely, because (de-)compression requires CPU-cycles
+    - Potential reduction in I/O bandwidth
+    - Pathology: the data size increases as a result of compression
+  - [[https://portal.hdfgroup.org/display/HDF5/HDF5+Data+Flow+Pipeline+for+H5Dread][HDF5 Data Flow Pipeline for =H5Dread= ]]
+
+- Do you have recommendations for setting Figure of Merit (FOM) to
+  measure/capture I/O improvements? Any consideration based on current
+  supercomputers/hybrid systems, # of files used, kind of I/O (e.g. different
+  for read than for write), HDF5 versions, HDF5 features, if using SSDs/Burst
+  buffers, etc. What would be a good sample of FOM to follow?
+  - Baseline, metric (file size, throughput, IOPs)
+  - Large number of combinations? Perhaps polar diagrams? See [[https://www.youtube.com/watch?v=JEnYLWpBjso][this webinar]]
+    around 15:18.
+
+** Last week's highlights
+*** Announcements
+- [[https://forum.hdfgroup.org/t/2021-hdf5-user-group-hug21-call-for-papers/8301][2021 HDF5 User Group Call for Papers]]
+  - Format: "Paper and Presentation" or "Presentation"
+  - Deadline for abstracts: 1 June 2021
+  - Event: 12-15 October 2021
+*** Forum
+**** [[https://forum.hdfgroup.org/t/hdf5-udf-runs-on-macos/8527][HDF5-UDF runs on macOS!]]
+- *Caveat:* [[https://www.gnu.org/proprietary/malware-apple.en.html][Apple's Operating Systems Are Malware]] says [[https://www.gnu.org/][FSF]]
+****  [[https://forum.hdfgroup.org/t/hug-2021-hdf5-wishlist/8545][Make a wish!]]
+- What small changes would make a big difference in your HDF5 workflow?
+** Tips, tricks, & insights
+*** Jam-packed HDF5 Files - The HDF5 User Block
+- "Keeping things together." - mantra
+  - Metadata and data
+  - Stuff - a zip file of ancillary (non-HDF5) data, documentation, etc.
+  - "HDF5 can be on the inside or the outside"
+- User block :: Reserved space at the beginning of an HDF5 file
+  - Fixed size 2^N  bytes, min. size 512 KiB
+  - Ignored by the HDF5 library
+- Tooling [[https://portal.hdfgroup.org/display/HDF5/h5jam+-+h5unjam][=h5jam=, =h5unjam=]]
+
+  #+begin_example
+
+  usage: h5jam -i <in_file.h5> -u <in_user_file> [-o <out_file.h5>] [--clobber]
+
+Adds user block to front of an HDF5 file and creates a new concatenated file.
+
+OPTIONS
+  -i in_file.h5    Specifies the input HDF5 file.
+  -u in_user_file  Specifies the file to be inserted into the user block.
+                   Can be any file format except an HDF5 format.
+  -o out_file.h5   Specifies the output HDF5 file.
+                   If not specified, the user block will be concatenated in
+                   place to the input HDF5 file.
+  --clobber        Wipes out any existing user block before concatenating
+                   the given user block.
+                   The size of the new user block will be the larger of;
+                    - the size of existing user block in the input HDF5 file
+                    - the size of user block required by new input user file
+                   (size = 512 x 2N,  N is positive integer.)
+
+  -h               Prints a usage message and exits.
+  -V               Prints the HDF5 library version and exits.
+
+Exit Status:
+   0   Succeeded.
+   >0  An error occurred.
+
+  #+end_example
+
+  #+begin_example
+
+usage: h5unjam -i <in_file.h5>  [-o <out_file.h5> ] [-u <out_user_file> | --delete]
+
+Splits user file and HDF5 file into two files: user block data and HDF5 data.
+
+OPTIONS
+  -i in_file.h5   Specifies the HDF5 as input.  If the input HDF5 file
+                  contains no user block, exit with an error message.
+  -o out_file.h5  Specifies output HDF5 file without a user block.
+                  If not specified, the user block will be removed from the
+                  input HDF5 file.
+  -u out_user_file
+                  Specifies the output file containing the data from the
+                  user block.
+                  Cannot be used with --delete option.
+  --delete        Remove the user block from the input HDF5 file. The content
+                  of the user block is discarded.
+                  Cannot be used with the -u option.
+
+  -h              Prints a usage message and exits.
+  -V              Prints the HDF5 library version and exits.
+
+  If neither --delete nor -u is specified, the user block from the input file
+  will be displayed to stdout.
+
+Exit Status:
+  0      Succeeded.
+  >0    An error occurred.
+
+    #+end_example
+
+- Let's try this!
+
+** Coming soon
+*** What happens to open HDF5 handles/IDs when your program ends?
+- Suggested by Quincey Koziol (LBNL)
+- We'll take it in pieces
+  - Current behavior
+  - How async I/O changes  that picture
+*** Other topics of interest?
+* Clinic 2021-05-25
+** Your Questions
+
+- Does =h5repack= have any impact on reading?
+  - Yes, the read performance of a re-packed HDF5 file could be better or worse
+    (or about the same).
+- Is there any difference in reading a variable/field if it is compressed or
+  un-compressed? (This question came in at the end of our May 18 session.)
+  - Yes
+  - [[https://portal.hdfgroup.org/display/HDF5/HDF5+Data+Flow+Pipeline+for+H5Dread][HDF5 Data Flow Pipeline for =H5Dread= ]]
+- Do you have recommendations for setting Figure of Merit (FOM) to
+  measure/capture I/O improvements? Any consideration based on current
+  supercomputers/hybrid systems, # of files used, kind of I/O (e.g. different
+  for read than for write), HDF5 versions, HDF5 features, if using SSDs/Burst
+  buffers, etc. What would be a good sample of FOM to follow?
+  - Baseline, metric
+  - Large number of combinations? Perhaps polar diagrams? See [[https://www.youtube.com/watch?v=JEnYLWpBjso][this webinar]]
+    around 15:18.
+
+** Last week's highlights
+*** Announcements
+- [[https://forum.hdfgroup.org/t/webinar-announcement-the-hermes-buffering-system-take-two/8493][The Hermes Buffering System - Take Two]] was *POSTPONED*
+  - Stay tuned for a re-announcement
+- [[https://forum.hdfgroup.org/t/2021-hdf5-user-group-hug21-call-for-papers/8301][2021 HDF5 User Group Call for Papers]]
+  - Format: "Paper and Presentation" or "Presentation"
+  - Deadline for abstracts: 1 June 2021
+  - Event: 12-15 October 2021
+*** Forum
+**** [[https://forum.hdfgroup.org/t/zstd-filter-plugin-dictionary-training/8401][Zstd filter plugin & dictionary training]]
+- [[http://develop.hdf5.info/group___h5_z.html][H5Z life cycle]]
+** Tips, tricks, & insights
+*** =h5repack= - Getting stuff done w/o writing a lot of code
+Sanity check:
+#+begin_src sh :results output
+h5repack --help
+#+end_src
+The output should look like this:
+#+begin_example
+usage: h5repack [OPTIONS] file1 file2
+  file1                    Input HDF5 File
+  file2                    Output HDF5 File
+  OPTIONS
+   -h, --help              Print a usage message and exit
+   -v, --verbose           Verbose mode, print object information
+   -V, --version           Print version number and exit
+   -n, --native            Use a native HDF5 type when repacking
+   --enable-error-stack    Prints messages from the HDF5 error stack as they
+                           occur
+   -L, --latest            Use latest version of file format
+                           This option will take precedence over the options
+                           --low and --high
+   --low=BOUND             The low bound for library release versions to use
+                           when creating objects in the file
+                           (default is H5F_LIBVER_EARLIEST)
+   --high=BOUND            The high bound for library release versions to use
+                           when creating objects in the file
+                           (default is H5F_LIBVER_LATEST)
+   --merge                 Follow external soft link recursively and merge data
+   --prune                 Do not follow external soft links and remove link
+   --merge --prune         Follow external link, merge data and remove dangling link
+   -c L1, --compact=L1     Maximum number of links in header messages
+   -d L2, --indexed=L2     Minimum number of links in the indexed format
+   -s S[:F], --ssize=S[:F] Shared object header message minimum size
+   -m M, --minimum=M       Do not apply the filter to datasets smaller than M
+   -e E, --file=E          Name of file E with the -f and -l options
+   -u U, --ublock=U        Name of file U with user block data to be added
+   -b B, --block=B         Size of user block to be added
+   -M A, --metadata_block_size=A  Metadata block size for H5Pset_meta_block_size
+   -t T, --threshold=T     Threshold value for H5Pset_alignment
+   -a A, --alignment=A     Alignment value for H5Pset_alignment
+   -q Q, --sort_by=Q       Sort groups and attributes by index Q
+   -z Z, --sort_order=Z    Sort groups and attributes by order Z
+   -f FILT, --filter=FILT  Filter type
+   -l LAYT, --layout=LAYT  Layout type
+   -S FS_STRATEGY, --fs_strategy=FS_STRATEGY  File space management strategy for
+                           H5Pset_file_space_strategy
+   -P FS_PERSIST, --fs_persist=FS_PERSIST  Persisting or not persisting free-
+                           space for H5Pset_file_space_strategy
+   -T FS_THRESHOLD, --fs_threshold=FS_THRESHOLD   Free-space section threshold
+                           for H5Pset_file_space_strategy
+   -G FS_PAGESIZE, --fs_pagesize=FS_PAGESIZE   File space page size for
+                           H5Pset_file_space_page_size
+...
+#+end_example
+There's a lot of stuff to chew over, but let's focus on the examples:
+#+begin_example
+...
+
+Examples of use:
+
+1) h5repack -v -f GZIP=1 file1 file2
+
+   GZIP compression with level 1 to all objects
+
+2) h5repack -v -f dset1:SZIP=8,NN file1 file2
+
+   SZIP compression with 8 pixels per block and NN coding method to object dset1
+
+3) h5repack -v -l dset1,dset2:CHUNK=20x10 -f dset3,dset4,dset5:NONE file1 file2
+
+   Chunked layout, with a layout size of 20x10, to objects dset1 and dset2
+   and remove filters to objects dset3, dset4, dset5
+
+4) h5repack -L -c 10 -s 20:dtype file1 file2
+
+   Using latest file format with maximum compact group size of 10 and
+   minimum shared datatype size of 20
+
+5) h5repack -f SHUF -f GZIP=1 file1 file2
+
+   Add both filters SHUF and GZIP in this order to all datasets
+
+6) h5repack -f UD=307,0,1,9 file1 file2
+
+   Add bzip2 filter to all datasets
+
+7) h5repack --low=0 --high=1 file1 file2
+
+   Set low=H5F_LIBVER_EARLIEST and high=H5F_LIBVER_V18 via
+   H5Pset_libver_bounds() when creating the repacked file, file2
+#+end_example
+
+Let's create some test data and play!
+
+#+begin_src C
+
+#include "hdf5.h"
+
+#include <assert.h>
+#include <stdlib.h>
+
+#define SIZE 1024*1024
+
+int main()
+{
+  int ret_val = EXIT_SUCCESS;
+
+  hid_t file, fspace, dset;
+
+  double* data = (double*) malloc(SIZE*sizeof(double));
+
+  if ((file = H5Fcreate("foo.h5", H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT)) ==
+      H5I_INVALID_HID) {
+    ret_val = EXIT_FAILURE;
+    goto fail_file;
+  }
+
+  if ((fspace = H5Screate_simple(1, (hsize_t[]){ SIZE }, NULL)) ==
+      H5I_INVALID_HID) {
+    ret_val = EXIT_FAILURE;
+    goto fail_fspace;
+  }
+
+  if ((dset = H5Dcreate(file, "sequential", H5T_IEEE_F64LE, fspace,
+                        H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT)) ==
+      H5I_INVALID_HID) {
+    ret_val = EXIT_FAILURE;
+    goto fail_dset;
+  }
+
+  for (size_t i = 0; i < SIZE; ++i)
+    data[i] = (double)i;
+
+  if (H5Dwrite(dset, H5T_NATIVE_DOUBLE, H5S_ALL, H5S_ALL, H5P_DEFAULT, data)
+      < 0)
+    ret_val = EXIT_FAILURE;
+
+  H5Dclose(dset);
+
+  if ((dset = H5Dcreate(file, "random", H5T_IEEE_F64LE, fspace, H5P_DEFAULT,
+                        H5P_DEFAULT, H5P_DEFAULT)) == H5I_INVALID_HID) {
+    ret_val = EXIT_FAILURE;
+    goto fail_dset;
+  }
+  for (size_t i = 0; i < SIZE; ++i)
+    data[i] = (double)rand()/(double)RAND_MAX;
+
+  if (H5Dwrite(dset, H5T_NATIVE_DOUBLE, H5S_ALL, H5S_ALL, H5P_DEFAULT, data)
+      < 0)
+    ret_val = EXIT_FAILURE;
+
+  H5Dclose(dset);
+
+ fail_dset:
+  H5Sclose(fspace);
+ fail_fspace:
+  H5Fclose(file);
+ fail_file:
+  free(data);
+
+  assert(ret_val == EXIT_SUCCESS);
+
+  return ret_val;
+}
+
+#+end_src
+
+** Coming soon
+*** What happens to open HDF5 handles/IDs when your program ends?
+- Suggested by Quincey Koziol (LBNL)
+- We'll take it in pieces
+  - Current behavior
+  - How async I/O changes  that picture
+*** Other topics of interest?
+* Clinic 2021-05-18
+** Your Questions
+
+???
+
+** Last week's highlights
+*** Announcements
+- Recording of [[https://www.youtube.com/watch?v=RuBKDW4TNO4][H5Coro: The HDF5 Cloud-Optimized Read-Only Library]] is available now
+- [[https://forum.hdfgroup.org/t/webinar-announcement-the-hermes-buffering-system-take-two/8493][The Hermes Buffering System - Take Two]]
+  - May 28, 2021 11:00 a.m. CDT
+  - [[https://zoom.us/meeting/register/tJEtcuivqT4iH9CLyprQ23WhuZWjwIjslfoy][Registration]]
+  - [[https://www.youtube.com/watch?v=KJdXMqfRmS4][Previous Webinar Recording]]
+  - [[https://github.com/HDFGroup/hermes][Hermes on GitHub]]
+- [[https://forum.hdfgroup.org/t/2021-hdf5-user-group-hug21-call-for-papers/8301][2021 HDF5 User Group Call for Papers]]
+  - Format: "Paper and Presentation" or "Presentation"
+  - Deadline for abstracts: 1 June 2021
+  - Event: 12-15 October 2021
+*** Forum
+**** [[https://forum.hdfgroup.org/t/hdf5-udf-2-0-released-udf-signing-trust-profiles-python-bindings-and-more/8486][HDF5-UDF 2.0 released: UDF signing, trust profiles, Python bindings, and more! ]]
+- UDF signing
+- Library API
+  - Python bindings (i.e., manageable from Jupyter notebook)
+- Source code storage
+- [[https://github.com/lucasvr/hdf5-udf][GitHub]]
+**** [[https://forum.hdfgroup.org/t/zlib-ng-works-with-hdf5/8477][Zlib-ng works with HDF5]]
+- More anecdotal evidence of performance improvements
+- Begs a maintenance question: Should we/ can we support multiple
+  implementations of the same filter?
+**** [[https://forum.hdfgroup.org/t/reference-manual-in-doxygen/8230][Reference Manual in Doxygen]]
+- [[http://doxygen.hdf5.s3-website.us-east-2.amazonaws.com/_r_m.html][Current version]]
+- Life cycle entries - are they helpful?
+- To be included in HDF5 1.12.1
+** Tips, tricks, & insights
+*** When should you consider using chunked layout for a dataset?
+"Consider" means that you should also consider /alternatives/. None of the items
+listed below mandates chunked layout.
+**** Considerations
+- I would like to use a compression or other filter w/ my data
+- I cannot know/estimate the data size in advance
+- I need the ability to append data indefinitely
+- My read/write pattern is such that contiguous layout would reduce performance
+**** Caveats
+- What's a good chunk size?
+- Is my chunk cache the right size?
+- Compound types?
+- Variable-length datatypes?
+- Are there edge chunks?
+****  Experimentation
+- *Don't waste your time writing a lot of code!*
+  - Use a tool such as =h5repack=
+  - Use intuitive and boilerplate-free language bindings for Python, Julia, or
+    C++ that exist thanks to the HDF community
+** Coming soon
+*** What happens to open HDF5 handles/IDs when your program ends?
+- Suggested by Quincey Koziol (LBNL)
+- We'll take it in pieces
+  - Current behavior
+  - How async I/O changes  that picture
+*** Other topics of interest?
+* Clinic 2021-05-11
+** Your Questions
+- Where is the page that I'm showing?
+- How did we prepare the webinar radial diagrams?
+  - Using Python's =plotly= module
+  - [[https://medium.com/@abhishekdas.nitc/nightingale-plots-in-python-using-plotly-da42bc18d15d][Here's a nice article]] to get you started.
+  - We'll include a few scripts w/ [[https://github.com/HDFGroup/hdf5-iotest][HDF5 I/O test]] in the future
+
+** Last week's highlights
+*** Announcements
+- [[https://forum.hdfgroup.org/t/webinar-announcement-h5coro-the-hdf5-cloud-optimized-read-only-library/8429][H5Coro: The HDF5 Cloud-Optimized Read-Only Library]]
+  - May 14, 11:00 AM Central
+  -  Looking at ways to efficiently access HDF5 files residing in AWS S3
+- [[https://forum.hdfgroup.org/t/2021-hdf5-user-group-hug21-call-for-papers/8301][2021 HDF5 User Group Call for Papers]]
+  - Format: "Paper and Presentation" or "Presentation"
+  - Deadline for abstracts: 1 June 2021
+  - Event: 12-15 October 2021
+
+*** Forum
+**** [[https://forum.hdfgroup.org/t/zlib-ng-works-with-hdf5/8477][Zlib-ng works with HDF5]]
+- New =zlib= implementation appears to work w/ HDF5
+- Much better performance according to the post
+- Maybe support as a dynamic plugin?
+**** [[https://forum.hdfgroup.org/t/reference-manual-in-doxygen/8230][Reference Manual in Doxygen]]
+- [[http://doxygen.hdf5.s3-website.us-east-2.amazonaws.com/index.html][Current version]]
+- Interesting discussion around docs-like-code and maintenance
+- There are [[https://documentation.divio.com/][different kinds of documentation]]
+  - Tasks, concepts, reference (DITAA)
+  - Tutorials, how-to guides, explanation, reference (Divio)
+**** [[https://forum.hdfgroup.org/t/h5i-dec-ref-hangs/8104][~H5Idec_ref~ hangs]]
+- Showing an example of MPI ranks doing independent writes to different datasets
+  w/ MPI-IO VFD
+**** [[https://forum.hdfgroup.org/t/hdf5-infinite-loop-closing-library-v1-10-6/8468][HDF5: infinite loop closing library (v1.10.6)]]
+- We covered file close degrees in clinic no. 10 on [2021-04-20 Tue]
+**** [[https://forum.hdfgroup.org/t/hdfql-2-3-0-release-with-excel-import-export-support/8132][HDFql 2.3.0 Release (with EXCEL import/export support!)]]
+- Bugfix for Java =ArrayIndexOutOfBoundsException= when registering a zero
+  element byte array
+- Fixed in HDFql 2.4.0
+** Tips, tricks, & insights
+*** Fixed- vs. variable-length string performance cage match
+- Trigger: [[https://forum.hdfgroup.org/t/writing-and-reading-variable-length-std-string-in-compound-data-type/8455][Writing and reading variable length std::string in compound data type]]
+- Contributed by Steven (Canada Dry) Varga
+  - [[http://string-performance.h5cpp.org/][Presentation]]
+  - [[https://github.com/steven-varga/HDFGroup-mailinglist/tree/master/non-pod-struct-2021-apr-29][GitHub link]]
+** Coming soon
+*** What happens to open HDF5 handles/IDs when your program ends?
+- Suggested by Quincey Koziol (LBNL)
+- We'll take it in pieces
+  - Current behavior
+  - How async I/O changes  that picture
+*** Other topics of interest?
+Let us know!
+* Clinic 2021-05-04
+** Your Questions
+???
+
+** Last week's highlights
+*** Announcements
+- [[https://www.youtube.com/watch?v=JEnYLWpBjso][Recording of last week's webinar]]
+- [[https://forum.hdfgroup.org/t/webinar-announcement-h5coro-the-hdf5-cloud-optimized-read-only-library/8429][H5Coro: The HDF5 Cloud-Optimized Read-Only Library]]
+  - May 14, 11:00 AM Central
+  -  Looking at ways to efficiently access HDF5 files residing in AWS S3
+- [[https://forum.hdfgroup.org/t/2021-hdf5-user-group-hug21-call-for-papers/8301][2021 HDF5 User Group Call for Papers]]
+  - Format: "Paper and Presentation" or "Presentation"
+  - Deadline for abstracts: 1 June 2021
+  - Event: 12-15 October 2021
+
+*** Forum
+**** [[https://forum.hdfgroup.org/t/how-to-use-h5ocopy-to-copy-a-group-with-hard-links/8443][How to use H5ocopy to copy a group with hard links]]
+- [[https://portal.hdfgroup.org/display/HDF5/H5O_COPY][~H5Ocopy~]] vs. [[https://portal.hdfgroup.org/display/HDF5/H5L_COPY][~H5Lcopy~]]
+- [[https://portal.hdfgroup.org/display/HDF5/H5P_SET_COPY_OBJECT][~H5Pset_copy_object~]]
+
+** Tips, tricks, & insights
+*** What is =H5S_ALL= all about?
+
+#+begin_src C
+
+{
+  __label__ fail_update, fail_fspace, fail_dset, fail_file;
+  hid_t file, dset, fspace;
+
+  unsigned mode           = H5F_ACC_RDWR;
+  char     file_name[]    = "d1.h5";
+  char     dset_name[]    = "σύνολο/δεδομένων";
+  int      new_elts[6][2] = {{-1, 1}, {-2, 2}, {-3, 3}, {-4, 4},
+                             {-5, 5}, {-6, 6}};
+
+  if ((file = H5Fopen(file_name, mode, H5P_DEFAULT))
+      == H5I_INVALID_HID) {
+    ret_val = EXIT_FAILURE;
+    goto fail_file;
+  }
+  if ((dset = H5Dopen2(file, dset_name, H5P_DEFAULT))
+      == H5I_INVALID_HID) {
+    ret_val = EXIT_FAILURE;
+    goto fail_dset;
+  }
+  // get the dataset's dataspace
+  if ((fspace = H5Dget_space(dset)) == H5I_INVALID_HID) {
+    ret_val = EXIT_FAILURE;
+    goto fail_fspace;
+  }
+  // select the first 5 elements in odd positions
+  if (H5Sselect_hyperslab(fspace, H5S_SELECT_SET,
+                          (hsize_t[]){1},
+                          (hsize_t[]){2},
+                          (hsize_t[]){5},
+                          NULL) < 0) {
+    ret_val = EXIT_FAILURE;
+    goto fail_update;
+  }
+
+  // (implicitly) select and write the first 5 elements of the second
+  // column of NEW_ELTS
+  if (H5Dwrite(dset, H5T_NATIVE_INT, H5S_ALL, fspace, H5P_DEFAULT,
+               new_elts) < 0)
+    ret_val = EXIT_FAILURE;
+
+ fail_update:
+  H5Sclose(fspace);
+ fail_fspace:
+  H5Dclose(dset);
+ fail_dset:
+  H5Fclose(file);
+ fail_file:;
+}
+
+#+end_src
+
+** Coming soon
+*** Fixed- vs. variable-length string performance cage match
+- Contributed by Steven (Canada Dry) Varga
+- You don't want to miss that one!
+*** What happens to open HDF5 handles/IDs when your program ends?
+- Suggested by Quincey Koziol (LBNL)
+- We'll take it in pieces
+  - Current behavior
+  - How async I/O changes  that picture
+*** Other topics of interest?
+Let us know!
+* Clinic 2021-04-27
+** Your questions
+*** Question 1
+
+#+begin_quote
+Last week you mentioned that one might use the Fortran version of the HDF5
+library from C/C++ when working with column-major data.  Could you say more
+about this? Is the difference simply how the arguments to the library functions
+are interpreted (e.g ~H5Screate~, ~H5Sselect_hyperslab~) are interpreted, or is it
+possible to discern from the file itself whether the data is column-major or
+row-major?
+#+end_quote
+
+** Last week's highlights
+*** Announcements
+- ECP BOF Day slides are [[https://www.hdfgroup.org/wp-content/uploads/2021/04/ECP-HDF5-Comm-BOF-All-Slides.pdf][available]]
+- Part 2 of  [[https://forum.hdfgroup.org/t/webinar-announcement-hdf5-application-tuning-there-is-more-than-one-way-to-skin-a-cat-fish-part-2/8387][HDF5 Application Tuning]]
+  - April 30, 11:00 AM Central
+  - This time it's about HDF5 library performance variability
+- [[https://forum.hdfgroup.org/t/webinar-announcement-h5coro-the-hdf5-cloud-optimized-read-only-library/8429][H5Coro: The HDF5 Cloud-Optimized Read-Only Library]]
+  - May 14, 11:00 AM Central
+  -  Looking at ways to efficiently access HDF5 files residing in AWS S3
+- [[https://forum.hdfgroup.org/t/2021-hdf5-user-group-hug21-call-for-papers/8301][2021 HDF5 User Group Call for Papers]]
+  - Format: "Paper and Presentation" or "Presentation"
+  - Deadline for abstracts: 1 June 2021
+  - Event: 12-15 October 2021
+*** Forum
+**** [[https://forum.hdfgroup.org/t/reference-manual-in-doxygen/8230][Doxygen-based RM merged to =develop=]]
+- Pull requests welcome
+- Feedback on life cycle intros wanted, e.g., [[http://doxygen.hdf5.s3-website.us-east-2.amazonaws.com/group___h5_a.html][H5A]], [[http://doxygen.hdf5.s3-website.us-east-2.amazonaws.com/group___h5_d.html][H5D]], [[http://doxygen.hdf5.s3-website.us-east-2.amazonaws.com/group___h5_f.html][H5F]]
+**** [[https://forum.hdfgroup.org/t/parallel-hdf5-write-with-irregular-size-in-one-dimension/8284][Parallel HDF5 write with irregular size in one dimension]]
+- Rob Latham confirmed an [[https://forum.hdfgroup.org/t/parallel-hdf5-write-with-irregular-size-in-one-dimension/8284/10][issue]] in Darshan's HDF5 module
+**** [[https://forum.hdfgroup.org/t/how-to-use-h5ocopy-to-copy-a-group-with-hard-links/8443][How to use H5ocopy to copy a group with hard links]]
+- I don't understand it: are we copying groups or links (or both)?
+** Tips, tricks, & insights
+**** The =h5stat= tool
+
+#+begin_example
+Usage: h5stat [OPTIONS] file
+
+      OPTIONS
+     -h, --help            Print a usage message and exit
+     -V, --version         Print version number and exit
+     -f, --file            Print file information
+     -F, --filemetadata    Print file space information for file's metadata
+     -g, --group           Print group information
+     -l N, --links=N       Set the threshold for the # of links when printing
+                           information for small groups.  N is an integer greater
+                           than 0.  The default threshold is 10.
+     -G, --groupmetadata   Print file space information for groups' metadata
+     -d, --dset            Print dataset information
+     -m N, --dims=N        Set the threshold for the dimension sizes when printing
+                           information for small datasets.  N is an integer greater
+                           than 0.  The default threshold is 10.
+     -D, --dsetmetadata    Print file space information for datasets' metadata
+     -T, --dtypemetadata   Print datasets' datatype information
+     -A, --attribute       Print attribute information
+     -a N, --numattrs=N    Set the threshold for the # of attributes when printing
+                           information for small # of attributes.  N is an integer greater
+                           than 0.  The default threshold is 10.
+     -s, --freespace       Print free space information
+     -S, --summary         Print summary of file space information
+     --enable-error-stack  Prints messages from the HDF5 error stack as they occur
+     --s3-cred=<cred>      Access file on S3, using provided credential
+                           <cred> :: (region,id,key)
+                           If <cred> == "(,,)", no authentication is used.
+     --hdfs-attrs=<attrs>  Access a file on HDFS with given configuration
+                           attributes.
+                           <attrs> :: (<namenode name>,<namenode port>,
+                                       <kerberos cache path>,<username>,
+                                       <buffer size>)
+                           If an attribute is empty, a default value will be
+                           used.
+#+end_example
+
+Let's see this in action:
+
+#+begin_example
+File information
+        # of unique groups: 718
+        # of unique datasets: 351
+        # of unique named datatypes: 4
+        # of unique links: 353
+        # of unique other: 0
+        Max. # of links to object: 701
+        Max. # of objects in group: 350
+File space information for file metadata (in bytes):
+        Superblock: 48
+        Superblock extension: 0
+        User block: 0
+        Object headers: (total/unused)
+                Groups: 156725/16817
+                Datasets(exclude compact data): 129918/538
+                Datatypes: 1474/133
+        Groups:
+                B-tree/List: 21656
+                Heap: 33772
+        Attributes:
+                B-tree/List: 0
+                Heap: 0
+        Chunked datasets:
+                Index: 138
+        Datasets:
+                Heap: 0
+        Shared Messages:
+                Header: 0
+                B-tree/List: 0
+                Heap: 0
+        Free-space managers:
+                Header: 0
+                Amount of free space: 0
+Small groups (with 0 to 9 links):
+        # of groups with 0 link(s): 1
+        # of groups with 1 link(s): 710
+        # of groups with 2 link(s): 1
+        # of groups with 3 link(s): 2
+        # of groups with 4 link(s): 1
+        # of groups with 5 link(s): 1
+        Total # of small groups: 716
+Group bins:
+        # of groups with 0 link: 1
+        # of groups with 1 - 9 links: 715
+        # of groups with 100 - 999 links: 2
+        Total # of groups: 718
+Dataset dimension information:
+        Max. rank of datasets: 1
+        Dataset ranks:
+                # of dataset with rank 1: 351
+1-D Dataset information:
+        Max. dimension size of 1-D datasets: 736548
+        Small 1-D datasets (with dimension sizes 0 to 9):
+                # of datasets with dimension sizes 1: 1
+                Total # of small datasets: 1
+        1-D Dataset dimension bins:
+                # of datasets with dimension size 1 - 9: 1
+                # of datasets with dimension size 100000 - 999999: 350
+                Total # of datasets: 351
+Dataset storage information:
+        Total raw data size: 9330522
+        Total external raw data size: 0
+Dataset layout information:
+        Dataset layout counts[COMPACT]: 0
+        Dataset layout counts[CONTIG]: 0
+        Dataset layout counts[CHUNKED]: 351
+        Dataset layout counts[VIRTUAL]: 0
+        Number of external files : 0
+Dataset filters information:
+        Number of datasets with:
+                NO filter: 1
+                GZIP filter: 0
+                SHUFFLE filter: 350
+                FLETCHER32 filter: 0
+                SZIP filter: 0
+                NBIT filter: 0
+                SCALEOFFSET filter: 0
+                USER-DEFINED filter: 350
+Dataset datatype information:
+        # of unique datatypes used by datasets: 4
+        Dataset datatype #0:
+                Count (total/named) = (1/1)
+                Size (desc./elmt) = (60/64)
+        Dataset datatype #1:
+                Count (total/named) = (347/0)
+                Size (desc./elmt) = (14/1)
+        Dataset datatype #2:
+                Count (total/named) = (2/0)
+                Size (desc./elmt) = (14/2)
+        Dataset datatype #3:
+                Count (total/named) = (1/1)
+                Size (desc./elmt) = (79/12)
+        Total dataset datatype count: 351
+Small # of attributes (objects with 1 to 10 attributes):
+        # of objects with 1 attributes: 1
+        # of objects with 2 attributes: 551
+        # of objects with 3 attributes: 147
+        # of objects with 4 attributes: 2
+        # of objects with 5 attributes: 4
+        # of objects with 6 attributes: 1
+        Total # of objects with small # of attributes: 706
+Attribute bins:
+        # of objects with 1 - 9 attributes: 706
+        Total # of objects with attributes: 706
+        Max. # of attributes to objects: 6
+Free-space persist: FALSE
+Free-space section threshold: 1 bytes
+Small size free-space sections (< 10 bytes):
+        Total # of small size sections: 0
+Free-space section bins:
+        Total # of sections: 0
+File space management strategy: H5F_FSPACE_STRATEGY_FSM_AGGR
+File space page size: 4096 bytes
+Summary of file space information:
+  File metadata: 343731 bytes
+  Raw data: 9330522 bytes
+  Amount/Percent of tracked free space: 0 bytes/0.0%
+  Unaccounted space: 5582 bytes
+Total space: 9679835 bytes
+#+end_example
+
+** Coming soon
+*** What happens to open HDF5 handles/IDs when your program ends?
+- Suggested by Quincey Koziol (LBNL)
+- We'll take it in pieces
+  - Current behavior
+  - How async I/O changes  that picture
+*** Other topics of interest?
+Let us know!
+* Clinic 2021-04-20
+** Your questions
+** Last week's highlights
+*** Announcements
+- [[https://forum.hdfgroup.org/t/meetingc-online-tool-fair/8417][MeetingC++ online Tool Fair]] *TODAY*
+  - A [[http://meetingcpp-toolfair.h5cpp.org/#/][must-see]] for all [[http://h5cpp.org/][H5CPP]] fans!
+- Part 2 of  [[https://forum.hdfgroup.org/t/webinar-announcement-hdf5-application-tuning-there-is-more-than-one-way-to-skin-a-cat-fish-part-2/8387][HDF5 Application Tuning]]
+  - This time it's about HDF5 library performance variability
+- [[https://forum.hdfgroup.org/t/webinar-announcement-h5coro-the-hdf5-cloud-optimized-read-only-library/8429][H5Coro: The HDF5 Cloud-Optimized Read-Only Library]]
+  -  Looking at ways to efficiently access HDF5 files residing in AWS S3
+- [[https://forum.hdfgroup.org/t/2021-hdf5-user-group-hug21-call-for-papers/8301][2021 HDF5 User Group Call for Papers]]
+  - Format: "Paper and Presentation" or "Presentation"
+  - Deadline for abstracts: 1 June 2021
+  - Event: 12-15 October 2021
+*** Forum
+**** [[https://forum.hdfgroup.org/t/parallel-hdf5-write-with-irregular-size-in-one-dimension/8284][Parallel HDF5 write with irregular size in one dimension]]
+- Potential issue in Darshan's HDF5 module
+**** [[https://forum.hdfgroup.org/t/independent-datasets-for-mpi-processes-progress/8202][Independent datasets for MPI processes. Progress?]]
+- Discussing data life cycle and design options
+  - Competing requirements
+  - For better or worse, there are often many ways to do one thing in HDF5
+  - Robustness
+**** [[https://forum.hdfgroup.org/t/increases-the-use-of-the-system-ram-until-it-reaches-ram-saturation/8392][Increases the use of the system RAM until it reaches RAM saturation]]
+- Long running application w/ no apparent handle leakage
+- [[https://valgrind.org/][Valgrind]]
+**** [[https://forum.hdfgroup.org/t/calling-fortran-hdf5-function-h5dwrite-f-from-c/8386][Calling fortran HDF5 function h5dwrite_f from C++]]
+- I'm out of my depth when it comes to Fortran :-(
+** Tips, tricks, & insights
+*** Do I need a degree to use [[https://portal.hdfgroup.org/display/HDF5/H5P_SET_FCLOSE_DEGREE][~H5Pset_fclose_degree~]]?
+- Identifiers are transient runtime handles to manage HDF5 things
+- Everything begins with a file handle, but how does it end?
+  - Files can be re-opened
+  - Other files can be mounted in HDF5 groups
+  - Traversal of external links may trigger the opening of other files and
+    objects, but see [[https://portal.hdfgroup.org/display/HDF5/H5P_SET_ELINK_FILE_CACHE_SIZE][~H5Pset_elink_file_cache_size~]]
+- What happens if a file is closed before other (non-file) handles?
+  * =H5F_CLOSE_WEAK= ::
+    - File is closed if last open handle
+    - Invalidate file handle and delay file close until remaining objects are
+      closed
+  * =H5F_CLOSE_SEMI= ::
+    - File is closed if last open handle
+    - ~H5Fclose~ generates error if open handles remain
+  * =H5F_CLOSE_STRONG= ::
+    - File is closed, closing any remaining handles if necessary.
+  * =H5F_CLOSE_DEFAULT= :: VFD decides, =H5F_CLOSE_WEAK= for most VFDs. Notable exception: MPI-IO - =H5F_CLOSE_SEMI=
+
+** Coming soon
+*** What happens to open HDF5 handles/IDs when your program ends?
+- Suggested by Quincey Koziol (LBNL)
+- We'll take it in pieces
+  - Current behavior
+  - How async I/O changes  that picture
+*** Other topics of interest?
+Let us know!
+* Clinic 2021-04-06
+** Your questions
+*** Question 1
+We have observed that reading a dataset with variable-length ASCII strings and
+setting the read mem. type to =H5T_C_S1 (size=H5T_VARIABLE /
+cset=H5T_CSET_UTF8)=, produces an error with =“H5T.c line 4893 in
+H5T__path_find_real(): no appropriate function for conversion path”=. However,
+if we read first another dataset of the same file that contains UTF8 strings and
+then the same dataset with ASCII strings, no errors are returned whatsoever and
+the content seems to be retrieved. Is this an expected behaviour, or are we
+missing something?
+- As a side note, the same situation can be replicated by setting the cset to
+  =H5T_CSET_ASCII= and opening first the ASCII-based dataset before the
+  UTF8-dataset, or any other combination, as long as the first call succeeded
+  (e.g., opening the ASCII dataset with =cset=H5T_CSET_ASCII=, then opening the
+  same ASCII dataset with =cset=H5T_CSET_UTF8= also seems to work).
+- Tested using HDF5 v1.10.7, v1.12.0, and manually compiling the most recent
+  commit on the official GitHub repository. The code was compiled with GCC
+  9.3.0 + HPE-MPI v2.22, but no MPI file access property was given (i.e., using
+  =H5P_DEFAULT= to avoid MPI-IO).
+- Further information: https://github.com/HDFGroup/hdf5/issues/544
+
+** Last week's highlights
+*** Announcements
+- [[https://www.nuget.org/packages/HDF5.NET][Alpha 4 release]] of [[https://github.com/Apollo3zehn/HDF5.NET][HDF5.NET]]
+  - Based on the HDF5 file format spec. & no HDF5 library dependence!
+- [[https://forum.hdfgroup.org/t/2021-hdf5-user-group-hug21-call-for-papers/8301][2021 HDF5 User Group Call for Papers]]
+  - Format: "Paper and Presentation" or "Presentation"
+  - Deadline for abstracts: 1 June 2021
+  - Event: 12-15 October 2021
+
+*** Forum
+**** [[https://forum.hdfgroup.org/t/how-can-attributes-of-an-existing-object-be-modified/8319][How can attributes of an existing object be modified?]]
+- There are several different "namespaces" in HDF5
+- Examples:
+  - Global (=file-level) path names
+  - Per object attribute names
+  - Per compound type field names
+  - Etc.
+- Some have constraints such as reserved characters, character encoding, length,
+  etc.
+- Most importantly, they are disjoint and /don't mix/
+  - Disambiguation would be too costly, if not impossible
+**** [[https://forum.hdfgroup.org/t/hdf5dotnet-library/8314][HDF5DotNet library]]
+- There's perhaps a place for wrappers of the HDF5 C-API and and independent .NET native (=full-managed) solution (e.g., [[https://github.com/Apollo3zehn/HDF5.NET][HDF5.NET]])
+- [[http://swig.org/][SWIG]] (Simplified Wrapper and Interface Generator) has come a long way
+  - Should that be the path forward for [[https://github.com/HDFGroup/HDF.PInvoke][HDF.PInvoke]]
+  - We need greater automation and (.NET) platform independence
+  - Focus on testing
+  - Any thoughts/comments?
+
+**** [[https://forum.hdfgroup.org/t/parallel-hdf5-write-with-irregular-size-in-one-dimension/8284][Parallel HDF5 write with irregular size in one dimension]]
+- Posted an example that shows how different ranks can write varying amounts of
+  data to a chunked dataset in parallel. Some ranks don't write any data. The
+  chunk size is chosen arbitrarily.
+** Tips & tricks
+*** The "mystery" of the HDF5 file format
+- The specification published [[https://portal.hdfgroup.org/display/HDF5/File+Format+Specification][here]] can seem overwhelming. Part of the problem is
+  that you are seeing at least three versions layered on top of each other.
+- The [[https://hdf5.io/develop/_f_m_t1.html][first (?) release]] was a lot simpler, and has all the core ideas
+- Once you've digested that, you are ready for the [[https://hdf5.io/develop/_s_p_e_c.html][other releases]] and consider
+  writing your own (de-)serializer
+- Don't get carried away: only a tiny fraction of the HDF5 library's code deals
+  w/ serialization
+** Coming soon
+*** What happens to open HDF5 handles/IDs when your program ends?
+- Suggested by Quincey Koziol (LBNL)
+- We'll take it in pieces
+  - Current behavior
+  - How async I/O changes  that picture
+*** Other topics of interest?
+Let us know!
+
+* Clinic 2021-03-30
+Canceled because of ECP event.
+* Clinic 2021-03-23
+** Your questions
+???
+
+** Last week's highlights
+*** Announcements
+- [[https://forum.hdfgroup.org/t/2021-hdf5-user-group-hug21-call-for-papers/8301][2021 HDF5 User Group Call for Papers]]
+  - Format: "Paper and Presentation" or "Presentation"
+  - Deadline for abstracts: 1 June 2021
+  - Event: 12-15 October 2021
+- [[https://github.com/hdfgroup/hdf4][HDF4 is on GitHub]]
+- Don't forget to [[https://forum.hdfgroup.org/t/webinar-announcement-hermes-a-distributed-buffering-system-for-heterogeneous-storage-hierarchies/8269][register for the Hermes webinar]] on Friday (03/26)
+*** Forum
+**** [[https://forum.hdfgroup.org/t/how-to-convert-xml-to-hdf5/8279][How to convert XML to HDF5]]
+- There is no /canonical/ conversion path, even if you have an XML schema
+  - XML is simpler because elements are strictly nested
+  - XML can be trickier because of element repetition and the non-obligatory
+    nature of certain elements or attributes
+- Start w/ a scripting language that has XML (parsing) and HDF5 modules
+  - [[https://github.com/akheron/jansson][Jannson]] works well if you prefer C
+- Consider XSLT to simplify first
+**** [[https://forum.hdfgroup.org/t/hdf5dotnet-library/8314][HDF5DotNet library]]
+- It's been out of maintenance for many years
+- _Alternatives_: [[https://www.nuget.org/packages/HDF.PInvoke/][HDF.PInvoke]] (Windows only) and [[https://www.nuget.org/packages/HDF.PInvoke.1.10/][HDF.PInvoke.1.10]] (.NET
+  Standard)
+  - Both are based on HDF5 1.10.x
+- *Note:* We (The HDF Group) are neither C# nor .NET experts. [[https://docs.microsoft.com/en-us/dotnet/standard/native-interop/pinvoke][=PInvoke=]] is about
+  the level of abstraction we can handle. We count on and rely on knowledgeable
+  community members for advice and contributions.
+- There are many interesting community projects, for example, [[https://github.com/Apollo3zehn/HDF5.NET][HDF5.NET]]:
+  - Based on the HDF5 file format spec. & no HDF5 library dependence!
+**** [[https://forum.hdfgroup.org/t/parallel-hdf5-write-with-irregular-size-in-one-dimension/8284][Parallel HDF5 write with irregular size in one dimension]]
+- Many of our examples s..k, and we have to do a lot better
+  - Maybe we created them this way to generate more questions? :-/
+- HDF5 dataspaces are logical, chunks are physical
+  - Write a (logically) correct program first and then optimize performance!
+
+** Tips & tricks
+*** Large (> 64 KiB) HDF5 attributes
+
+#+begin_src python
+
+import h5py, numpy as np
+
+with h5py.File('my.h5', 'w', libver='latest') as file:
+    file.attrs['random[1024]'] = np.random.random(1024)
+    file.attrs['random[1048576]'] = np.random.random(1024*1024)
+
+#+end_src
+
+The =h5dump= output looks like this:
+
+#+begin_example
+
+gerd@guix ~/scratch/run$ h5dump -pBH my.h5
+HDF5 "my.h5" {
+SUPER_BLOCK {
+   SUPERBLOCK_VERSION 3
+   FREELIST_VERSION 0
+   SYMBOLTABLE_VERSION 0
+   OBJECTHEADER_VERSION 0
+   OFFSET_SIZE 8
+   LENGTH_SIZE 8
+   BTREE_RANK 16
+   BTREE_LEAF 4
+   ISTORE_K 32
+   FILE_SPACE_STRATEGY H5F_FSPACE_STRATEGY_FSM_AGGR
+   FREE_SPACE_PERSIST FALSE
+   FREE_SPACE_SECTION_THRESHOLD 1
+   FILE_SPACE_PAGE_SIZE 4096
+   USER_BLOCK {
+      USERBLOCK_SIZE 0
+   }
+}
+GROUP "/" {
+   ATTRIBUTE "random[1024]" {
+      DATATYPE  H5T_IEEE_F64LE
+      DATASPACE  SIMPLE { ( 1024 ) / ( 1024 ) }
+   }
+   ATTRIBUTE "random[1048576]" {
+      DATATYPE  H5T_IEEE_F64LE
+      DATASPACE  SIMPLE { ( 1048576 ) / ( 1048576 ) }
+   }
+}
+}
+
+#+end_example
+
+The ~libver='latest'~ keyword is critical. Running without produces this error:
+
+#+begin_example
+
+gerd@guix ~/scratch/run$ python3 large_attribute.py
+Traceback (most recent call last):
+  File "large_attribute.py", line 6, in <module>
+    file.attrs['random[1048576]'] = np.random.random(1024*1024)
+  File "h5py/_objects.pyx", line 54, in h5py._objects.with_phil.wrapper
+  File "h5py/_objects.pyx", line 55, in h5py._objects.with_phil.wrapper
+  File "/home/gerd/.guix-profile/lib/python3.8/site-packages/h5py/_hl/attrs.py", line 100, in __setitem__
+    self.create(name, data=value)
+  File "/home/gerd/.guix-profile/lib/python3.8/site-packages/h5py/_hl/attrs.py", line 201, in create
+    attr = h5a.create(self._id, self._e(tempname), htype, space)
+  File "h5py/_objects.pyx", line 54, in h5py._objects.with_phil.wrapper
+  File "h5py/_objects.pyx", line 55, in h5py._objects.with_phil.wrapper
+  File "h5py/h5a.pyx", line 47, in h5py.h5a.create
+RuntimeError: Unable to create attribute (object header message is too large)
+
+#+end_example
+
+~libver=('v108', 'v108')~ also works. (=v108= corresponds to HDF5 1.8.x).
+
+* Clinic 2021-03-16
+** Your questions
+
+???
+
+** Last week's highlights
+*** Announcements
+- [[https://forum.hdfgroup.org/t/webinar-announcement-hermes-a-distributed-buffering-system-for-heterogeneous-storage-hierarchies/8269][Webinar Announcement: Hermes – A Distributed Buffering System for
+  Heterogeneous Storage Hierarchies]]
+- [[https://forum.hdfgroup.org/t/hsds-version-0-6-3-released/8270][HSDS version 0.6.3 released]]
+  - Grab the latest image on Docker Hub =hdfgroup/hsds:v0.6.3=!
+*** Forum
+**** [[https://forum.hdfgroup.org/t/multithreaded-writing-to-a-single-file-in-c/8264][Multithreaded writing to a single file in C++ ]]
+- Beware of non-thread-safe wrappers or language bindings!
+- Compiling the C library with =--enable-threadsafe= is only the first step
+**** [[https://forum.hdfgroup.org/t/reference-manual-in-doxygen/8230][Reference Manual in Doxygen]]
+- Making good progress; see [[https://github.com/HDFGroup/hdf5/tree/doxygen2][GitHub]] and [[https://hdf5.io/develop/index.html][preview]]
+- What do you think?
+- In which order should existing content be migrated? [[https://forum.hdfgroup.org/t/reference-manual-in-doxygen/8230][Chime in!]]
+  - [[https://portal.hdfgroup.org/display/knowledge][HDF Knowledge Base]]?
+- Examples:
+  - [[https://hdf5.io/develop/api-compat-macros.html][API Compatibility Macros]]
+  - [[https://hdf5.io/develop/_t_n_m_d_c.html][Metadata Caching in HDF5]]
+  - [[https://hdf5.io/develop/_f_m_t.html][File Format Specification]]
+**** [[https://forum.hdfgroup.org/t/h5i-get-name-call-is-very-slow-for-hdf5-file-5-gb/8246][~H5Iget_name~ call is very slow for HDF5 file > 5 GB]]
+- [[https://portal.hdfgroup.org/display/HDF5/H5I_GET_NAME][~H5Iget_name~]] constructs /an/ HDF5 path name given an object identifier
+  - _Use Case_: You are in a corner of an application where all you've got is a
+    handle (identifier) and you would like to render something meaningful to
+    humans.
+- It's not so much the file size but the number and arrangement of objects that
+  makes ~H5Iget_name~ slow
+  - See the [[https://portal.hdfgroup.org/display/HDF5/h5stat][=h5stat=]] output the user provided!
+- What contributes to ~H5Iget_name~ being slow?
+  - The path names are not stored in an HDF5 file (except in symbolic links...)
+    and are created on-demand
+  - In general, HDF5 /arrangements/ are not trees, not even directed graphs, but
+    directed multi-graphs
+    - A node can be the target of multiple edges (including from the same source
+      node)
+    - Certain nodes (groups) can be source and target of an edge
+- *Take-Home-Message:*Unless you are certain that your HDF5 arrangement is a
+  tree, you are skating on thin ice with path names!
+  - Trying to uniquely identify objects via path name is asking for trouble
+    - Use addresses + file IDs (pre-HDF 1.12) or tokens (HDF 1.12+) for that!
+- Quincey points out that
+  - The library caches metadata that can accelerate ~H5Iget_name~
+  - But there are other complications
+    - For example, you can have "anonymous" objects (objects that haven't
+    been linked to groups in the file. i.e., no path yet)
+    - Another source of trouble are objects that have been unlinked
+
+** Tips & tricks
+*** How to open an HDF5 in append mode?
+
+To be clear, there is no =H5F*= call that behaves like an append call. But we
+can mimic one as follows:
+
+*Credits:* Werner Benger
+
+#+begin_src C -n
+
+hid = H5Fcreate(filename, H5F_ACC_EXCL|H5F_ACC_SWMR_WRITE, fcpl_id, fapl_id);
+if (hid < 0)
+  {
+    hid = H5Fopen(filename, H5F_ACC_RDWR|H5F_ACC_SWMR_WRITE, fapl_id);
+  }
+
+if (hid < 0)
+  // something's going on...
+
+#+end_src
+
+- If the file exists ~H5Fcreate~ will fail and ~H5Fopen~ with ~H5F_ACC_RDWR~
+  will kick in.
+  - If the file is not an HDF5 file, both will fail.
+- If the file does not exist, ~H5Fcreate~ will do its job.
+
+* Clinic 2021-03-09
+** Your questions (as of 9:00 a.m. Central Time)
+*** Question 1
+#+begin_quote
+Is there a limit on array size if I save an array as an attribute of a dataset?
+
+In terms of the performance, is there any consequence if I save a large amount
+of data into an attribute?
+#+end_quote
+
+- Size limit :: No, not in newer versions (1.8.x+) of HDF5. See [[https://portal.hdfgroup.org/pages/viewpage.action?pageId=48808714][What limits are there in HDF5?]]
+  - Make sure that downstream applications can handle such attributes (i.e., use
+    HDF5 1.8.x or later)
+  - Remember to tell the library that you want to use the 1.8 or later file
+    format via [[https://portal.hdfgroup.org/display/HDF5/H5F_SET_LIBVER_BOUNDS][~H5Fset_libverbounds~]] (e.g., set ~low~ to ~H5F_LIBVER_V18~)
+  - Also keep an eye on [[https://portal.hdfgroup.org/display/HDF5/H5P_SET_ATTR_PHASE_CHANGE][~H5Pset_attr_phase_change~]] (Consider setting ~max_compact~ to 0.)
+- Performance :: It depends. (...on what you mean by /performance/)
+  - Attributes have a different function (from datasets) in HDF5
+    - They "decorate" other objects - application metadata
+  - Their values are treated as atomic units, i.e., you will always write and
+    read the entire "large" value.
+    - In other words, you lose partial I/O
+    - Several layouts available for datasets are not supported with attributes
+      - No compression
+
+*** Question 2
+#+begin_quote
+Question regarding hdf5 I/O performance, compare saving data into a large array
+in one dataset Vs saving data into several smaller arrays and in several
+dataset. Any consequence in terms of the performance? Will there be any sweet
+spot for best performance? Or any tricks to make it reading/writing faster? I
+know parallel I/O but parallel I/O would need hardware support which is not
+always available. So the question is about the tricks to speed up I/O without
+parallel I/O.
+#+end_quote
+
+- One large dataset vs. many small datasets, which is faster? :: It depends.
+  - How do you access the data?
+    - Do you always write/read the entire array in the order it was written?
+    - Is it WORM (write once read many)?
+      - How and how frequently does it change?
+  - How compressible is the data?
+    - Do you need to store data at all? E.g., [[https://www.hdfgroup.org/2021/02/webinar-learn-about-data-virtualization-with-hdf5-udf-and-how-it-can-streamline-your-work-materials/][HDF5-UDF]]
+  - What is performance for you and how do you measure it?
+  - What percentage of total runtime does your application spend doing I/O?
+  - What scalability behavior do you expect?
+  - Assuming throughput is the measure, create a baseline for your target
+    system, for example, via [[https://fio.readthedocs.io/en/latest/fio_doc.html][FIO]] or [[https://github.com/hpc/ior][IOR]]
+    - Your goal is to saturate the I/O subsystem
+    - Is this a dedicated system?
+  - Which other systems do you need to support? Are you the only user? What's
+    the future?
+  - **What's the budget?**
+
+** Last week's highlights
+*** Announcements
+**** [[https://forum.hdfgroup.org/t/ann-h5py-3-2-released/8232][h5py 3.2 release]]
+- Supports the HDF5 S3 (read-only) VFD thanks to Satrajit Ghosh
+  - Need to [[https://docs.h5py.org/en/stable/build.html#source-install][build h5py from source]]
+- Minimum Python version 3.7
+- Interesting bugfix: [[https://github.com/h5py/h5py/issues/1817][Fix reading data with a datatype of variable-length arrays of fixed length strings]]
+**** HDF5 Community BOF at ECP Community BOF Days
+- March 30, 3:00 p.m. (Eastern)
+- [[https://exascaleproject.zoomgov.com/meeting/register/vJItf-Chrj4jH9xNnStZkPE-P84YcZ52-7s][Registration]]
+*** Forum
+**** [[https://forum.hdfgroup.org/t/get-object-header-size/8233][Get Object Header size]]
+- The user created a compound type with 100s of fields and eventually saw this
+  error:
+  #+begin_example
+H5Oalloc.c line 1312 in H5O__alloc(): object header message is too large
+  #+end_example
+- This issue was first raised (Jira-ticket HDFFV-1089 date) on  Jun 08, 2009
+- **Root cause:** the size of header message data is represented in a 2 byte
+  unsigned integer (see section IV.A.1.a and IV.A.1.b of the [[https://portal.hdfgroup.org/display/HDF5/File+Format+Specification][HDF5 file format spec.]])
+  - Ergo, header messages, currently, cannot be larger than 64 KB.
+  - Datatype information is stored in a header message (see section IV.A.2.d)
+  - This can be fixed with a file format update, but it's /fallen through the
+    cracks/ for over 10 years
+- The customer is always right, but who needs 100s of fields in a compound type?
+  - _Use Case_: You have a large record type and you always (or most of the
+    time) read and write all fields together.
+  - Outside this narrow use case you are bound to lose a lot of performance and
+    flexibility
+- You are Leaving the +American Sector+ Mainstream: not too many tools will be
+  able to handle your data
+- Better approach: divide-and-conquer, i.e., go w/ a group of compounds or
+  individual columns
+**** [[https://forum.hdfgroup.org/t/using-hdf5-in-qt-creator/8194][Using HDF5 in Qt Creator]]
+- Linker can't find ~H5::FileAccPropList()~ and ~H5::FileCreatPropList()~
+- Works fine in release mode, but not in debug mode
+- AFAIK, we don't distribute debug libraries in binary form. Still doesn't
+  explain why the user couldn't use the release binaries in a debug build,
+  unless QT Creator is extra pedantic?
+**** [[https://forum.hdfgroup.org/t/reference-manual-in-doxygen/8230][Reference Manual in Doxygen]]
+- Making good progress; see [[https://github.com/HDFGroup/hdf5/tree/doxygen2][GitHub]] and [[https://hdf5.io/develop/index.html][preview]]
+- What do you think?
+- In which order should existing content be migrated? [[https://forum.hdfgroup.org/t/reference-manual-in-doxygen/8230][Chime in!]]
+  - [[https://portal.hdfgroup.org/display/knowledge][HDF Knowledge Base]]?
+- Examples:
+  - [[https://hdf5.io/develop/api-compat-macros.html][API Compatibility Macros]]
+  - [[https://hdf5.io/develop/_t_n_m_d_c.html][Metadata Caching in HDF5]]
+  - [[https://hdf5.io/develop/_f_m_t.html][File Format Specification]]
+**** [[https://forum.hdfgroup.org/t/h5i-get-name-call-is-very-slow-for-hdf5-file-5-gb/8246][~H5Iget_name~ call is very slow for HDF5 file > 5 GB]]
+- [[https://portal.hdfgroup.org/display/HDF5/H5I_GET_NAME][~H5Iget_nname~]] constructs /an/ HDF5 path name given an object identifier
+  - _Use Case_: You are in a corner of an application where all you've got is a
+    handle (identifier) and you would like to render something meaningful to
+    humans.
+- It's not so much the file size but the number and arrangement of objects that
+  makes ~H5Iget_name~ slow
+  - See the [[https://portal.hdfgroup.org/display/HDF5/h5stat][=h5stat=]] output the user provided!
+- What contributes to ~H5Iget_name~ being slow?
+  - The path names are not stored in an HDF5 file (except in symbolic links...)
+    and are created on-demand
+  - In general, HDF5 /arrangements/ are not trees, not even directed graphs, but
+    directed multi-graphs
+    - A node can be the target of multiple edges (including from the same source
+      node)
+    - Certain nodes (groups) can be source and target of an edge
+- *Take-Home-Message:*Unless you are certain that your HDF5 arrangement is a
+  tree, you are skating on thin ice with path names!
+  - Trying to uniquely identify objects via path name is asking for trouble
+    - Use addresses + file IDs (pre-HDF 1.12) or tokens (HDF 1.12+) for that!
+
+* Clinic 2021-03-02
+** Your questions
+*** [[https://github.com/steven-varga/h5rnd][h5rnd]]
+- **Question:** How are generated HDF5 objects named?  An integer name, or can a
+  randomized string be used?
+  - =h5rnd= Generates a pool of random strings as link names
+  - Uniform length distribution between 5 and 30 over =[a-z][A-Z]=
+
+- **Question:** Does it create multi-dimensional datasets with a rich set of
+  HDF5 datatypes?  Compound datatypes, perhaps?
+  - Currently, it creates 1,000 element 1D FP64 datasets (w/ attribute)
+  - RE: types - anything is possible. Budget?
+
+- **Question:** Are named datatypes generated? If not, are these reasonable
+  types of extensions for =h5rnd=?
+  - Not currently, but anything is possible
+
+*** Other questions?
+- **Question:** How do these extensions fit with the general intent and
+  extensibility of =h5rnd=?
+  - It was written as an illustration
+  - Uses an older version of H5CPP
+  - Labeling could be improved
+  - Dataset generation under development
+  - Some enhancements in a future version
+
+** Last week's highlights
+*** Forum
+**** [[https://forum.hdfgroup.org/t/external-link-access-in-parallel-hdf5-1-12-0/8219][External link access in parallel HDF5 1.12.0]]
+- Can't access externally linked datasets in parallel; fine in 1.10.x and in serial
+- It appears that someone encountered a known bug in the field
+- Dev. claim it's fixed in =develop=, waiting for confirmation from the user
+
+**** [[https://forum.hdfgroup.org/t/h5i-dec-ref-hangs/8104][=H5I_dec_ref= hangs]]
+- [[https://portal.hdfgroup.org/display/HDF5/H5I_DEC_REF][=H5Idec_ref=]] is one of those functions that needs to be used w/ extra care
+- Using =mpi4py= and =h5py=
+- User provided an MWE (in Python) and, honestly, there is limited help we can
+  offer (as we are neither =mpi4py= nor =h5py= experts)
+- A C or C++ MWE might be the better starting point
+
+**** [[https://forum.hdfgroup.org/t/h5diff-exits-with-1-but-doesnt-print-differences/6872][=h5diff= exits with 1 but doesn’t print differences]]
+- Case of out-of-date/poor documentation
+- [[https://portal.hdfgroup.org/display/HDF5/h5diff][=h5diff=]] is perhaps the most complex tool (multi-graph comparison + what does
+  ~'='~ mean?)
+- Writing code is the easy part
+- We need to do better
+
+**** [[https://forum.hdfgroup.org/t/independent-datasets-for-mpi-processes-progress/8202][Independent datasets for MPI processes. Progress?]]
+- Need some clarification on the problem formulation
+- Current status (w/ MPI) MD-modifying ops. must be collective
+- On the horizon: asynchronous operations (ASYNC VOL)
+
+**** [[https://forum.hdfgroup.org/t/writing-to-virtual-datasets/8188][Writing to virtual datasets]]
+- Apparently broken when a datatype conversion (truncation!) is involved
+
+* Clinic 2021-02-23
+** Your questions
+*** How to use ~H5Ocopy~ in C++ code?
+- [[https://forum.hdfgroup.org/t/how-to-use-h5copy-in-c-code/8175][Forum post]]
+  #+begin_quote
+  sandhya.v250 (Feb 19)
+
+  Hello Team, I want to copy few groups from one hdf5 file to hdf5 another file
+  which is not yet created and this should be done inside the C++ code..can you
+  please tell me how can I use this inside this tool
+  #+end_quote
+
+- The [[https://portal.hdfgroup.org/display/HDF5/H5O_COPY][function in question]]  (there is also a tool called =h5copy=):
+  #+begin_src C
+
+  herr_t H5Ocopy
+  (
+   hid_t       src_loc_id,
+   const char* src_name,
+   hid_t       dst_loc_id,
+   const char* dst_name,
+   hid_t       ocpypl_id,
+   hid_t       lcpl_id
+   );
+
+  #+end_src
+
+- The emphasis  appears to be on C++
+  - You can do this in C. It's just more boilerplate.
+  - Whenever I need something C++, I turn to my colleague Steven Varga (=
+    Mr. [[http://h5cpp.org/][H5CPP]])
+  - He also created a nice [[https://github.com/steven-varga/h5rnd][random HDF5 file generator/tester]] (= 'Prüfer' in
+    German)
+
+*** Steven's solution (excerpt)
+
+The full example can be downloaded from [[https://github.com/steven-varga/HDFGroup-mailinglist/tree/master/object-copy-2021-feb-18][here]].
+
+**Basic idea:** Visit all objects in the source via ~H5Ovisit~ and invoke
+~H5Ocopy~ in the callback.
+
+#+begin_src C++ -N
+
+#include "argparse.h"
+#include <h5cpp/all>
+#include <string>
+
+herr_t ocpy_callback(hid_t src, const char *name, const H5O_info_t *info,
+                     void *dst_) {
+  hid_t* dst = static_cast<hid_t*>(dst_);
+  int err = 0;
+  switch( info->type ){
+  case H5O_TYPE_GROUP:
+    if(H5Lexists( *dst, name, H5P_DEFAULT) >= 0)
+      err = H5Ocopy(src, name, *dst, name, H5P_DEFAULT, H5P_DEFAULT);
+    break;
+  case H5O_TYPE_DATASET:
+    err = H5Ocopy(src, name, *dst, name, H5P_DEFAULT, H5P_DEFAULT);
+    break;
+  default: /*H5O_TYPE_NAMED_DATATYPE, H5O_TYPE_NTYPES, H5O_TYPE_UNKNOWN */
+    ; // nop to keep compiler happy
+  }
+  return 0;
+}
+
+int main(int argc, char **argv)
+{
+  argparse::ArgumentParser arg("ocpy", "0.0.1");
+  arg.add_argument("-i", "--input")
+    .required().help("path to input hdf5 file");
+  arg.add_argument("-s", "--source")
+    .default_value(std::string("/"))
+    .help("path to group within hdf5 container");
+  arg.add_argument("-o", "--output").required()
+    .help("the new hdf5 will be created/or opened rw");
+  arg.add_argument("-d", "--destination")
+    .default_value(std::string("/"))
+    .help("target group");
+
+  std::string input, output, source, destination;
+  try {
+    arg.parse_args(argc, argv);
+    input = arg.get<std::string>("--input");
+    output = arg.get<std::string>("--output");
+    source = arg.get<std::string>("--source");
+    destination = arg.get<std::string>("--destination");
+
+    h5::fd_t fd_i = h5::open(input, H5F_ACC_RDONLY);
+    h5::fd_t fd_o = h5::create(output, H5F_ACC_TRUNC);
+    h5::gr_t dgr{H5I_UNINIT}, sgr = h5::gr_t{H5Gopen(fd_i, source.data(),
+                                                     H5P_DEFAULT)};
+    h5::mute();
+    if( destination != "/" ){
+      char * gname = destination.data();
+      dgr = H5Lexists(fd_o, gname, H5P_DEFAULT) >= 0 ?
+        h5::gr_t{H5Gcreate(fd_o, gname, H5P_DEFAULT, H5P_DEFAULT,
+                           H5P_DEFAULT)}
+        : h5::gr_t{H5Gopen(fd_i, gname, H5P_DEFAULT)};
+      H5Ovisit(sgr, H5_INDEX_CRT_ORDER, H5_ITER_NATIVE, ocpy_callback, &dgr );
+    } else
+      H5Ovisit(sgr, H5_INDEX_CRT_ORDER, H5_ITER_NATIVE, ocpy_callback, &fd_o);
+    h5::unmute();
+  } catch ( const h5::error::any& e ) {
+    std::cerr << e.what() << std::endl;
+    std::cout << arg;
+  }
+  return 0;
+}
+
+#+end_src
+
+*** Parting thoughts
+- This is can be tricky business depending on how selective you want to be
+- ~H5Ovisit~ visits /objects/ and does not account for dangling links, etc.
+- ~H5Ocopy~'s behavior is highly customizable. Check the options & play w/
+  =h5copy= to see the effect!
+
+*** More Questions
+**** Question 1
+#+begin_quote
+I have an unrelated question. I have 7,000 HDF5 files, each 500 MB long. When I
+use them, should I open them selectively, when I need them, or is it
+advantageous to make one big file, or to open virtual files? I am interested in
+the speed of the different approaches.
+#+end_quote
+
+- 40 GbE connectivity
+- 10 contiguously laid out Datasets per file => ~50 MB per dataset
+- Always reading full datasets
+- **Considerations:**
+  - If you have the RAM and use all data in an "epoch" just read whole files and
+    use [[https://support.hdfgroup.org/HDF5/doc/Advanced/FileImageOperations/HDF5FileImageOperations.pdf][HDF5 file images]] for "in-memory I/O."
+  - You could maintain an index file /I/ which contains external links (one for
+    each of the 7,000 files), and a dataset which for each external file and
+    dataset contains the offset of the dataset in the file. You would keep /I/
+    (small!) in memory and, for each dataset request, read the ~50MB directly
+    w/o the HDF5 library. This assumes that no datatype conversion is necessary
+    and you have no trouble interpreting the bytes.
+  - A variation of the previous approach would be for the stub-file to contain
+    HDF5 [[https://www.star.nesdis.noaa.gov/jpss/documents/HDF5_Tutorial_201509/2-3-Working%20with%20collections%20of%20HDF5%20files.pptx.pdf][/virtual datasets/]], datasets stitched together from other
+    datasets. This would we a good option, if you wanted to simplify your
+    application code and make everything appear as a single large HDF5
+    file. It'd be important though to have that (small) stub-file on the clients
+    in memory to not incur a high latency penalty.
+  - Both approaches can be easily parallelized, assuming read-only access. If
+    there are writers involved, it's still doable, but additional considerations
+    apply.
+
+#+begin_quote
+Another question: what is the recommended way to combine Python with C++ with
+C++ reading in and working on large hdf5 files that require a lot of speed.
+#+end_quote
+
+- To be honest, we ran out of time and I (GH) didn't fully grasp the question.
+- Steven said something about Julia
+- Henric uses Boost Python.  What about Cython?
+- What's the access pattern?
+
+  **Let's continue the discussion on the forum or come back next week!**
+
+** Last week's highlights
+*** Forum
+- [[https://forum.hdfgroup.org/t/possible-bug-with-hyperslab-selection-in-1-10-7/8164][Hyperslab selection bug confirmed]]
+- [[https://forum.hdfgroup.org/t/write-data-to-variable-length-string-attribute/8101][Write data to variable length string attribute]] bug is a feature =;-)=
+- [[https://forum.hdfgroup.org/t/creating-a-dataset-through-external-link-does-not-allow-hdf5view-to-see-resulting-dataset-from-root-file/8148][Possible bug in HDFView]]
+  - The [[https://en.wikipedia.org/wiki/Minimal_working_example][MWE]] checks out and it looks more and more like a bug in HDFView
+
+** Appendix
+*** The =h5copy= command line tool
+
+#+begin_example
+gerd@guix ~$ h5copy
+
+usage: h5copy [OPTIONS] [OBJECTS...]
+   OBJECTS
+      -i, --input        input file name
+      -o, --output       output file name
+      -s, --source       source object name
+      -d, --destination  destination object name
+   OPTIONS
+      -h, --help         Print a usage message and exit
+      -p, --parents      No error if existing, make parent groups as needed
+      -v, --verbose      Print information about OBJECTS and OPTIONS
+      -V, --version      Print version number and exit
+      --enable-error-stack
+                  Prints messages from the HDF5 error stack as they occur.
+      -f, --flag         Flag type
+
+      Flag type is one of the following strings:
+
+      shallow     Copy only immediate members for groups
+
+      soft        Expand soft links into new objects
+
+      ext         Expand external links into new objects
+
+      ref         Copy references and any referenced objects, i.e., objects
+                  that the references point to.
+                    Referenced objects are copied in addition to the objects
+                  specified on the command line and reference datasets are
+                  populated with correct reference values. Copies of referenced
+                  datasets outside the copy range specified on the command line
+                  will normally have a different name from the original.
+                    (Default:Without this option, reference value(s) in any
+                  reference datasets are set to NULL and referenced objects are
+                  not copied unless they are otherwise within the copy range
+                  specified on the command line.)
+
+      noattr      Copy object without copying attributes
+
+      allflags    Switches all flags from the default to the non-default setting
+
+      These flag types correspond to the following API symbols
+
+      H5O_COPY_SHALLOW_HIERARCHY_FLAG
+      H5O_COPY_EXPAND_SOFT_LINK_FLAG
+      H5O_COPY_EXPAND_EXT_LINK_FLAG
+      H5O_COPY_EXPAND_REFERENCE_FLAG
+      H5O_COPY_WITHOUT_ATTR_FLAG
+      H5O_COPY_ALL
+  #+end_example
+
+* Clinic 2021-02-09
+**THIS MEETING IS BEING RECORDED** and the recording will be available on The
+HDF Group's [[https://www.youtube.com/channel/UCRhtsIZquL3r-zH-R-r9-tQ][YouTube channel]]. Remember to subscribe!
+
+** Goal(s)
+** This is a meeting dedicated to /your/ questions.
+** In the unlikely event there aren't any
+We have a few prepared topics (forum posts, announcements, etc.)
+** Sometimes life deals you an HDF5 file
+No question is too small. We are here to learn. All of us.
+
+** Meeting Etiquette
+** Be social, turn on your camera (if you've got one)
+Talking to black boxes isn't fun.
+
+** Raise your hand to signal a contribution (question, comment)
+Mute yourself while others are speaking, be ready to participate.
+
+** Be mindful of your "airtime"
+We want to cover as many of your topics as possible. Be fair to others.
+
+** Introduce yourself
+1. Your Name
+2. Your affiliation/organization/group
+3. One reason why you are here today
+
+** Use the shared Google doc for questions and code snippets
+The [[https://docs.google.com/document/d/17j7MsAdNdCLxxWA_PtXv3jTgWDTqOm2uTk5jHCj8zXM/edit][link]] can be found in the chat window.
+
+** When the 30 min. timer runs out, this meeting is over.
+Continue the discussion on the [[https://forum.hdfgroup.org/][HDF Forum]] or come back next week!
+
+** Notes
+** Don't miss our next webinar about data virtualization with HDF5-UDF and how it can streamline your work
+- Presented by Lucas Villa Real (IBM Research)
+- Feb 12, 2021 11:00 AM in Central Time (US and Canada)
+- [[https://zoom.us/meeting/register/tJEsc-iqrj4iGNJirT52ttruJ1DH2uWmFV][Sign-up link]]
+
+** Bug-of-the-Week Award (my candidate)
+- [[https://forum.hdfgroup.org/t/write-data-to-variable-length-string-attribute/8101][Write data to variable length string attribute]] by Kerim Khemraev
+- [[https://jira.hdfgroup.org/browse/HDFFV-11215][Jira issue HDFFV-11215]]
+- Quick demonstration
+  #+begin_src C++ :tangle ./foo4k.cpp
+  #include "hdf5.h"
+
+  #include <filesystem>
+  #include <iostream>
+  #include <string>
+
+  #define H5FILE_NAME "Attributes.h5"
+  #define ATTR_NAME   "VarLenAttr"
+
+  namespace fs = std::filesystem;
+
+  int main(int argc, char *argv[])
+  {
+    hid_t file, attr;
+
+    auto attr_type = H5Tcopy(H5T_C_S1);
+    H5Tset_size(attr_type, H5T_VARIABLE);
+    H5Tset_cset(attr_type, H5T_CSET_UTF8);
+
+    auto make_scalar_attr = [](auto& file, auto& attr_type)
+      -> hid_t
+    {
+      auto attr_space  = H5Screate(H5S_SCALAR);
+      auto result = H5Acreate(file, ATTR_NAME,
+                              attr_type, attr_space,
+                              H5P_DEFAULT, H5P_DEFAULT);
+      H5Sclose(attr_space);
+      return result;
+    };
+
+    if( !fs::exists(H5FILE_NAME) )
+      { // If the file doesn't exist we create it &
+        // add a root group attribute
+        std::cout << "Creating file...\n";
+        file = H5Fcreate(H5FILE_NAME, H5F_ACC_TRUNC,
+                         H5P_DEFAULT, H5P_DEFAULT);
+        attr = make_scalar_attr(file, attr_type);
+      }
+    else
+      { // File exists: we either delete the attribute and
+        // re-create it, or we just re-write it.
+        std::cout << "Opening file...\n";
+        file = H5Fopen(H5FILE_NAME, H5F_ACC_RDWR, H5P_DEFAULT);
+
+  #ifndef REWRITE_ONLY
+        H5Adelete(file, ATTR_NAME);
+        attr = make_scalar_attr(file, attr_type);
+  #else
+        attr = H5Aopen(file, ATTR_NAME, H5P_DEFAULT);
+  #endif
+      }
+
+    // Write or re-write the attribute
+    const char* data[1] = { "Let it be λ!" };
+    H5Awrite(attr, attr_type, data);
+
+    hsize_t size;
+    H5Fget_filesize(file, &size);
+    std::cout << "File size: " << size << " bytes\n";
+
+    H5Tclose(attr_type);
+    H5Aclose(attr);
+    H5Fclose(file);
+  }
+  #+end_src
+
+** Documentation update
+- Doxygen-based RM
+- Remaining: a few =H5P=  calls and =H5E=
+- Current version: [[https://hdf5.io/develop/modules.html]]
+
+* Clinic 2021-02-16
+** Your questions
+** Last week's highlights
+*** Events
+- [[https://www.youtube.com/watch?v=7ZYZKB7DNUg][Webinar: /Learn about data virtualization with HDF5-UDF and how it can
+  streamline your work/]]
+- [[https://www.youtube.com/watch?v=g5h_YlvI9Aw][Recording of last week's clinic]]
+*** Forum
+- [[https://forum.hdfgroup.org/t/hdfql-2-3-0-release-with-excel-import-export-support/8132][Release of HDFql 2.3.0]]
+  - Excel import and export (no Excel or OLE dependency!)
+- [[https://forum.hdfgroup.org/t/creating-a-dataset-through-external-link-does-not-allow-hdf5view-to-see-resulting-dataset-from-root-file/8148][Possible bug in HDFView]]
+  - Based on the description, it appears that external links are not properly
+    traversed
+  - Waiting for [[https://en.wikipedia.org/wiki/Minimal_working_example][MWE]]
+- [[https://forum.hdfgroup.org/t/possible-bug-with-hyperslab-selection-in-1-10-7/8164][Possible hyperslab selection bug in 1.10.7]]
+  - It appears that =H5S_SELECT_OR= is no longer "commutative", i.e., ~H5Dread~
+    with =SelA OR SelB= works, but not =SelB OR SelA=
+  - Wasn't there in 1.10.6
+** Notes
+*** What (if any) are the ACID properties of HDF5 operations?
+**** Split-state
+The state of an open (for RW) HDF5 file is /split/ between RAM and persistent
+storage. Often the partial states will be out of sync. In the event of a
+"catastrophic" failure (power outage, application crash, system crash), it is
+impossible to predict what the partial state on disk will be.
+
+#+begin_src plantuml :file ../img/hdf5-file-state.png :exports both
+skinparam componentStyle rectangle
+
+package "HDF5 File State" {
+    database "Disk" {
+        [Partial State 1]
+    }
+    cloud "RAM" {
+        [Partial State 2]
+    }
+}
+#+end_src
+
+**** Non-transactional
+The main reason why it is impossible to predict the outcome is that HDF5
+operations are non-transactional. By 'transaction' I mean a collection of
+operations (and the effects of their execution) on the physical and abstract
+application state. In particular, there are no concepts of beginning a
+transaction, a commit, or a roll-back. Since they are not transactional, it is
+not straightforward to speak about the ACID properties of HDF5 operations.
+
+**** File system facilities
+People sometimes speak about ACID properties with respect to file system
+operations. Although the HDF5 library relies on file system operations for the
+implementation of HDF5 operations, the correspondence is not as direct as
+might wish. For example, what appears as a single HDF5 operation to the user
+often includes multiple file system operations. Several file system operations
+have a certain property only at the level of a single operation, but not
+multiple operations combined.
+
+**** ACID
+- Atomicity :: All changes to an HDF5 file's state must complete or fail as a
+  whole unit.
+  - Supported in HDF5? **No.**
+  - Some file systems only support single op. atomicity, if at all.
+  - A lot of HDF5 operations are /in-place/; mixed success -> impossible to
+    recover
+- Consistency :: An operation is a correct transformation of the HDF5 file's
+  state.
+  - Supported in HDF5? **Yes and No**
+  - Depends on one's definition of HDF5 file/object integrity constraints
+  - Assuming we are dealing with a correct program
+  - Special case w/ multiple processes: Single Writer Multiple Reader
+- Isolation (serialization) :: Even though operations execute concurrently, it
+  appears to each operation, OP, that others executed either before OP or after
+  OP, but not both.
+  - Supported in HDF5? **No.**
+  - Depends on concurrency scenario and requires special configuration (e.g.,
+    MT, MPI).
+  - Time-of-check-time-of-use vulnerability
+- Durability :: Once an operation completes successfully, it's changes to the
+  file's state survive failure.
+  - Supported in HDF5? **No.**
+  - "Split brain"
+  - No transaction log
+
+* COMMENT Anatomy
+A few /skeletons/ to get started.
+
+** C
+
+#+begin_src C -r -n :tangle ctd.c :noweb no-export :results output
+
+#include "hdf5.h"
+
+int main(int argc, char** argv)
+{
+  <<main-variables>>
+
+                  <<print-library-version>>
+
+                  <<create-or-open-a-file>>
+
+                  <<release-handles>>
+    }
+
+#+end_src
+
+*** =h5dump=
+
+#+begin_src sh :results output
+
+h5dump -pB hello.hdf5
+
+#+end_src
+
+*** =<<main-variables>>=
+
+#+begin_src C -r -n :noweb-ref main-variables
+
+hid_t file, lcpl;
+
+lcpl = H5Pcreate(H5P_LINK_CREATE);
+H5Pset_create_intermediate_group(lcpl, 1);
+
+#+end_src
+
+*** =<<release-handles>>=
+
+#+begin_src C -r -n :noweb-ref release handles
+
+H5Fclose(file);
+H5Pclose(lcpl);
+
+#+end_src
+
+*** =<<print-library-version>>=
+
+#+begin_src C -r -n :noweb-ref print-library-version
+
+{
+  unsigned majnum, minnum, relnum;
+  H5get_libversion(&majnum, &minnum, &relnum);
+  printf("HDF5 version %u.%u.%u\n", majnum, minnum, relnum);
+}
+
+#+end_src
+
+*** =<<create-or-open-file>>=
+
+#+begin_src C -r -n :noweb-ref create-or-open-a-file
+
+{
+  /*
+    hid_t fcpl = H5Pcreate(H5P_FILE_CREATE);
+    hid_t fapl = H5Pcreate(H5P_FILE_ACCESS);
+  ,*/
+  file = H5Fcreate("hello.hdf5", H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
+  /*
+    H5Pclose(fapl);
+    H5Pclose(fcpl);
+  ,*/
+}
+
+#+end_src
+
+** Julia
+** Python
+** R
+
+* COMMENT Helpers
+
+#+begin_src emacs-lisp
+
+(defun 25min-countdown ()
+  (interactive)
+  (setq org-timer-default-timer 25
+        current-prefix-arg '(4 4)) ; C-u C-u
+  (call-interactively 'org-timer-set-timer))
+
+#+end_src
+
+* COMMENT Local Variables
+
+# Local Variables:
+# org-babel-C-compiler: h5cc
+# org-coderef-label-format: "// (ref:%s)"
+# after-save-hook: org-preview-latex-fragment
+# End:

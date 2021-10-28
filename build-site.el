@@ -17,6 +17,23 @@
 ;; Install dependencies
 (package-install 'htmlize)
 
+(require 'org)
+
+;; Download the PlantUML JAR
+(require 'url)
+
+(setq plantuml-jar-path (expand-file-name ".packages/plantuml.jar"))
+(setq plantuml-default-exec-mode 'jar)
+(setq org-plantuml-jar-path plantuml-jar-path)
+(unless (file-exists-p plantuml-jar-path)
+  (url-copy-file "https://sourceforge.net/projects/plantuml/files/1.2021.12/plantuml.1.2021.12.jar/download"
+		 ".packages/plantuml.jar"))
+(add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
+
+(package-install 'plantuml-mode)
+(org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t)))
+(setq org-confirm-babel-evaluate nil)
+
 ;; Load the publishing system
 (require 'ox-publish)
 
