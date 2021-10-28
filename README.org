@@ -1,0 +1,6 @@
+
+Browse the site by going to [[https://hdfgroup.github.io/]].
+
+Build the site by running =build.sh=.
+
+Don't forget to commit your changes!
