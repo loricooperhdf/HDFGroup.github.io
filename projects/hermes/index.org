@@ -2,11 +2,11 @@
 
 | *Title*        | Hermes: Extending the HDF Library to Support Intelligent I/O Buffering for Deep Memory and Storage Hierarchy Systems |
 | *Sponsor*      | [[https://nsf.gov/][National Science Foundation]]                                                                                          |
-| **Award**      | [[https://www.nsf.gov/awardsearch/showAward?AWD_ID=1835669][1835669]]                                                                                                              |
-| **Partner(s)** | [[http://www.cs.iit.edu/~scs/index.html][Scalable Computing Software Laboratory (IIT)]]                                                                         |
-| **Overview**   | [[http://www.cs.iit.edu/~scs/assets/projects/Hermes/Hermes.html][Hermes]]                                                                                                               |
-| **Source**     | [[https://nsf.gov/][GitHub]]                                                                                                               |
-| **Docker**     | [[https://hub.docker.com/repository/docker/hdfgroup/hermes][=hermes=]], [[https://hub.docker.com/repository/docker/hdfgroup/hermes-dev][=hermes-dev=]], [[https://hub.docker.com/repository/docker/hdfgroup/hermes-deps][=hermes-deps=]]                                                                                |
-| **API**        | [[https://docs.hdfgroup.org/hermes/][Doxygen]]                                                                                                              |
+| *Award*        | [[https://www.nsf.gov/awardsearch/showAward?AWD_ID=1835669][1835669]]                                                                                                              |
+| *Partner(s)*   | [[http://www.cs.iit.edu/~scs/index.html][Scalable Computing Software Laboratory (IIT)]]                                                                         |
+| *Overview*     | [[http://www.cs.iit.edu/~scs/assets/projects/Hermes/Hermes.html][Hermes]]                                                                                                               |
+| *Source*       | [[https://nsf.gov/][GitHub]]                                                                                                               |
+| *Docker*       | [[https://hub.docker.com/repository/docker/hdfgroup/hermes][=hermes=]], [[https://hub.docker.com/repository/docker/hdfgroup/hermes-dev][=hermes-dev=]], [[https://hub.docker.com/repository/docker/hdfgroup/hermes-deps][=hermes-deps=]]                                                                                |
+| *API*          | [[https://docs.hdfgroup.org/hermes/][Doxygen]]                                                                                                              |
 
 
