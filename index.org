@@ -1,3 +1,5 @@
 #+title: The HDF Group
 
-For more information visit our website: [[https://www.hdfgroup.org)][The HDF Group]]
+- [[./projects/][Projects]]
+
+For more information visit our website: [[https://www.hdfgroup.org/][The HDF Group]]
