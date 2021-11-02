@@ -3,6 +3,121 @@
 #+OPTIONS: num:nil H:2 toc:t
 #+SETUPFILE: ../themes/theme-readtheorg.setup
 
+* Clinic 2021-11-02
+** Your Questions
+- Q :: ???
+- Q :: Under [[https://portal.hdfgroup.org/display/HDF5/Software+Changes+from+Release+to+Release+for+HDF5-1.10][Compatibility and Performance Issues]] we say
+       #+BEGIN_QUOTE
+       Not all HDF5-1.10 releases are compatible. 
+       #+END_QUOTE
+       What does that mean and why?
+- Q :: Can a point selection be written to/read from a hypserslab selection?
+       Does this work in parallel?
+
+** Last week's highlights
+*** Announcements
+**** [[https://forum.hdfgroup.org/t/release-of-hdf5-1-10-8-newsletter-180/9108][HDF5 1.10.8 Release]]
+- [[https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.8/src/hdf5-1.10.8-RELEASE.txt][Release notes]]
+  - CMake no longer builds the C++ library by default
+  - HDF5 now requires Visual Studio 2015 or greater
+  - On macOS, Universal Binaries can now be built
+  - CMake option to build the HDF filter plugins project as an external
+    project
+  - Autotools and CMake target added to produce doxygen generated
+    documentation
+  - CMake option to statically link gcc libs with MinGW
+  - File locking now works on Windows
+  - Improved performance of =H5Sget_select_elem_pointlist=
+  - Detection of simple data transform function ="x"=
+- [[https://portal.hdfgroup.org/display/HDF5/Software+Changes+from+Release+to+Release+for+HDF5-1.10][Interesting figure]]
+- Under *Compatibility and Performance Issues* is
+**** Try the HDF5 SWMR VFD Beta!
+- [[https://forum.hdfgroup.org/t/vfd-swmr-beta-1-release/8824][Forum post]]
+- [[https://github.com/HDFGroup/hdf5/tree/feature/vfd_swmr_beta_1][GitHub]]
+*** Forum
+**** [[https://forum.hdfgroup.org/t/h5dget-chunk-info-performance-for-many-chunks/9079][=H5Dget_chunk_info= performance for many chunks?]]
+- *Task:* Get all of the chunk file offsets + sizes
+- *Solution:* [[https://docs.hdfgroup.org/hdf5/develop/group___h5_d.html#title6][=H5Dchunk_iter=]]
+- *Caveat:* Currently only available in the =development= branch
+- *Note:* We covered this function and an example in our clinic on [2021-08-03 Tue]
+**** [[https://forum.hdfgroup.org/t/open-hdf5-when-it-is-already-opened-in-hdfview/9104][Open HDF5 when it is already opened in HDFVIEW]]
+#+BEGIN_QUOTE
+Is there a way (probably file access property) to open the file multiple times
+(especially when it is opened in HdfView) and allow to read/write it? May the
+problem be solved if I build hdf5 with multithreads option ON ?
+#+END_QUOTE
+- Except for specific use cases (SWMR), this is a bad idea
+- Why? Remember this figure?
+#+begin_src plantuml :file ../img/hdf5-file-state.png :exports results
+skinparam componentStyle rectangle
+
+package "HDF5 File State" {
+    database "Disk" {
+        [Partial State 1]
+    }
+    cloud "RAM" {
+        [Partial State 2]
+    }
+}
+#+end_src
+**** [[https://forum.hdfgroup.org/t/append-hdf5-files-in-parallel/9098][Append HDF5 files in parallel]]
+#+BEGIN_QUOTE
+I have thousands of HDF5 files that need to be merged into a single file.
+Merging is simply to append all groups and datasets of one file after
+another in a new output file. The group names of the input files are all
+different from one another. In addition, all datasets are chunked and
+compressed.
+
+I have thousands of HDF5 files that need to be merged into a single file.
+Merging is simply to append all groups and datasets of one file after
+another in a new output file. The group names of the input files are all
+different from one another. In addition, all datasets are chunked and
+compressed.
+
+My question is how do I merge the files in parallel?
+
+My implementation consists of the following steps:
+...
+#+END_QUOTE
+- That's a tough one
+- Two options
+  1. Don't copy any data, just reference existing data (via external links)
+  2. Copy data as fast as you can
+     - (MPI) parallel make this more complicated
+**** [[https://forum.hdfgroup.org/t/reading-variable-length-data-from-hdf5-file-c-api/9115][Reading variable length data from hdf5 file C++ API]]
+- Got +milk+ matching =H5Dread= and =H5Dwrite=?
+
+** Tips, tricks, & insights
+*** =H5Dread= / =H5Dwrite= Symmetry
+- Syntax
+  #+BEGIN_SRC C
+
+herr_t H5Dwrite
+(
+  hid_t dset_id,
+  hid_t mem_type_id,
+  hid_t mem_space_id, hid_t file_space_id,
+  hid_t dxpl_id, const void* buf
+);  
+
+herr_t H5Dread
+(
+  hid_t dset_id,
+  hid_t mem_type_id,
+  hid_t mem_space_id,  hid_t file_space_id,
+  hid_t dxpl_id, void* buf
+);
+		
+  #+END_SRC
+- /Necessary/ conditions for this to work out
+  1. The in-memory (element) datatype must be convertible to/from the in-file
+     datatype.
+  2. The dataspace selections in-memory and in the file must have the same
+     number of selected elements.
+  3. The buffer must be big enough to hold at least the number of selected
+     elements (in their native representation).
+     - For parallel, the number of elements written/read by this MPI rank
+
 * Clinic 2021-10-28
 ** Your Questions
 - Q :: ???
