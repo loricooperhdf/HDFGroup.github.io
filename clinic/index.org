@@ -68,12 +68,6 @@ another in a new output file. The group names of the input files are all
 different from one another. In addition, all datasets are chunked and
 compressed.
 
-I have thousands of HDF5 files that need to be merged into a single file.
-Merging is simply to append all groups and datasets of one file after
-another in a new output file. The group names of the input files are all
-different from one another. In addition, all datasets are chunked and
-compressed.
-
 My question is how do I merge the files in parallel?
 
 My implementation consists of the following steps:
