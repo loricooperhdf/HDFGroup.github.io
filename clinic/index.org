@@ -82,7 +82,7 @@ herr_t H5Dread
      *not* convertible to ragged arrays!)
   2. The dataspace selections in-memory and in the file must have the same
      number of selected elements. (Be careful when using =H5S_ALL= for one of
-     =mem_space_id= or =file_sace_id=!)
+     =mem_space_id= or =file_space_id=!)
   3. The buffer must be big enough to hold at least the number of selected
      elements (in their native representation).
      - For parallel, the number of elements written/read by this MPI rank
