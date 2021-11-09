@@ -3,6 +3,90 @@
 #+OPTIONS: num:nil H:2 toc:t
 #+SETUPFILE: ../themes/theme-readtheorg.setup
 
+* Clinic 2021-11-09
+** Your Questions
+- Q :: ???
+- Q :: Under [[https://portal.hdfgroup.org/display/HDF5/Software+Changes+from+Release+to+Release+for+HDF5-1.10][Compatibility and Performance Issues]] we say
+       #+BEGIN_QUOTE
+       Not all HDF5-1.10 releases are compatible. 
+       #+END_QUOTE
+       What does that mean and why?
+- Q :: Can a point selection be written to/read from a hypserslab selection?
+       Does this work in parallel?
+
+** Last week's highlights
+*** Announcements
+**** [[https://forum.hdfgroup.org/t/accelerate-i-o-operations-with-hermes/9142][Accelerate I/O operations with Hermes]]
+- Hermes 0.1.0-beta
+- Distributed I/O buffering for storage hierarchies
+- [[https://github.com/HDFGroup/hermes][GitHub]] & [[https://github.com/HDFGroup/hermes/wiki/1.-Getting-Started][Getting Started Guide]]
+- Stay tuned for a webinar on December 1, 2021
+**** Try the HDF5 SWMR VFD Beta!
+- [[https://forum.hdfgroup.org/t/vfd-swmr-beta-1-release/8824][Forum post]]
+- [[https://github.com/HDFGroup/hdf5/tree/feature/vfd_swmr_beta_1][GitHub]]
+*** Forum
+**** [[https://forum.hdfgroup.org/t/crash-when-writing-parallel-compressed-chunks/6186][Crash when writing parallel compressed chunks]]
+- Jordan committed a fix for an old =MPI_ERR_TRUNCATE= issue/crash
+- Merging to development branches of HDF5 1.13, 1.12, 1.10
+- If you've been affected by this, give it a try!
+**** [[https://forum.hdfgroup.org/t/sorting-of-members-of-a-compound-type/9134][Sorting of members of a compound type]]
+- User has to write elements of a compound datatype one at a time
+- "Partial I/O gets in the way" - sorting fields by name or offset
+  - Happens on each write call => overhead
+- Can this be avoided? User might provide a patch...
+**** [[https://forum.hdfgroup.org/t/read-write-specific-coordiantes-in-multi-dimensional-dataset/9137][Read/write specific coordiantes in multi-dimensional dataset?]]
+- Thomas is looking for use cases from =h5py= users
+  #+BEGIN_SRC python
+  
+  arr = ds.points[[(0, 0), (1, 0), (2, 2)]]  # Read
+
+  ds.points[[(0, 0), (1, 0), (2, 2)]] = [1, 2, 3]  # Write
+
+  #+END_SRC
+- See his [[https://github.com/h5py/h5py/pull/1793][PR]]
+**** [[https://forum.hdfgroup.org/t/reading-variable-length-data-from-hdf5-file-c-api/9115][Reading variable length data from hdf5 file C++ API]]
+- The "curse" of variable-length sequence data = the loss of memory contiguity
+- C++20 [[https://en.cppreference.com/w/cpp/container/span][=std::span=]] seems to be the way to go, but how many codes are C++20?
+- *Important:* The cleanup of buffers into which VLEN data is read is the
+  caller's responsibility! Use =H5Dvlen_reclaim= (HDF5 1.10-) or
+  =H5Treclaim= (HDF5 1.12+).
+- Got +milk+ matching =H5Dread= and =H5Dwrite=?
+
+** Tips, tricks, & insights
+We didn't get to this last time...
+
+*** =H5Dread= / =H5Dwrite= Symmetry
+- Syntax
+  #+BEGIN_SRC C
+
+herr_t H5Dwrite
+(
+  hid_t dset_id,
+  hid_t mem_type_id,  // the library "knows" the in-file datatype
+  hid_t mem_space_id, hid_t file_space_id,
+  hid_t dxpl_id, const void* buf
+);  
+
+herr_t H5Dread
+(
+  hid_t dset_id,
+  hid_t mem_type_id,  // the library "knows" the in-file datatype
+  hid_t mem_space_id,  hid_t file_space_id,
+  hid_t dxpl_id, void* buf
+);
+		
+  #+END_SRC
+- /Necessary/ conditions for this to work out
+  1. The in-memory (element) datatype must be convertible to/from the in-file
+     datatype. (With the exception of VLEN strings, VLEN types a la =hvl_t= are
+     *not* convertible to ragged arrays!)
+  2. The dataspace selections in-memory and in the file must have the same
+     number of selected elements. (Be careful when using =H5S_ALL= for one of
+     =mem_space_id= or =file_sace_id=!)
+  3. The buffer must be big enough to hold at least the number of selected
+     elements (in their native representation).
+     - For parallel, the number of elements written/read by this MPI rank
+
 * Clinic 2021-11-02
 ** Your Questions
 - Q :: ???
@@ -40,6 +124,7 @@
 - *Solution:* [[https://docs.hdfgroup.org/hdf5/develop/group___h5_d.html#title6][=H5Dchunk_iter=]]
 - *Caveat:* Currently only available in the =development= branch
 - *Note:* We covered this function and an example in our clinic on [2021-08-03 Tue]
+
 **** [[https://forum.hdfgroup.org/t/open-hdf5-when-it-is-already-opened-in-hdfview/9104][Open HDF5 when it is already opened in HDFVIEW]]
 #+BEGIN_QUOTE
 Is there a way (probably file access property) to open the file multiple times
@@ -60,6 +145,7 @@ package "HDF5 File State" {
     }
 }
 #+end_src
+
 **** [[https://forum.hdfgroup.org/t/append-hdf5-files-in-parallel/9098][Append HDF5 files in parallel]]
 #+BEGIN_QUOTE
 I have thousands of HDF5 files that need to be merged into a single file.
@@ -78,6 +164,7 @@ My implementation consists of the following steps:
   1. Don't copy any data, just reference existing data (via external links)
   2. Copy data as fast as you can
      - (MPI) parallel make this more complicated
+
 **** [[https://forum.hdfgroup.org/t/reading-variable-length-data-from-hdf5-file-c-api/9115][Reading variable length data from hdf5 file C++ API]]
 - Got +milk+ matching =H5Dread= and =H5Dwrite=?
 
