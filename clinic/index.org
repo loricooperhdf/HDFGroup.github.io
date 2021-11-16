@@ -3,6 +3,55 @@
 #+OPTIONS: num:nil H:2 toc:t
 #+SETUPFILE: ../themes/theme-readtheorg.setup
 
+* Clinic 2021-11-16
+** Your Questions
+- Q :: ???
+- Q :: Under [[https://portal.hdfgroup.org/display/HDF5/Software+Changes+from+Release+to+Release+for+HDF5-1.10][Compatibility and Performance Issues]] we say
+       #+BEGIN_QUOTE
+       Not all HDF5-1.10 releases are compatible. 
+       #+END_QUOTE
+       What does that mean and why?
+- Q :: Can a point selection be written to/read from a hypserslab selection?
+       Does this work in parallel?
+
+** Last week's highlights
+*** Announcements
+**** [[https://forum.hdfgroup.org/t/accelerate-i-o-operations-with-hermes/9142][Accelerate I/O operations with Hermes]]
+- Hermes 0.1.0-beta
+- Distributed I/O buffering for storage hierarchies
+- [[https://github.com/HDFGroup/hermes][GitHub]] & [[https://github.com/HDFGroup/hermes/wiki/1.-Getting-Started][Getting Started Guide]]
+- [[https://us06web.zoom.us/meeting/register/tZcpd-CspzgsH908R0eZ1rMZbA67KR8z1hnI][Register]] for the webinar on December 1, 2021 11:00 AM (Central)!
+**** Try the HDF5 SWMR VFD Beta!
+- [[https://forum.hdfgroup.org/t/vfd-swmr-beta-1-release/8824][Forum post]]
+- [[https://github.com/HDFGroup/hdf5/tree/feature/vfd_swmr_beta_1][GitHub]]
+*** Forum
+**** [[https://forum.hdfgroup.org/t/vfd-swmr-beta-1-release/8824][VFD SWMR beta 1 release]]
+- Part of HDF5 1.13?
+- No and yes: de-coupling of VFDs and library releases
+**** [[https://forum.hdfgroup.org/t/hdf5functionargumentexception-inappropriate-type-for-datatype-class-array/9145][HDF5FunctionArgumentException: Inappropriate type for Datatype.CLASS_ARRAY]]
+- Drink responsibly & don't go crazy with those datatypes!
+**** [[https://forum.hdfgroup.org/t/dynamically-loaded-filters-on-mac-os/9159][Dynamically Loaded Filters on Mac OS]]
+- The joy of being different
+**** [[https://forum.hdfgroup.org/t/h5datatype-with-variable-length-how-to-set-the-values/9162][H5Datatype with variable length: How to set the values?]]
+- The joy and frustration of language bindings to the HDF5 C-API
+**** [[https://forum.hdfgroup.org/t/open-hdf5-when-it-is-already-opened-in-hdfview/9104][Open HDF5 when it is already opened in HDFVIEW]]
+- Solution:
+#+BEGIN_SRC shell
+export HDF5_USE_FILE_LOCKING="FALSE"
+#+END_SRC
+
+** Tips, tricks, & insights
+*** Mochi - 2021 R&D100 Winner
+- [[https://www.mcs.anl.gov/research/projects/mochi/][Mochi project page]]
+- Collaboration between ANL, LANL, CMU, and The HDF Group
+- See Jerome Soumagne's [[https://www.youtube.com/watch?v=j0T51XHrJrY&list=PLPyhR4PdEeGYdTX7SVM59LwoNJDgJSNdd&index=17][HUG 2021 presentation]]
+- Changes in scientific workflows
+- Composable data services and building blocks
+- Micros-services rather than monoliths
+- A refined toolset for modern architectures and demanding applications
+
+*** Who wants to share their favorite hack/trick?
+
 * Clinic 2021-11-09
 ** Your Questions
 - Q :: ???
