@@ -673,6 +673,8 @@ GROUP "/" {
   - Support for querying and indexing
   - API clean-up
 - [[https://docs.hdfgroup.org/hdf5/develop/group___h5_r.html][Basic life cycle examples in RM]]
+* Clinic 2021-09-21
+- Elena's slides on [[./Chunking-compression.pdf][HDF5 Chunking and Compression - Performance issues]]
 * Clinic 2021-08-31
 ** Your Questions
 - Q :: Will the HDF5 1.12.1 file locking changes be brought to 1.10.8?
