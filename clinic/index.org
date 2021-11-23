@@ -3,6 +3,141 @@
 #+OPTIONS: num:nil H:2 toc:t
 #+SETUPFILE: ../themes/theme-readtheorg.setup
 
+* Clinic 2021-11-23
+** Your Questions
+- Q :: ???
+- Q :: Under [[https://portal.hdfgroup.org/display/HDF5/Software+Changes+from+Release+to+Release+for+HDF5-1.10][Compatibility and Performance Issues]] we say
+       #+BEGIN_QUOTE
+       Not all HDF5-1.10 releases are compatible. 
+       #+END_QUOTE
+       What does that mean and why?
+  - *API* incompatibility (not file format!) introduced in HDF5 1.10.3
+- Q :: Can a point selection be written to/read from a hypserslab selection?
+       Does this work in parallel?
+  - It appears to work for simple examples in sequential mode:
+#+BEGIN_SRC C
+
+#include "hdf5.h"
+
+#include <stdlib.h>
+
+int main()
+{
+  __label__ fail_file, fail_fspace, fail_dset;
+  int retval = EXIT_SUCCESS;
+  hid_t file, fspace, dset, mspace;
+  int data[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+
+  if((file = H5Fcreate("sel.h5", H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT)) ==
+     H5I_INVALID_HID) {
+    retval = EXIT_FAILURE;
+    goto fail_file;
+  }
+
+  if ((fspace = H5Screate_simple(1, (hsize_t[]) {10}, NULL)) ==
+      H5I_INVALID_HID) {
+    retval = EXIT_FAILURE;
+    goto fail_fspace;
+  }
+
+  if ((dset = H5Dcreate(file, "ints", H5T_STD_I32LE, fspace, H5P_DEFAULT,
+                        H5P_DEFAULT, H5P_DEFAULT)) == H5I_INVALID_HID) {
+    retval = EXIT_FAILURE;
+    goto fail_dset;
+  }
+
+  if ((mspace = H5Scopy(fspace)) == H5I_INVALID_HID) {
+    retval = EXIT_FAILURE;
+    goto fail_copy;
+  }
+
+  // 1. Make a point selection in memory
+  // 2. Make a hyperslab selection in the file
+  // 3. Write
+  if (H5Sselect_elements(mspace, H5S_SELECT_SET, 3, (hsize_t[]){3, 1, 6}) < 0 ||
+      H5Sselect_hyperslab(fspace, H5S_SELECT_SET, (hsize_t[]){4}, NULL,
+                          (hsize_t[]){1}, (hsize_t[]){3}) < 0 ||
+      H5Dwrite(dset, H5T_NATIVE_INT, mspace, fspace, H5P_DEFAULT, data) < 0) {
+    retval = EXIT_FAILURE;
+    goto fail_write;    
+  }
+
+fail_write:
+  H5Sclose(mspace);
+fail_copy:
+  H5Dclose(dset);
+fail_dset:  
+  H5Sclose(fspace);
+fail_fspace:
+  H5Fclose(file);
+fail_file:
+  return retval;
+}
+
+#+END_SRC
+
+- The ouput file produce looks like this:
+
+#+BEGIN_EXAMPLE
+
+HDF5 "sel.h5" {
+GROUP "/" {
+   DATASET "ints" {
+      DATATYPE  H5T_STD_I32LE
+      DATASPACE  SIMPLE { ( 10 ) / ( 10 ) }
+      DATA {
+      (0): 0, 0, 0, 0, 3, 1, 6, 0, 0, 0
+      }
+   }
+}
+}
+
+#+END_EXAMPLE
+
+- I have yet to try parallel mode 
+
+** Last week's highlights
+*** Announcements
+**** [[https://forum.hdfgroup.org/t/accelerate-i-o-operations-with-hermes/9142][Accelerate I/O operations with Hermes]]
+- Hermes 0.1.0-beta
+- Distributed I/O buffering for storage hierarchies
+- [[https://github.com/HDFGroup/hermes][GitHub]] & [[https://github.com/HDFGroup/hermes/wiki/1.-Getting-Started][Getting Started Guide]]
+- [[https://us06web.zoom.us/meeting/register/tZcpd-CspzgsH908R0eZ1rMZbA67KR8z1hnI][Register]] for the webinar on December 1, 2021 11:00 AM (Central)!
+**** Try the HDF5 SWMR VFD Beta!
+- [[https://forum.hdfgroup.org/t/vfd-swmr-beta-1-release/8824][Forum post]]
+- [[https://github.com/HDFGroup/hdf5/tree/feature/vfd_swmr_beta_1][GitHub]]
+*** Forum
+**** [[https://forum.hdfgroup.org/t/reference-manual-in-doxygen/8230][Reference Manual in Doxygen]]
+- We've been experimenting with [[https://docs.hdfgroup.org/hdf5/develop/_f_t_s.html#gsc.tab=0][full-text search]]
+- Not a replacement for the Doxygen-native search
+- What do you think?
+**** [[https://forum.hdfgroup.org/t/working-with-packed-12-bit-integers/9171][Working with packed 12-bit integers]]
+- Two basic approaches: packing or filtering
+- [[https://github.com/berkeleysdm/H5TurboPFor][H5TurboPFor]]
+  - HDF5 frontend for [[https://github.com/powturbo/TurboPFor-Integer-Compression][TurboPFor: Fastest Integer Compression]]
+**** [[https://forum.hdfgroup.org/t/h5datatype-with-variable-length-how-to-set-the-values/9162][H5Datatype with variable length: How to set the values?]]
+- Too many half-baked HDF5 Java interfaces (including our own)
+- How can we better engage with that community?
+- [[https://www.hdfql.com/][HDFql]]?
+**** [[https://forum.hdfgroup.org/t/which-layout-shall-i-use/9180][Which layout shall I use?]]
+- Acquiring a lot of small (< 8K) messages
+- Which (dataset) layout is best for performance?
+- It depends...
+  - How is performance measured?
+  - How will the messages be accessed?
+**** [[https://forum.hdfgroup.org/t/controlling-btree-parameters-for-performance-reasons/9176][Controlling BTree parameters for performance reasons]]  
+- Import large number of images (~5 million) as chunked datasets
+- ~10-20 million groups for indexing
+- Can B-tree parameters do magic? (No)
+- Potential remedies
+  - File format improvements
+  - Reduce the number of objects by stacking images, e.g., by resolution
+**** [[https://forum.hdfgroup.org/t/vfd-swmr-beta-1-release/8824][VFD SWMR beta 1 release]]
+- Will the HDF5 SWMR VFD be a plugin?
+  - I don't know for sure.
+** Tips, tricks, & insights
+No time for that, today.
+
 * Clinic 2021-11-16
 ** Your Questions
 - Q :: ???
