@@ -3,12 +3,115 @@
 #+OPTIONS: num:nil H:2 toc:t
 #+SETUPFILE: ../themes/theme-readtheorg.setup
 
+* Clinic 2021-12-07
+** Your Questions
+- Q :: ???
+- Q :: Can a point selection be written to/read from a hypserslab selection?
+       Does this work in parallel?
+  - It appears to work for simple examples in sequential mode
+  - I have yet to try parallel mode
+
+** Last week's highlights
+*** Announcements
+**** We had a great webinar [[https://forum.hdfgroup.org/t/accelerate-i-o-operations-with-hermes/9142][Accelerate I/O operations with Hermes]]
+- Stay tuned for the recording on YouTube
+- The Hermes project now has its [[https://forum.hdfgroup.org/c/Hermes][forum category]]
+  - Follow announcements, ask questions, participate!
+**** [[https://forum.hdfgroup.org/t/release-of-hdf5-1-13-0-newsletter-181-the-hdf-group/9224][Release of HDF5-1.13.0]]
+- An /odd/ release number?
+  - Experimental vs. maintenance releases see [[https://www.hdfgroup.org/2021/12/hdf5-1-13-0-introducing-experimental-releases/][here]]
+  - "Experimental" is not a fig leaf for "shoddy"
+  - Experimental releases receive as much TLC as maintenance releases
+- Highlights:
+  - VOL layer updates (DAOS, pass-through, async.)
+  - VFD layer updates
+    - Dynamic loading
+    - GPUDirect VFD
+- Performance improvements
+- [[https://confluence.hdfgroup.org/download/attachments/74188083/2021-12-2-ParallelTools-Portal.pdf?version=1&modificationDate=1638475023303&api=v2][=h5dwalk=]] tool
+  #+begin_src shell
+
+[ bin]$ mpiexec -n 4 ./h5dwalk -o show-h5dump-h5files.log -T ./h5dump
+$HOME/Sandbox/HDF5/GITHUB/hdf5/tools/testfiles
+[ bin]$ more show-h5dump-h5files.log
+---------
+Command: ./h5dump -n /home/riwarren/Sandbox/HDF5/GITHUB/hdf5/tools/testfiles/tnestedcmpddt.h5
+HDF5 "/home/riwarren/Sandbox/HDF5/GITHUB/hdf5/tools/testfiles/tnestedcmpddt.h5" {
+FILE_CONTENTS {
+  group /
+  dataset /dset1
+  dataset /dset2
+  dataset /dset4
+  dataset /dset5
+  datatype /enumtype
+  group /group1
+  dataset /group1/dset3
+  datatype /type1
+  }
+}
+...
+
+  #+end_src
+
+**** [[https://us06web.zoom.us/meeting/register/tZUtdemprjMsG9YmD5MINqn6VWh2VJnoUX7N][VOL tutorial]] moved to January 14, 2022!
+- Covers the basics needed to construct a simple terminal VOL connector
+- Great New Year's resolution =;-)=
+*** Forum
+**** [[https://forum.hdfgroup.org/t/working-with-packed-12-bit-integers/9171][Working with packed 12-bit integers]]
+- Two basic approaches: packing or filtering
+- [[https://github.com/berkeleysdm/H5TurboPFor][H5TurboPFor]]
+  - HDF5 frontend for [[https://github.com/powturbo/TurboPFor-Integer-Compression][TurboPFor: Fastest Integer Compression]]
+**** [[https://forum.hdfgroup.org/t/h5datatype-with-variable-length-how-to-set-the-values/9162][H5Datatype with variable length: How to set the values?]]
+- Too many half-baked HDF5 Java interfaces (including our own)
+- How can we better engage with that community?
+- [[https://www.hdfql.com/][HDFql]]?
+**** [[https://forum.hdfgroup.org/t/which-layout-shall-i-use/9180][Which layout shall I use?]]
+- Acquiring a lot of small (< 8K) messages
+- Which (dataset) layout is best for performance?
+  - What is layout?
+- It depends...
+  - How is performance measured?
+  - How will the messages be accessed?
+**** [[https://forum.hdfgroup.org/t/controlling-btree-parameters-for-performance-reasons/9176][Controlling BTree parameters for performance reasons]]
+- Import large number of images (~5 million) as chunked datasets
+- ~10-20 million groups for indexing
+- Can B-tree parameters do magic? (No)
+  - Good [[https://courses.cs.washington.edu/courses/cse326/04su/lectures/BRank.pdf][intro to B-trees]]
+- Two kinds of B-trees, file-wide configuration via FCPL
+  #+begin_src C
+
+  // group links
+  herr_t H5Pset_sym_k(hid_t plist_id, unsigned ik, unsigned lk);
+
+  // dataset chunk index
+  herr_t herr_t H5Pset_istore_k(hid_t plist_id, unsigned ik);
+
+  #+end_src
+- Other potential remedies
+  - File format improvements
+  - Reduce the number of objects by stacking images, e.g., by resolution
+**** [[https://forum.hdfgroup.org/t/vfd-swmr-beta-1-release/8824][VFD SWMR beta 1 release]]
+- Will the HDF5 SWMR VFD be a plugin?
+  - +I don't know for sure.+
+    - No. See Dana's response.
+**** [[https://forum.hdfgroup.org/t/virtual-data-set/9206][Virtual Data Set]]
+#+begin_quote
+For our application, we need to return an error in case the caller tries to
+read data from a VDS and some of the referenced files that store the requested
+data are not available.
+#+end_quote
+- Currently, users cannot change the error behavior of VDS functions
+- Pedestrian approach: parse the VDS metadata to detect missing files
+
+** Tips, tricks, & insights
+No time for that, today.
+
 * Clinic 2021-11-23
 ** Your Questions
 - Q :: ???
 - Q :: Under [[https://portal.hdfgroup.org/display/HDF5/Software+Changes+from+Release+to+Release+for+HDF5-1.10][Compatibility and Performance Issues]] we say
        #+BEGIN_QUOTE
-       Not all HDF5-1.10 releases are compatible. 
+       Not all HDF5-1.10 releases are compatible.
        #+END_QUOTE
        What does that mean and why?
   - *API* incompatibility (not file format!) introduced in HDF5 1.10.3
@@ -59,14 +162,14 @@ int main()
                           (hsize_t[]){1}, (hsize_t[]){3}) < 0 ||
       H5Dwrite(dset, H5T_NATIVE_INT, mspace, fspace, H5P_DEFAULT, data) < 0) {
     retval = EXIT_FAILURE;
-    goto fail_write;    
+    goto fail_write;
   }
 
 fail_write:
   H5Sclose(mspace);
 fail_copy:
   H5Dclose(dset);
-fail_dset:  
+fail_dset:
   H5Sclose(fspace);
 fail_fspace:
   H5Fclose(file);
@@ -94,7 +197,7 @@ GROUP "/" {
 
 #+END_EXAMPLE
 
-- I have yet to try parallel mode 
+- I have yet to try parallel mode
 
 ** Last week's highlights
 *** Announcements
@@ -125,7 +228,7 @@ GROUP "/" {
 - It depends...
   - How is performance measured?
   - How will the messages be accessed?
-**** [[https://forum.hdfgroup.org/t/controlling-btree-parameters-for-performance-reasons/9176][Controlling BTree parameters for performance reasons]]  
+**** [[https://forum.hdfgroup.org/t/controlling-btree-parameters-for-performance-reasons/9176][Controlling BTree parameters for performance reasons]]
 - Import large number of images (~5 million) as chunked datasets
 - ~10-20 million groups for indexing
 - Can B-tree parameters do magic? (No)
@@ -143,7 +246,7 @@ No time for that, today.
 - Q :: ???
 - Q :: Under [[https://portal.hdfgroup.org/display/HDF5/Software+Changes+from+Release+to+Release+for+HDF5-1.10][Compatibility and Performance Issues]] we say
        #+BEGIN_QUOTE
-       Not all HDF5-1.10 releases are compatible. 
+       Not all HDF5-1.10 releases are compatible.
        #+END_QUOTE
        What does that mean and why?
 - Q :: Can a point selection be written to/read from a hypserslab selection?
@@ -192,7 +295,7 @@ export HDF5_USE_FILE_LOCKING="FALSE"
 - Q :: ???
 - Q :: Under [[https://portal.hdfgroup.org/display/HDF5/Software+Changes+from+Release+to+Release+for+HDF5-1.10][Compatibility and Performance Issues]] we say
        #+BEGIN_QUOTE
-       Not all HDF5-1.10 releases are compatible. 
+       Not all HDF5-1.10 releases are compatible.
        #+END_QUOTE
        What does that mean and why?
 - Q :: Can a point selection be written to/read from a hypserslab selection?
@@ -221,7 +324,7 @@ export HDF5_USE_FILE_LOCKING="FALSE"
 **** [[https://forum.hdfgroup.org/t/read-write-specific-coordiantes-in-multi-dimensional-dataset/9137][Read/write specific coordiantes in multi-dimensional dataset?]]
 - Thomas is looking for use cases from =h5py= users
   #+BEGIN_SRC python
-  
+
   arr = ds.points[[(0, 0), (1, 0), (2, 2)]]  # Read
 
   ds.points[[(0, 0), (1, 0), (2, 2)]] = [1, 2, 3]  # Write
@@ -249,7 +352,7 @@ herr_t H5Dwrite
   hid_t mem_type_id,  // the library "knows" the in-file datatype
   hid_t mem_space_id, hid_t file_space_id,
   hid_t dxpl_id, const void* buf
-);  
+);
 
 herr_t H5Dread
 (
@@ -258,7 +361,7 @@ herr_t H5Dread
   hid_t mem_space_id,  hid_t file_space_id,
   hid_t dxpl_id, void* buf
 );
-		
+
   #+END_SRC
 - /Necessary/ conditions for this to work out
   1. The in-memory (element) datatype must be convertible to/from the in-file
@@ -276,7 +379,7 @@ herr_t H5Dread
 - Q :: ???
 - Q :: Under [[https://portal.hdfgroup.org/display/HDF5/Software+Changes+from+Release+to+Release+for+HDF5-1.10][Compatibility and Performance Issues]] we say
        #+BEGIN_QUOTE
-       Not all HDF5-1.10 releases are compatible. 
+       Not all HDF5-1.10 releases are compatible.
        #+END_QUOTE
        What does that mean and why?
 - Q :: Can a point selection be written to/read from a hypserslab selection?
@@ -363,7 +466,7 @@ herr_t H5Dwrite
   hid_t mem_type_id,
   hid_t mem_space_id, hid_t file_space_id,
   hid_t dxpl_id, const void* buf
-);  
+);
 
 herr_t H5Dread
 (
@@ -372,7 +475,7 @@ herr_t H5Dread
   hid_t mem_space_id,  hid_t file_space_id,
   hid_t dxpl_id, void* buf
 );
-		
+
   #+END_SRC
 - /Necessary/ conditions for this to work out
   1. The in-memory (element) datatype must be convertible to/from the in-file
