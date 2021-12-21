@@ -3,6 +3,156 @@
 #+OPTIONS: num:nil H:2 toc:t
 #+SETUPFILE: ../themes/theme-readtheorg.setup
 
+* Clinic 2021-12-21
+** Your Questions
+- Q :: ???
+- Q :: Can a point selection be written to/read from a hypserslab selection?
+       Does this work in parallel?
+  - It appears to work for simple examples in sequential mode
+  - I have yet to try parallel mode
+
+** Last week's highlights
+*** Announcements
+Nothing to report.
+*** Forum
+**** [[https://forum.hdfgroup.org/t/memory-management-in-conversions-of-variable-length-data-types/9250][Memory management in conversions of variable length data types]]
+- Reading data represented as HDF5 variable-length sequences. => [[https://docs.hdfgroup.org/hdf5/develop/structhvl__t.html][~hvl_t~]]
+  #+begin_src C
+
+  typedef struct {
+      size_t len; /**< Length of VL data (in base type units) */
+      void * p;   /**< Pointer to VL data */
+  } hvl_t;
+
+  #+end_src
+- Who owns the memory attached to =p=?
+- *The caller!* Clean up w/ [[https://docs.hdfgroup.org/hdf5/develop/group___h5_d.html#ga222a2fd93868e2524b2e42c3c6146119][~H5Dvlen_reclaim~]] (pre-HDF5 1.12.x) or [[https://docs.hdfgroup.org/hdf5/develop/group___v_l_e_n.html#ga6851783a68a0f868c27300cb5622fbbe][~H5Treclaim~]]
+  (HDF5 1.12+)
+**** [[https://forum.hdfgroup.org/t/read-write-compound-containing-std-string-using-native-c-hdf5-lib/9258][Read/write compound containing `std::string` using native C hdf5 lib]]
+- Don't pass C++ objects as arguments to C library functions!
+  - You might get lucky, but you are relying on compiler peculiarities.
+    - /Your luck will run out eventually./
+#+begin_src C++
+
+typedef struct {
+    int     serial_no;
+    std::string location;  // CHANGED FROM char* to std::string
+    double  temperature;
+    double  pressure;
+} sensor_t;
+
+#+end_src
+- Works with ~H5Dwrite~ for strings of a certain size, fails for ~H5Dread~
+- See [[https://joellaity.com/2020/01/31/string.html][libc++'s implementation of ~std::string~]] by Joel Laity for details.
+**** [[https://forum.hdfgroup.org/t/merge-2-groups-from-the-same-h5-file/9260][Merge 2 groups from the same h5 file]]
+- Simple example
+  #+begin_example
+
+                 ?
+  /G1/D + /G2/D ---> /G3/( Σ = /G1/D + G2/D )
+
+  #+end_example
+- In this simple example, we want to "append" the elements of the dataset
+  =/G2/D= to the elements of the dataset =/G1/D=
+- Question: Is copying dataset elements problematic?
+  - YES :: Use virtual datasets! The also provides maximum flexibility in
+    defining Σ and mapping the constituent datasets.
+    - If you are using an older version of HDF5, you could define a dataset of
+      region references to fake virtual datasets. This is much less convenient.
+  - NO :: Pedestrian approach: create a new (joint) dataset which can accommodate
+    the constituent datasets and read and write the elements from the
+    constituents.
+    - *Wrinkle:* The constituent datasets are too large and to fit into memory.
+      - Page your way through the constituents!
+
+** Tips, tricks, & insights
+*** [[https://forum.hdfgroup.org/t/hdfql-emacs-org-winning-combo/9241][A GUI for HDFql]]
+- [[https://www.hdfql.com/][HDFql]] is the [[https://en.wikipedia.org/wiki/La-Z-Boy][La-Z-Boy]] of HDF5 interfaces
+  - SQL is convenient and concise because we say what we want (declarative) rather
+    than how to do it (imperative).
+- Example (evaluate with =C-c C-c=):
+  #+begin_src hdfql :exports both :results output
+
+  CREATE TRUNCATE AND USE FILE my_file.h5
+
+  CREATE DATASET my_group/my_dataset AS double(3) ENABLE zlib LEVEL 0 VALUES(4, 8, 6)
+
+  SELECT FROM DATASET my_group/my_dataset
+
+  #+end_src
+
+  #+RESULTS:
+  : 4.000000
+  : 8.000000
+  : 6.000000
+
+- Really?
+  #+begin_src shell :exports both :results output
+
+  h5dump -p my_file.h5
+
+  #+end_src
+
+  #+RESULTS:
+  #+begin_example
+  HDF5 "my_file.h5" {
+  GROUP "/" {
+     GROUP "my_group" {
+        DATASET "my_dataset" {
+           DATATYPE  H5T_IEEE_F64LE
+           DATASPACE  SIMPLE { ( 3 ) / ( 3 ) }
+           STORAGE_LAYOUT {
+              CHUNKED ( 3 )
+              SIZE 35 (0.686:1 COMPRESSION)
+           }
+           FILTERS {
+              COMPRESSION DEFLATE { LEVEL 0 }
+           }
+           FILLVALUE {
+              FILL_TIME H5D_FILL_TIME_IFSET
+              VALUE  H5D_FILL_VALUE_DEFAULT
+           }
+           ALLOCATION_TIME {
+              H5D_ALLOC_TIME_INCR
+           }
+           DATA {
+           (0): 4, 8, 6
+           }
+        }
+     }
+  }
+  }
+  #+end_example
+
+- *Homework:* What's the line count of an program written in C?
+- [[https://www.gnu.org/software/emacs/][Emacs]] supports the execution of source code blocks in [[https://orgmode.org/][Org mode]]
+- HDFql comes with a command line interface
+- Combine the two w/ a snippet of [[https://www.gnu.org/software/emacs/manual/html_node/elisp/][Emacs Lisp]] code
+  #+begin_src emacs-lisp
+
+  ;; We assume that HDFqlCLI is in the path and that libHDFql.so is in
+  ;; the LD_LIBRARY_PATH.
+
+  (defun org-babel-execute:hdfql (body params)
+    "Execute a block of HDFql code with org-babel."
+    (message "executing HDFql source code block")
+    (org-babel-eval
+     (format "HDFqlCLI --no-status --execute=\"%s\"" body) ""))
+
+  (push '("hdfql" . sql) org-src-lang-modes)
+
+  (add-to-list 'org-structure-template-alist '("hq" . "src hdfql"))
+
+  #+end_src
+- The rest is cosmetics:
+  - Syntax highlighting ("font locking" in Emacs-speak)
+  - Auto-indentation
+  - Sessions
+  - Ping me ([[mailto:gheber@hdfgroup.org][Gerd Heber]]), if you are interested in pushing this forward!
+
+** On behalf of The HDF Group, I wish you a Merry Christmas and a Happy New Year!
+Stay safe & come back next year!
+
 * Clinic 2021-12-07
 ** Your Questions
 - Q :: ???
