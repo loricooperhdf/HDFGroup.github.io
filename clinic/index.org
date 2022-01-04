@@ -3,6 +3,151 @@
 #+OPTIONS: num:nil H:2 toc:t
 #+SETUPFILE: ../themes/theme-readtheorg.setup
 
+* Clinic 2022-01-04
+** Your Questions
+- Q :: ???
+- Q :: Can a point selection be written to/read from a hypserslab selection?
+       Does this work in parallel?
+  - It appears to work for simple examples in sequential mode
+  - I have yet to try parallel mode
+
+** Last week's highlights
+*** Announcements
+Happy New Year!
+*** Forum
+**** [[https://forum.hdfgroup.org/t/repair-corrupted-file/9288][Repair corrupted file]]
+- There's no general tool for that (yet)
+- Rigorous error checking and resource handling goes a long way
+  #+begin_src C
+  {
+    __label__ fail_file;
+    hid_t file, group;
+    char  src_path[] = "/a/few/groups";
+
+    if ((file = H5Fcreate("o1.h5", H5F_ACC_TRUNC, H5P_DEFAULTx2)) ==
+         H5I_INVALID_HID) {
+      ret_val = EXIT_FAILURE;
+      goto fail_file;
+    }
+
+    // create a few groups
+    {
+      __label__ fail_group, fail_lcpl;
+      hid_t lcpl;
+      if ((lcpl = H5Pcreate(H5P_LINK_CREATE)) == H5I_INVALID_HID) {
+        ret_val = EXIT_FAILURE;
+        goto fail_lcpl;
+      }
+      if (H5Pset_create_intermediate_group(lcpl, 1) < 0) {
+        ret_val = EXIT_FAILURE;
+        goto fail_group;
+      }
+      if ((group = H5Gcreate(file, src_path, lcpl, H5P_DEFAULTx2)) ==
+           H5I_INVALID_HID) {
+        ret_val = EXIT_FAILURE;
+        goto fail_group;
+      }
+
+      H5Gclose(group);
+    fail_group:
+      H5Pclose(lcpl);
+    fail_lcpl:;
+    }
+
+    // create a copy
+    if (H5Ocopy(file, ".", file, "copy of", H5P_DEFAULTx2) < 0) {
+      ret_val = EXIT_FAILURE;
+    }
+
+    H5Fclose(file);
+  fail_file:;
+  }
+  #+end_src
+- This looks pretty awkward, but there's some method to the madness...
+
+** Tips, tricks, & insights
+*** [[https://forum.hdfgroup.org/t/hdfql-emacs-org-winning-combo/9241][A GUI for HDFql]]
+- [[https://www.hdfql.com/][HDFql]] is the [[https://en.wikipedia.org/wiki/La-Z-Boy][La-Z-Boy]] of HDF5 interfaces
+  - SQL is convenient and concise because we say what we want (declarative) rather
+    than how to do it (imperative).
+- Example (evaluate with =C-c C-c=):
+  #+begin_src hdfql :exports both :results output
+
+  CREATE TRUNCATE AND USE FILE my_file.h5
+
+  CREATE DATASET my_group/my_dataset AS double(3) ENABLE zlib LEVEL 0 VALUES(4, 8, 6)
+
+  SELECT FROM DATASET my_group/my_dataset
+
+  #+end_src
+
+  #+RESULTS:
+  : 4.000000
+  : 8.000000
+  : 6.000000
+
+- Really?
+  #+begin_src shell :exports both :results output
+
+  h5dump -p my_file.h5
+
+  #+end_src
+
+  #+RESULTS:
+  #+begin_example
+  HDF5 "my_file.h5" {
+  GROUP "/" {
+     GROUP "my_group" {
+        DATASET "my_dataset" {
+           DATATYPE  H5T_IEEE_F64LE
+           DATASPACE  SIMPLE { ( 3 ) / ( 3 ) }
+           STORAGE_LAYOUT {
+              CHUNKED ( 3 )
+              SIZE 35 (0.686:1 COMPRESSION)
+           }
+           FILTERS {
+              COMPRESSION DEFLATE { LEVEL 0 }
+           }
+           FILLVALUE {
+              FILL_TIME H5D_FILL_TIME_IFSET
+              VALUE  H5D_FILL_VALUE_DEFAULT
+           }
+           ALLOCATION_TIME {
+              H5D_ALLOC_TIME_INCR
+           }
+           DATA {
+           (0): 4, 8, 6
+           }
+        }
+     }
+  }
+  }
+  #+end_example
+
+- *Homework:* What's the line count of an program written in C?
+- [[https://www.gnu.org/software/emacs/][Emacs]] supports the execution of source code blocks in [[https://orgmode.org/][Org mode]]
+- HDFql comes with a command line interface
+- Combine the two w/ a snippet of [[https://www.gnu.org/software/emacs/manual/html_node/elisp/][Emacs Lisp]] code
+  #+begin_src emacs-lisp
+
+  ;; We assume that HDFqlCLI is in the path and that libHDFql.so is in
+  ;; the LD_LIBRARY_PATH.
+
+  (defun org-babel-execute:hdfql (body params)
+    "Execute a block of HDFql code with org-babel."
+    (message "executing HDFql source code block")
+    (org-babel-eval
+     (format "HDFqlCLI --no-status --execute=\"%s\"" body) ""))
+
+  (push '("hdfql" . sql) org-src-lang-modes)
+
+  (add-to-list 'org-structure-template-alist '("hq" . "src hdfql"))
+
+  #+end_src
+- The rest is cosmetics
+- See [[https://github.com/HDFGroup/emacs][this GitHub repo]] for HDF5 support in Emacs
+- Fork and create a PR, if you are interested in pushing this forward!
+
 * Clinic 2021-12-21
 ** Your Questions
 - Q :: ???
