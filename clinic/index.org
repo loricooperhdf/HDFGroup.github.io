@@ -3,6 +3,85 @@
 #+OPTIONS: num:nil H:2 toc:t
 #+SETUPFILE: ../themes/theme-readtheorg.setup
 
+* Clinic 2022-01-11
+** Your Questions
+- Q :: ???
+- Q :: Can a point selection be written to/read from a hypserslab selection?
+       Does this work in parallel?
+  - It appears to work for simple examples in sequential mode
+  - I have yet to try parallel mode
+
+** Last week's highlights
+*** Announcements
+**** [[https://forum.hdfgroup.org/t/tutorial-announcement-constructing-a-simple-terminal-vol-connector/9187][VOL tutorial postponed]]
+- New date February 25th, 11:00 a.m. to 1:00 p.m. (Central)
+- You can still register
+*** Forum
+**** [[https://forum.hdfgroup.org/t/select-hyperslab-of-vl-data/9300][select hyperslab of VL data]]
+- Two issues:
+  1. Getting the selections right
+  2. Dealing w/ VLEN data
+     #+begin_src C
+
+     struct s_data {
+         uint64_t b;
+         uint16_t a;
+     };
+
+     struct ext_data3 {
+         uint64_t a;
+         uint32_t b;
+         int16_t nelem;
+         struct s_data data[3];  // <- ARRAY
+     };
+
+     struct ext_data {
+         uint64_t a;
+         uint32_t b;
+         int16_t nelem;
+         struct s_data data[];   // <- VLEN
+     };
+
+     #+end_src
+     - Nested compound (surface) datatype
+     - Attempted byte-stream representation as =\0=-terminated VLEN string
+**** [[https://forum.hdfgroup.org/t/dynamically-change-the-file-access-property-list/9314][Dynamically change the File Access Property List]]
+- File access properties
+  - Vs. file creation properties
+- Set before file creation or file open
+  #+begin_src C
+  hid_t fapl = H5Pcreate(H5P_FILE_ACCESS);
+  H5Pset_alignment(fapl, threshold, alignment);
+  ...
+  H5Fopen(..., fapl) or  H5Fcreate(..., fapl)
+  ...
+  #+end_src
+- What is the use case for changing them dynamically?
+  - Wouldn't make sense for some properties, e.g., VFD
+  - Dynamic alignment changes, why?
+
+** Tips, tricks, & insights
+*** HDF5 snippets
+- Developer productivity
+  - IntelliSense in VSCode
+  - [[https://github.com/Microsoft/language-server-protocol/][Language Server Protocol (LSP)]]
+  - Emacs has support for LSP via [[https://emacs-lsp.github.io/lsp-mode/][=lsp-mode=]]
+    - Resource-intensive
+    - Not a templating mechanism
+  - [[https://github.com/joaotavora/yasnippet][YASnippet]] is a template system for Emacs
+  - Easy to install and configure
+    #+begin_src elisp
+
+    (use-package yasnippet
+      :custom
+      (yas-triggers-in-field t)
+      :config
+      (setq yas-snippet-dirs "~/.emacs.d/snippets")
+      (yas-global-mode 1))
+
+    #+end_src
+  - A (growing) set of snippets can be found [[https://github.com/HDFGroup/emacs/tree/master/snippets][here]]
+  - Demo
 * Clinic 2022-01-04
 ** Your Questions
 - Q :: ???
