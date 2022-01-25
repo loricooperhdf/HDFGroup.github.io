@@ -3,6 +3,24 @@
 #+OPTIONS: num:nil H:2 toc:t
 #+SETUPFILE: ../themes/theme-readtheorg.setup
 
+* Clinic 2022-01-25
+** Your Questions
+- Q :: ???
+- Q :: Can a point selection be written to/read from a hypserslab selection?
+       Does this work in parallel?
+  - It appears to work for simple examples in sequential mode
+  - I have yet to try parallel mode
+
+** Last week's highlights
+*** Announcements
+**** [[https://forum.hdfgroup.org/t/tutorial-announcement-constructing-a-simple-terminal-vol-connector/9187][VOL tutorial postponed]]
+- New date February 25th, 11:00 a.m. to 1:00 p.m. (Central)
+- You can still register
+*** Forum
+****  Post
+** Tips, tricks, & insights
+*** HDF5 - the better TXT format
+
 * Clinic 2022-01-18
 ** Your Questions
 - Q :: ???
