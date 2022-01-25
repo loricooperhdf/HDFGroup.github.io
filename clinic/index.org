@@ -3,6 +3,118 @@
 #+OPTIONS: num:nil H:2 toc:t
 #+SETUPFILE: ../themes/theme-readtheorg.setup
 
+* Clinic 2022-01-25
+** Your Questions
+- Q :: ???
+- Q :: Can a point selection be written to/read from a hypserslab selection?
+       Does this work in parallel?
+  - It appears to work for simple examples in sequential mode
+  - I have yet to try parallel mode
+
+** Last week's highlights
+*** Announcements
+**** Auth0 authentication issues (apologies...)
+**** [[https://forum.hdfgroup.org/t/tutorial-announcement-constructing-a-simple-terminal-vol-connector/9187][VOL tutorial postponed]]
+- New date February 25th, 11:00 a.m. to 1:00 p.m. (Central)
+- You can still register
+*** Forum
+**** [[https://forum.hdfgroup.org/t/does-the-mpi-driver-lock-the-file/9318][Does the MPI driver lock the file?]]
+- Yes, but I don't understand the user's description
+#+begin_quote
+I implemented a stride which tells the generation script how much work is being
+sent to each slave from the master. Now I have 4 datasets and each dataset has
+something like 400k entries. Each slave rank will write to all 4 datasets.
+
+Now if I set the stride to a low value (10), the generation is way faster than
+if I set it to a big value (1024).
+
+I wasn’t able to find how parallelism is exactly implemented. From the above
+behaviour it looks like the file is being locked which then blocks my whole
+programm, especially if the stride is big (more time for the other ranks to run
+into a lock and be idle inbetween). Is that really the case? I write data
+continously, so theoretically there is no need for a lock. Is is possible to
+tell the driver “don’t lock the file”?
+#+end_quote
+- What's a 'stride'? (not a hyperslab stride...)
+- Parallelism is implemented through MPI-I/O
+- How does a file lock block the program?
+- File locks can be disabled programmatically or via environment variable
+**** [[https://forum.hdfgroup.org/t/h5datatype-with-variable-length-how-to-set-the-values/9162][H5Datatype with variable length: How to set the values?]]
+- [[https://www.hdfql.com/][HDFql]] is adding support for variable-length datatypes in JAVA
+  #+begin_src java
+  // declare Java class that "mimics" the HDF5 compound dataset
+  class Data
+  {
+      int myDimension;
+      int myShapeType;
+      int myInterpolationType;
+      int myIntegrationType;
+      int myNumberOfNormalComponents;
+      int myNumberOfShearComponents;
+      ArrayList myConnectivity;
+      ArrayList myFaceConnectivity;
+  }
+
+  // declare variables
+  Data write[] = new Data[1];
+  Data read[] = new Data[1];
+
+  // create HDF5 file 'myFile.h5' and use (i.e. open) it
+  HDFql.execute("CREATE AND USE FILE myFile.h5");
+
+  // create compound dataset 'myDataset'
+  HDFql.execute("CREATE DATASET myDataset AS COMPOUND(myDimension AS INT, myShapeType AS INT, myInterpolationType AS INT, myIntegrationType AS INT, myNumberOfNormalComponents AS INT, myNumberOfShearComponents AS INT, myConnectivity AS VARINT, myFaceConnectivity AS VARINT)");
+
+  // populate variable 'write' with dummy values
+  write[0] = new Data();
+  write[0].myDimension = 1;
+  write[0].myShapeType = 2;
+  write[0].myInterpolationType = 3;
+  write[0].myIntegrationType = 4;
+  write[0].myNumberOfNormalComponents = 5;
+  write[0].myNumberOfShearComponents = 6;
+  write[0].myConnectivity = new ArrayList();
+  write[0].myConnectivity.add(10);
+  write[0].myConnectivity.add(20);
+  write[0].myFaceConnectivity = new ArrayList();
+  write[0].myFaceConnectivity.add(30);
+  write[0].myFaceConnectivity.add(40);
+  write[0].myFaceConnectivity.add(50);
+
+  // write content of variable 'write' into dataset 'myDataset'
+  HDFql.execute("INSERT INTO myDataset VALUES FROM MEMORY " + HDFql.variableRegister(write));
+
+  // read content of dataset 'myDataset' and populate variable 'read' with it
+  HDFql.execute("SELECT FROM myDataset INTO MEMORY " + HDFql.variableRegister(read));
+
+  // display content of variable 'read'
+  System.out.println("myDimension: " + read[0].myDimension);
+  System.out.println("myShapeType: " + read[0].myShapeType);
+  System.out.println("myInterpolationType: " + read[0].myInterpolationType);
+  System.out.println("myIntegrationType: " + read[0].myIntegrationType);
+  System.out.println("myNumberOfNormalComponents: " + read[0].myNumberOfNormalComponents);
+  System.out.println("myNumberOfShearComponents: " + read[0].myNumberOfShearComponents);
+  for(int i = 0; i < read[0].myConnectivity.size(); i++)
+      {
+          System.out.println("myConnectivity: " + read[0].myConnectivity.get(i));
+      }
+  for(int i = 0; i < read[0].myFaceConnectivity.size(); i++)
+      {
+          System.out.println("myFaceConnectivity: " + read[0].myFaceConnectivity.get(i));
+      }
+  #+end_src
+** Tips, tricks, & insights
+*** HDF5 - the better TXT format
+- Source in [[https://github.com/gheber/h5zip][GitHub repo]]
+- Basic idea (Joe Lee): Store text files as compressed byte streams in HDF5 files.
+- *Pros:*
+  - Passes the =diff= test
+  - Size reduction
+  - Portable metadata + rich annotation
+    - Unicode encoding
+    - Dataset region references
+- *Cons:*
+  - Not suitable as editor back-ends
 * Clinic 2022-01-18
 ** Your Questions
 - Q :: ???
@@ -52,200 +164,18 @@
   GET http://hsdshdflab.hdfgroup.org/?domain=/shared/tall.h5
 
   #+end_src
-
-  #+RESULTS:
-  #+BEGIN_SRC js
-  {
-    "root": "g-d38053ea-3418fe27-5b08-db62bc-9076af",
-    "class": "domain",
-    "owner": "admin",
-    "created": 1622930252.3698952,
-    "limits": {
-      "min_chunk_size": 1048576,
-      "max_chunk_size": 4194304,
-      "max_request_size": 104857600,
-      "max_chunks_per_request": 1000
-    },
-    "compressors": [
-      "blosclz",
-      "lz4",
-      "lz4hc",
-      "gzip",
-      "zstd"
-    ],
-    "version": "0.7.0beta",
-    "lastModified": 1623085764.3507726,
-    "hrefs": [
-      {
-        "rel": "self",
-        "href": "http://hsdshdflab.hdfgroup.org/?domain=/shared/tall.h5"
-      },
-      {
-        "rel": "database",
-        "href": "http://hsdshdflab.hdfgroup.org/datasets?domain=/shared/tall.h5"
-      },
-      {
-        "rel": "groupbase",
-        "href": "http://hsdshdflab.hdfgroup.org/groups?domain=/shared/tall.h5"
-      },
-      {
-        "rel": "typebase",
-        "href": "http://hsdshdflab.hdfgroup.org/datatypes?domain=/shared/tall.h5"
-      },
-      {
-        "rel": "root",
-        "href": "http://hsdshdflab.hdfgroup.org/groups/g-d38053ea-3418fe27-5b08-db62bc-9076af?domain=/shared/tall.h5"
-      },
-      {
-        "rel": "acls",
-        "href": "http://hsdshdflab.hdfgroup.org/acls?domain=/shared/tall.h5"
-      },
-      {
-        "rel": "parent",
-        "href": "http://hsdshdflab.hdfgroup.org/?domain=hdflab2/shared"
-      }
-    ]
-  }
-  // GET http://hsdshdflab.hdfgroup.org/?domain=/shared/tall.h5
-  // HTTP/1.1 200 OK
-  // Content-Type: application/json; charset=utf-8
-  // Date: Tue, 18 Jan 2022 17:38:16 GMT
-  // Server: Python/3.8 aiohttp/3.7.4.post0
-  // Content-Length: 1045
-  // Connection: keep-alive
-  // Request duration: 0.265036s
-  #+END_SRC
-- Querying the HDF5 root group w/ resource ID
-  =g-d38053ea-3418fe27-5b08-db62bc-9076af=
+- Querying the HDF5 root group w/ resource ID =g-d38053ea-3418fe27-5b08-db62bc-9076af=
   #+begin_src restclient :exports both
 
   GET http://hsdshdflab.hdfgroup.org/groups/g-d38053ea-3418fe27-5b08-db62bc-9076af/links?domain=/shared/tall.h5
 
   #+end_src
-
-  #+RESULTS:
-  #+BEGIN_SRC js
-  {
-    "links": [
-      {
-        "class": "H5L_TYPE_HARD",
-        "id": "g-d38053ea-3418fe27-3227-467313-8ebf63",
-        "created": 1622930252.985488,
-        "title": "g1",
-        "collection": "groups",
-        "target": "http://hsdshdflab.hdfgroup.org/groups/g-d38053ea-3418fe27-3227-467313-8ebf63?domain=/shared/tall.h5",
-        "href": "http://hsdshdflab.hdfgroup.org/groups/g-d38053ea-3418fe27-5b08-db62bc-9076af/links/g1?domain=/shared/tall.h5"
-      },
-      {
-        "class": "H5L_TYPE_HARD",
-        "id": "g-d38053ea-3418fe27-96ba-7678c2-3d4bcb",
-        "created": 1622930252.5707703,
-        "title": "g2",
-        "collection": "groups",
-        "target": "http://hsdshdflab.hdfgroup.org/groups/g-d38053ea-3418fe27-96ba-7678c2-3d4bcb?domain=/shared/tall.h5",
-        "href": "http://hsdshdflab.hdfgroup.org/groups/g-d38053ea-3418fe27-5b08-db62bc-9076af/links/g2?domain=/shared/tall.h5"
-      }
-    ],
-    "hrefs": [
-      {
-        "rel": "self",
-        "href": "http://hsdshdflab.hdfgroup.org/groups/g-d38053ea-3418fe27-5b08-db62bc-9076af/links?domain=/shared/tall.h5"
-      },
-      {
-        "rel": "home",
-        "href": "http://hsdshdflab.hdfgroup.org/?domain=/shared/tall.h5"
-      },
-      {
-        "rel": "owner",
-        "href": "http://hsdshdflab.hdfgroup.org/groups/g-d38053ea-3418fe27-5b08-db62bc-9076af?domain=/shared/tall.h5"
-      }
-    ]
-  }
-  // GET http://hsdshdflab.hdfgroup.org/groups/g-d38053ea-3418fe27-5b08-db62bc-9076af/links?domain=/shared/tall.h5
-  // HTTP/1.1 200 OK
-  // Content-Type: application/json; charset=utf-8
-  // Date: Tue, 18 Jan 2022 17:43:40 GMT
-  // Server: Python/3.8 aiohttp/3.7.4.post0
-  // Content-Length: 1125
-  // Connection: keep-alive
-  // Request duration: 0.386565s
-  #+END_SRC
 - Let's look at a dataset
   #+begin_src restclient :exports both
 
   GET http://hsdshdflab.hdfgroup.org/datasets/d-d38053ea-3418fe27-cb7b-00379e-75d3e8?domain=/shared/tall.h5
 
   #+end_src
-
-  #+RESULTS:
-  #+BEGIN_SRC js
-  {
-    "id": "d-d38053ea-3418fe27-cb7b-00379e-75d3e8",
-    "root": "g-d38053ea-3418fe27-5b08-db62bc-9076af",
-    "shape": {
-      "class": "H5S_SIMPLE",
-      "dims": [
-        10
-      ],
-      "maxdims": [
-        10
-      ]
-    },
-    "type": {
-      "class": "H5T_FLOAT",
-      "base": "H5T_IEEE_F32BE"
-    },
-    "creationProperties": {
-      "layout": {
-        "class": "H5D_CHUNKED",
-        "dims": [
-          10
-        ]
-      },
-      "fillTime": "H5D_FILL_TIME_ALLOC"
-    },
-    "layout": {
-      "class": "H5D_CHUNKED",
-      "dims": [
-        10
-      ]
-    },
-    "attributeCount": 0,
-    "created": 1622930252,
-    "lastModified": 1622930252,
-    "domain": "/shared/tall.h5",
-    "hrefs": [
-      {
-        "rel": "self",
-        "href": "http://hsdshdflab.hdfgroup.org/datasets/d-d38053ea-3418fe27-cb7b-00379e-75d3e8?domain=/shared/tall.h5"
-      },
-      {
-        "rel": "root",
-        "href": "http://hsdshdflab.hdfgroup.org/groups/g-d38053ea-3418fe27-5b08-db62bc-9076af?domain=/shared/tall.h5"
-      },
-      {
-        "rel": "home",
-        "href": "http://hsdshdflab.hdfgroup.org/?domain=/shared/tall.h5"
-      },
-      {
-        "rel": "attributes",
-        "href": "http://hsdshdflab.hdfgroup.org/datasets/d-d38053ea-3418fe27-cb7b-00379e-75d3e8/attributes?domain=/shared/tall.h5"
-      },
-      {
-        "rel": "data",
-        "href": "http://hsdshdflab.hdfgroup.org/datasets/d-d38053ea-3418fe27-cb7b-00379e-75d3e8/value?domain=/shared/tall.h5"
-      }
-    ]
-  }
-  // GET http://hsdshdflab.hdfgroup.org/datasets/d-d38053ea-3418fe27-cb7b-00379e-75d3e8?domain=/shared/tall.h5
-  // HTTP/1.1 200 OK
-  // Content-Type: application/json; charset=utf-8
-  // Date: Tue, 18 Jan 2022 17:45:58 GMT
-  // Server: Python/3.8 aiohttp/3.7.4.post0
-  // Content-Length: 1116
-  // Connection: keep-alive
-  // Request duration: 0.170890s
-  #+END_SRC
 - Check it out with your favorite REST client!
 
 * Clinic 2022-01-11
