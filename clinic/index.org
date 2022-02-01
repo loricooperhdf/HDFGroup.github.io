@@ -3,6 +3,58 @@
 #+OPTIONS: num:nil H:2 toc:t
 #+SETUPFILE: ../themes/theme-readtheorg.setup
 
+* Clinic 2022-02-01
+** Your Questions
+- Q :: ???
+- Q :: Can a point selection be written to/read from a hypserslab selection?
+       Does this work in parallel?
+  - It appears to work for simple examples in sequential mode
+  - I have yet to try parallel mode
+
+** Last week's highlights
+*** Announcements
+**** Auth0 authentication issues resolved
+- Let us know if you still have issues!
+**** [[https://forum.hdfgroup.org/t/tutorial-announcement-constructing-a-simple-terminal-vol-connector/9187][VOL tutorial postponed]]
+- New date February 25th, 11:00 a.m. to 1:00 p.m. (Central)
+- You can still register
+**** Hermes 0.3.0-beta release
+- Available on [[https://github.com/HDFGroup/hermes/releases][GitHub]]
+- Most notable change: a [[https://github.com/HDFGroup/hermes/wiki/Adapters#pubsub-adapter][publisher/subscriber API]] by Jamie Cernuda
+**** Stay tuned for an upcoming blog post
+- /BioSimulations: a platform for sharing and reusing biological simulations/
+*** Forum
+- ???
+
+** Tips, tricks, & insights
+*** HDFView binaries for Debian and Ubuntu
+- They are well-hidden =:-(=
+  - It takes *four* clicks to get there (if you know where to go...)
+- Current version (HDFView 3.1.3) [[https://support.hdfgroup.org/ftp/HDF5/releases/HDF-JAVA/hdfview-3.1.3/bin/][link]]
+  - [[https://support.hdfgroup.org/ftp/HDF5/releases/HDF-JAVA/hdfview-3.1.3/bin/HDFView-3.1.3-ubuntu2004_64.tar.gz][HDFView-3.1.3-ubuntu2004_64.tar.gz]]
+  - [[https://support.hdfgroup.org/ftp/HDF5/releases/HDF-JAVA/hdfview-3.1.3/bin/HDFView-3.1.3-ubuntu2010_64.tar.gz][HDFView-3.1.3-ubuntu2010_64.tar.gz]]
+- Download an unpack (=tar -zxvf ...=)
+- Content Debian installer and =README.txt=
+- Install w/ =sudo dpkg -i hdfview_..._amd64deb=
+- Installation directories =/opt/hdfview/[bin,lib,share]=
+- Launch w/ =/opt/hdfview/bin/HDFView= (add to your =PATH= as needed)
+- Does it need to be this hard?
+
+*** One Stop HDF5 - [[https://hdflab.hdfgroup.org/][HDF Lab]]
+- Your registration w/ the HDF Group website is the ticket
+- Home directory w/ 10 GB of free storage
+- HSDS, =h5py=, =h5cc=
+- Plenty of examples (Jupyter notebooks, Python scripts, etc.)
+- /Coming soon:/ [[https://h5web.panosc.eu/hsds][=h5web=]]
+
+*** [[https://software.pan-data.eu/software/180/h5web][=h5web=]]
+- Developed by [[https://esrf.fr/][ESRF]]
+- [[https://reactjs.org/][React]] components for data visualization and exploration
+  - "HDFView for the browser"
+- [[https://github.com/silx-kit/h5web][GitHub]]
+- Supports HDF5 files in POSIX file systems & HSDS
+- A JupyterHub plugin, [[https://github.com/silx-kit/jupyterlab-h5web][jupyterlab-h5web]], is available
+
 * Clinic 2022-01-25
 ** Your Questions
 - Q :: ???
