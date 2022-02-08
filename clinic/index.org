@@ -3,6 +3,51 @@
 #+OPTIONS: num:nil H:2 toc:t
 #+SETUPFILE: ../themes/theme-readtheorg.setup
 
+* Clinic 2022-02-08
+** Your Questions
+- Q :: ???
+- Q :: Can a point selection be written to/read from a hypserslab selection?
+       Does this work in parallel?
+  - It appears to work for simple examples in sequential mode
+  - I have yet to try parallel mode
+
+** Last week's highlights
+*** Announcements
+**** [[https://forum.hdfgroup.org/t/tutorial-announcement-constructing-a-simple-terminal-vol-connector/9187][VOL tutorial postponed]]
+- New date February 25th, 11:00 a.m. to 1:00 p.m. (Central)
+- You can still register
+**** Check out this interesting blog post
+- [[https://www.hdfgroup.org/2022/02/biosimulations-a-platform-for-sharing-and-reusing-biological-simulations/][/BioSimulations: a platform for sharing and reusing biological simulations/]]
+*** Forum
+**** [[https://forum.hdfgroup.org/t/recover-corrupted-datasets/9375][Recover corrupted datasets]]
+- Turns out that there was a single corrupted chunk
+- Unclear how it got corrupted
+- The user was able to recover the good chunks via [[https://docs.hdfgroup.org/hdf5/develop/group___h5_d.html#title30][=H5Dread_chunk=]]
+**** [[https://forum.hdfgroup.org/t/using-gzip-compression-does-not-compress-and-cannot-be-opened-by-hdfview/9388][Using GZIP compression does not compress, and cannot be opened by HDFView]]
+- It appears that the user didn't appreciate the implications of using
+  [[https://docs.hdfgroup.org/hdf5/develop/group___h5_d.html#title37][=H5Dwrite_chunk=]]
+  - Using this function tells the HDF5 library to "step aside" and let the
+    user take full control
+  - Compression outside the library is fine, but you need to make sure that
+    the right metadata is in place
+**** [[https://forum.hdfgroup.org/t/why-are-there-err-files-next-to-test-files-in-binary-plugin-download/9394][Why are there .err files next to test files in binary plugin download?]]
+- Just artifacts for testing
+- Could they be stripped from release binaries? Perhaps.
+**** [[https://forum.hdfgroup.org/t/can-we-use-external-links-to-read-only-data-in-writable-files/9390][Can we use external links to read-only data in writable files?]]
+- Traversing external links typically involves opening another HDF5 file
+- What's the access mode? (The link does *NOT* contain that information.)
+  - Default access mode: inherited from the link's "parent"
+  - Can be overwritten via a link access property list with [[https://docs.hdfgroup.org/hdf5/develop/group___l_a_p_l.html#ga020f7eb2eae01043286af50db0a76d82][=H5Pset_elink_acc_flags=]]
+**** [[https://forum.hdfgroup.org/t/compression-filter-that-employes-multiple-datasets/9398][Compression filter that employes multiple datasets]]
+- Use case: compression of unstructured mesh connectivity
+  - Involves multiple datasets
+  - The current filter extension API has no support for that
+
+** Tips, tricks, & insights
+
+
+???
+
 * Clinic 2022-02-01
 ** Your Questions
 - Q :: ???
@@ -22,7 +67,7 @@
 - Available on [[https://github.com/HDFGroup/hermes/releases][GitHub]]
 - Most notable change: a [[https://github.com/HDFGroup/hermes/wiki/Adapters#pubsub-adapter][publisher/subscriber API]] by Jamie Cernuda
 **** Stay tuned for an upcoming blog post
-- /BioSimulations: a platform for sharing and reusing biological simulations/
+- [[https://www.hdfgroup.org/2022/02/biosimulations-a-platform-for-sharing-and-reusing-biological-simulations/][/BioSimulations: a platform for sharing and reusing biological simulations/]]
 *** Forum
 - ???
 
