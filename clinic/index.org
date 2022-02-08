@@ -7,9 +7,116 @@
 ** Your Questions
 - Q :: ???
 - Q :: Can a point selection be written to/read from a hypserslab selection?
-       Does this work in parallel?
-  - It appears to work for simple examples in sequential mode
-  - I have yet to try parallel mode
+       Does this work in parallel? Yes!
+       #+begin_src C
+       #include "hdf5.h"
+       #include "mpi.h"
+
+       #include <stdlib.h>
+
+       int main(int argc, char** argv)
+       {
+         // boilerplate
+         int retval = EXIT_SUCCESS;
+         if (MPI_Init(&argc, &argv) != MPI_SUCCESS) {
+           retval = EXIT_FAILURE;
+           goto fail_mpi;
+         }
+
+         MPI_Comm comm = MPI_COMM_WORLD;
+         int size, rank;
+         if (MPI_Comm_size(comm, &size) != MPI_SUCCESS ||
+             MPI_Comm_rank(comm, &rank) != MPI_SUCCESS) {
+           retval = EXIT_FAILURE;
+           goto fail_file;
+         }
+
+         hid_t fapl = H5I_INVALID_HID;
+         if ((fapl = H5Pcreate(H5P_FILE_ACCESS)) == H5I_INVALID_HID ||
+             H5Pset_fapl_mpio(fapl, comm, MPI_INFO_NULL) < 0) {
+           retval = EXIT_FAILURE;
+           goto fail_file;
+         }
+
+         hid_t file = H5I_INVALID_HID;
+         if ((file = H5Fcreate("sel_par.h5", H5F_ACC_TRUNC, H5P_DEFAULT, fapl))
+             == H5I_INVALID_HID) {
+           retval = EXIT_FAILURE;
+           goto fail_file;
+         }
+
+         // 1D filespace, size of communicator
+         hid_t fspace = H5I_INVALID_HID;
+         if ((fspace = H5Screate_simple(1, (hsize_t[]) {2*size}, NULL)) ==
+             H5I_INVALID_HID) {
+           retval = EXIT_FAILURE;
+           goto fail_fspace;
+         }
+
+         hid_t dset = H5I_INVALID_HID;
+         if ((dset = H5Dcreate(file, "ints", H5T_STD_I32LE, fspace, H5P_DEFAULT,
+                               H5P_DEFAULT, H5P_DEFAULT)) == H5I_INVALID_HID) {
+           retval = EXIT_FAILURE;
+           goto fail_dset;
+         }
+
+         // 2-element memory space
+         hid_t mspace = H5I_INVALID_HID;
+         if ((mspace = H5Screate_simple(1, (hsize_t[]) {2}, NULL)) ==
+             H5I_INVALID_HID) {
+           retval = EXIT_FAILURE;
+           goto fail_mspace;
+         }
+
+         int data[2] = { 2*rank, 2*rank+1 };
+
+         // 1. Make a (single) point selection in memory
+         // 2. Make a hyperslab selection in the file
+         // 3. Write
+         if (H5Sselect_elements(mspace, H5S_SELECT_SET, 1, (hsize_t[]){0}) < 0 ||
+             H5Sselect_hyperslab(fspace, H5S_SELECT_SET, (hsize_t[]){2*rank}, NULL,
+                                 (hsize_t[]){1}, (hsize_t[]){1}) < 0 ||
+             H5Dwrite(dset, H5T_NATIVE_INT, mspace, fspace, H5P_DEFAULT, data) < 0) {
+           retval = EXIT_FAILURE;
+           goto fail_write;
+         }
+
+       fail_write:
+         H5Sclose(mspace);
+       fail_mspace:
+         H5Dclose(dset);
+       fail_dset:
+         H5Sclose(fspace);
+       fail_fspace:
+         H5Fclose(file);
+       fail_file:
+         if (fapl != H5I_INVALID_HID)
+           H5Pclose(fapl);
+
+         MPI_Barrier(comm);
+
+         MPI_Finalize();
+
+       fail_mpi:
+         return retval;
+       }
+       #+end_src
+       Output:
+       #+begin_example
+       penguin:~$ mpiexec -n 4 ./sel_par
+       penguin:~$ h5dump sel_par.h5
+       HDF5 "sel_par.h5" {
+       GROUP "/" {
+          DATASET "ints" {
+             DATATYPE  H5T_STD_I32LE
+             DATASPACE  SIMPLE { ( 8 ) / ( 8 ) }
+             DATA {
+             (0): 0, 0, 2, 0, 4, 0, 6, 0
+             }
+          }
+       }
+       }
+       #+end_example
 
 ** Last week's highlights
 *** Announcements
@@ -46,7 +153,7 @@
 ** Tips, tricks, & insights
 
 
-???
+Back next time.
 
 * Clinic 2022-02-01
 ** Your Questions
