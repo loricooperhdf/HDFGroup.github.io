@@ -6,6 +6,111 @@
 * Clinic 2022-02-08
 ** Your Questions
 - Q :: ???
+
+** Last week's highlights
+*** Announcements
+**** [[https://forum.hdfgroup.org/t/tutorial-announcement-constructing-a-simple-terminal-vol-connector/9187][VOL tutorial postponed]]
+- New date February 25th, 11:00 a.m. to 1:00 p.m. (Central)
+- You can still register
+**** Check out this interesting blog post
+- [[https://www.hdfgroup.org/2022/02/biosimulations-a-platform-for-sharing-and-reusing-biological-simulations/][/BioSimulations: a platform for sharing and reusing biological simulations/]]
+*** Forum
+**** [[https://forum.hdfgroup.org/t/read-compound-data-to-buffer/9402][Read compound data to buffer]]
+- HDFView screenshot of a compound dataset
+- Simple & elegant [[https://www.hdfql.com/][HDFql]] solution
+  #+begin_src C++
+  #include <iostream>
+  #include "HDFql.hpp"
+
+  struct data
+  {
+      unsigned long long timestamp;
+      int order;
+      int serial_number;
+      double temperature;
+      double pressure;
+      int int_array[2][2];
+  };
+
+  int main(int argc, char *argv[])
+  {
+     struct data values[4];
+
+     HDFql::variableRegister(values);
+
+     HDFql::execute("select from h5ex_t_cmpd.h5 DS1 into memory 0");
+
+     for(int i = 0; i < 4; i++)
+     {
+         std::cout << "Timestamp=" << values[i].timestamp << std::endl;
+         std::cout << "Order=" << values[i].order << std::endl;
+         std::cout << "Serial number=" << values[i].serial_number << std::endl;
+         std::cout << "Temperature=" << values[i].temperature << std::endl;
+         std::cout << "Pressure=" << values[i].pressure << std::endl;
+         std::cout << "IntArray[0][0]=" << values[i].int_array[0][0] << std::endl;
+         std::cout << "IntArray[0][1]=" << values[i].int_array[0][1] << std::endl;
+         std::cout << "IntArray[1][0]=" << values[i].int_array[1][0] << std::endl;
+         std::cout << "IntArray[1][1]=" << values[i].int_array[1][1] << std::endl;
+     }
+
+     return 0;
+  }
+  #+end_src
+**** [[https://forum.hdfgroup.org/t/can-we-use-external-links-to-read-only-data-in-writable-files/9390][Can we use external links to read-only data in writable files?]]
+- Interesting follow-up from Thomas Kluyver (=h5py= project)
+  - =h5py= does not currently expose =H5Pset_elink_acc_flags=
+  - Would be easy to do in the low-level API
+  - High-level API unclear
+- Ambiguous error message; API failure due to insufficient permissions
+  vs. non-existent file or directory
+  - [[https://github.com/HDFGroup/hdf5/issues/1431][GitHub issue]]
+**** [[https://forum.hdfgroup.org/t/read-subgroups-parallel-bug/9426][Read subgroups parallel bug?]]
+- Goal: Determine the link names of blocks of subgroups in a group in parallel.
+- Idea: Assign a link index range to each MPI process and fire away:
+  =H5Lget_name_by_idx=.
+- Issues:
+  - MPI hangs; not sure why...
+  - =H5Lget_name_by_idx= is an expensive call, looping over =idx= makes it worse
+    - Parallel file systems don't like it
+  - =H5Literate= + callback would be better, but not much
+    - To many small reads will be a drag on performance
+- The real question is what the underlying use case is about.
+  - Maybe a dataset of object references instead of a group would be more
+    suitable?
+** Tips, tricks, & insights
+*** Do you need a link or a reference?
+- HDF5 link :: Explicit, unidirectional, named association between a source
+  (HDF5 group) and a destination
+  #+begin_example
+       name
+  src -------> dst
+  #+end_example
+- HDF5 (object) reference :: An HDF5 datatype whose values represent references
+  (pointers) to HDF5 objects in the same or other HDF5 files.
+  #+begin_example
+  &object
+  #+end_example
+
+**** Similarities
+- Links can be used in the role of a (non-value) reference
+  - A link can be "de-referenced" by link traversal
+- References can be used as implicit links
+  - A reference can be "traversed" by address/token resolution
+
+**** Differences
+- Links
+  - Are inseparable from groups and not values of an HDF5 datatype
+  - Have a name
+  - Can be dangling
+- References
+  - Are values of an HDF5 datatype
+  - We can store them in attributes and datasets
+  - Have no name other than their implicit position
+  - Cannot dangle
+
+* Clinic 2022-02-08
+** Your Questions
+- Q :: ???
 - Q :: Can a point selection be written to/read from a hypserslab selection?
        Does this work in parallel? Yes!
        #+begin_src C
