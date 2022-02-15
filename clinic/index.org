@@ -3,7 +3,7 @@
 #+OPTIONS: num:nil H:2 toc:t
 #+SETUPFILE: ../themes/theme-readtheorg.setup
 
-* Clinic 2022-02-08
+* Clinic 2022-02-15
 ** Your Questions
 - Q :: ???
 
