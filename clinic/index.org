@@ -53,6 +53,48 @@
     Alas, those "file consistency checking utilities" never materialized.
 
 ** Tips, tricks, & insights
+*** How do HDF5-UDF work?
+Currently, they are repesented as chunked datasets with a single chunk. That's
+why they work fine with existing tools. The UDF itself is executed as part of the
+HDF5 filter pipeline. Its code is stored in the dataset blob data plus metadata
+and managed by the UDF handler.
+
+#+CAPTION: =H5Dwrite_chunk=
+[[./img/H5Dwrite_chunk.png]]
+
+#+CAPTION: HDF5-UDF overview (Lucas C. Villa Real)
+[[./img/hdf5-udf.png]]
+
+- Example: [[https://github.com/lucasvr/user-defined-functions/tree/default/data_virtualization/csv][Virtualization of CSV files through HDF5-UDF]]
+
+  #+begin_example python
+
+  def dynamic_dataset():
+      udf_data = lib.getData("GreatestAlbums")
+      udf_dims = lib.getDims("GreatestAlbums")
+
+      # The file is encoded as ISO-8859-1, so instruct Python about it
+      with open("albumlist.csv", encoding="iso-8859-1") as f:
+
+          # Read and ignore the header
+          f.readline()
+
+          for i, line in enumerate(f.readlines()):
+              # Remove double-quotes and newlines around certain strings
+              parts = [col.strip('"').strip("\n") for col in line.split(",")]
+              udf_data[i].Number = int(parts[0])
+              udf_data[i].Year = int(parts[1])
+              lib.setString(udf_data[i].Album,  parts[2].encode("utf-8"))
+              lib.setString(udf_data[i].Artist,  parts[3].encode("utf-8"))
+              lib.setString(udf_data[i].Genre,  parts[4].encode("utf-8"))
+              lib.setString(udf_data[i].Subgenre,  parts[5].encode("utf-8"))
+
+#+end_example
+
+- Resources
+  - [[https://github.com/lucasvr/hdf5-udf][HDF5-UDF on GitHub]]
+  - [[https://hdf5-udf.readthedocs.io/en/latest/#json-schema-for-hdf5-udf-datasets][HDF5-UDF Documentation]]
+  - [[https://github.com/lucasvr/user-defined-functions/][HDF5-UDF examples]]
 
 * Clinic 2022-02-15
 ** Your Questions
