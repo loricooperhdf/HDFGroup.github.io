@@ -3,6 +3,57 @@
 #+OPTIONS: num:nil H:2 toc:t
 #+SETUPFILE: ../themes/theme-readtheorg.setup
 
+* Clinic 2022-02-22
+** Your Questions
+- Q :: ???
+
+** Last week's highlights
+*** Announcements
+**** [[https://forum.hdfgroup.org/t/tutorial-announcement-constructing-a-simple-terminal-vol-connector/9187][Constructing a Simple Terminal VOL Connector]]
+- It's happening on this Friday, February 25th, 11:00 a.m. to 1:00
+  p.m. (Central)
+- You can still register!
+**** Check out another interesting blog post
+- [[https://www.hdfgroup.org/2022/02/a-kind-of-magic-storing-computations-in-hdf5/][A Kind of Magic: Storing Computations in HDF5]]
+  - The latest and greatest on Lucas C. Villa Real's [[https://github.com/lucasvr/hdf5-udf][HDF5-UDF]]
+*** Forum
+**** [[https://forum.hdfgroup.org/t/unable-to-open-a-dataset-in-my-hdf5-file/9425][Unable to open a Dataset in my HDF5 file]]
+- It often helps to read what people are actually asking...
+- I'm glad my colleague Aleksandar did just that and clarified that the way to
+  obtain a NumPy array from a dataset is
+  #+begin_src python
+  phrase_numpy = phrase[...]
+  #+end_src
+  and *not*
+  #+begin_src python
+  phrase_numpy = np.array(phrase)
+  #+end_src
+**** [[https://forum.hdfgroup.org/t/read-subgroups-parallel-bug/9426][Read subgroups parallel bug?]]
+- Poor performance of =H5Lget_name_by_idx= or =H5Literate= with large numbers of
+  links
+- Running against [[https://www.beegfs.io/c/][BeeGFS]]
+- File sizes of 1-2 GB
+- Better strategy: Use HDF5 core VFD ([[https://docs.hdfgroup.org/hdf5/develop/group___f_a_p_l.html#title51][=H5Pset_fapl_core=]]) to load into memory
+  and then do the iteration without I/O at memory speed.
+**** [[https://forum.hdfgroup.org/t/help-with-broken-file/9436][Help with broken file]]
+- Sad story
+- We talked about the HDF5 file state [[sec:clinic20210216][about a year ago]]
+  - There are currently no user-level transactions in HDF5, making file content
+    vulnerable to application crash
+- Familiarity with the [[https://docs.hdfgroup.org/hdf5/develop/_f_m_t3.html][file format specification]] and [[https://github.com/HDFGroup/hdf5/blob/develop/tools/src/misc/h5debug.c][=h5debug=]] can help to
+  inspect parts of an HDF5 file that is in an inconsistent state
+- A proper discovery tool of recoverable information would be great & we even
+  have ideas how to do it
+  - There are comments in the file format specification such as this:
+    #+begin_quote
+    The ASCII character string "SNOD" is used to indicate the beginning of a
+    symbol table node. This gives file consistency checking utilities a better
+    chance of reconstructing a damaged file.
+    #+end_quote
+    Alas, those "file consistency checking utilities" never materialized.
+
+** Tips, tricks, & insights
+
 * Clinic 2022-02-15
 ** Your Questions
 - Q :: ???
@@ -4463,6 +4514,7 @@ Continue the discussion on the [[https://forum.hdfgroup.org/][HDF Forum]] or com
 - Current version: [[https://hdf5.io/develop/modules.html]]
 
 * Clinic 2021-02-16
+<<sec:clinic20210216>>
 ** Your questions
 ** Last week's highlights
 *** Events
