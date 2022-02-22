@@ -5,7 +5,8 @@
 
 * Clinic 2022-02-22
 ** Your Questions
-- Q :: ???
+- Q :: Clarification/explanation on John Readey’s "seismic data" post regarding
+  using native HDF5 as an HSDS "single object".  –Robert Seip
 
 ** Last week's highlights
 *** Announcements
