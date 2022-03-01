@@ -23,12 +23,39 @@
 - When the VFL layer was created (~1998?) there were only RAM and HDDs
 - With GPU, FPGA, and other near-data computing devices there are new types of
   memory, storage, and storage access paths
+- The (de-)allocation VFD callbacks deal with (de-)allocation of (virtual) file
+  space
+- I/O acceleration depends on device-specific memory
+- Goal :: Avoid reams of device specific conditonally-compiled allocation code
+- Approach :: Since the application selects a device-specific VFD, extend the
+  [[https://docs.hdfgroup.org/hdf5/develop/struct_h5_f_d__class__t.html][=H5FD_class_t=]] interface with generic device-memory (de-)allocation callbacks
+- Proposal :: My colleague Jordan Henderson recently added a control callback
+  and a corresponding op-code.
+  #+begin_src C
+  /*
+   * Defining H5FD_FEAT_MEMMANAGE for a VFL driver means that
+   * the driver uses special memory management routines or wishes
+   * to do memory management in a specific manner. Therefore, HDF5
+   * should request that the driver handle any memory management
+   * operations when appropriate.
+   */
+  #define H5FD_FEAT_MEMMANAGE 0x00010000
+
+  herr_t (*ctl)(H5FD_t *file, uint64_t op_code, uint64_t flags,
+                const void *input, void **output);
+
+  #+end_src
+
 ** Tips, tricks, & insights
 *** HDF5 extension APIs - Virtual File Layer (VFL)
 - [[https://docs.hdfgroup.org/hdf5/develop/_v_f_l.html][Introductory technical note]]
+#+caption: HDF5 extension APIs (Elena Pourmal, The HDF Group)
+[[file:./img/vol_vfd.png]]
 - No VFL toolkit, but using an existing VFD (= VFL plugin) is a good starting
   point, see files called =H5FD*.[c,h]= in the HDF5 source tree.
-
+- Example: read-only VFD plugin for Hadoop File System (HDFS)
+  - [[https://github.com/HDFGroup/hdf5/blob/develop/src/H5FDhdfs.h][=H5FDhdfs.h=]]
+  - [[https://github.com/HDFGroup/hdf5/blob/develop/src/H5FDhdfs.c][=H5FDhdfs.c=]]
 * Clinic 2022-02-22
 ** Your Questions
 - Q :: Clarification/explanation on John Readey’s "seismic data" post regarding
