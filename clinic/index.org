@@ -3,6 +3,32 @@
 #+OPTIONS: num:nil H:2 toc:t
 #+SETUPFILE: ../themes/theme-readtheorg.setup
 
+* Clinic 2022-03-01
+** Your Questions
+- Q :: ???
+
+** Last week's highlights
+*** Announcements
+**** [[https://forum.hdfgroup.org/t/tutorial-announcement-constructing-a-simple-terminal-vol-connector/9187][Tutorial Announcement: Constructing a Simple Terminal VOL Connector]]
+- [[https://youtu.be/7XEbm-__QuM][Recording]] and [[https://www.hdfgroup.org/wp-content/uploads/2022/02/VOL_tutorial_feb_2022.pdf][slides]] available
+- [[https://github.com/HDFGroup/vol-toolkit][VOL toolkit]] on GitHub
+*** Forum
+**** [[https://forum.hdfgroup.org/t/can-compound-dataset-been-compressed/9457][Can Compound Dataset been compressed?]]
+- Yes.
+- Compound datatype with array datatype fields
+- Misunderstanding on chunking and elements
+- No [[https://en.wikipedia.org/wiki/Minimal_reproducible_example][Minimal Reproducible Example (MRE)]], no error messages
+**** [[https://forum.hdfgroup.org/t/hdf5-crosscompile-to-arm64/6759][Hdf5 crosscompile to arm64]]
+**** [[https://forum.hdfgroup.org/t/memory-management-in-h5fd-class-t/9452][Memory management in =H5FD_class_t=]]
+- When the VFL layer was created (~1998?) there were only RAM and HDDs
+- With GPU, FPGA, and other near-data computing devices there are new types of
+  memory, storage, and storage access paths
+** Tips, tricks, & insights
+*** HDF5 extension APIs - Virtual File Layer (VFL)
+- [[https://docs.hdfgroup.org/hdf5/develop/_v_f_l.html][Introductory technical note]]
+- No VFL toolkit, but using an existing VFD (= VFL plugin) is a good starting
+  point, see files called =H5FD*.[c,h]= in the HDF5 source tree.
+
 * Clinic 2022-02-22
 ** Your Questions
 - Q :: Clarification/explanation on John Readey’s "seismic data" post regarding
