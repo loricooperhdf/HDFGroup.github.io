@@ -3,6 +3,163 @@
 #+OPTIONS: num:nil H:2 toc:t
 #+SETUPFILE: ../themes/theme-readtheorg.setup
 
+* Clinic 2022-03-08
+** Your Questions
+- Q :: ???
+
+** Last week's highlights
+*** Announcements
+**** [[https://portal.hdfgroup.org/display/support/HDF5%201.13.1][HDF5 1.13.1 release]]
+- [[https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.13/hdf5-1.13.1/src/hdf5-1.13.1-RELEASE.txt][Release notes]]
+- Blog post [[https://www.hdfgroup.org/2022/03/parallel-compression-improvements-in-hdf5-1-13-1/][Parallel compression improvements in HDF5 1.13.1]]
+  - Bug fixes & performance improvements and better support for collective I/O
+  - IOR results from =cori= at NERSC
+  - For parallel dataset creation early allocation was the only option
+    - Incremental file space allocation is now supported for datasets created in
+      parallel but /only if/ they have filters applied to them
+
+*** Forum
+**** [[https://forum.hdfgroup.org/t/extent-the-dataspace-of-an-existing-attribute/9464][Extent the dataspace of an existing attribute]]
+
+**** [[https://forum.hdfgroup.org/t/memory-leak-while-reading-data/9473][Memory Leak while Reading Data?]]
+- Loop over a directory of HDF5 files and populate a list of per-file
+  dictionaries
+- A bit of a mystery; appears to happen only under macOS
+  - No issues under Windows w/ =h5py= 2.x or 3.x, according to the user
+
+** Tips, tricks, & insights
+*** HDF5 applications and clients in Cloud-based environments
+Focal points: application or service
+
+**** Application-centric
+***** Object
+- Applications are completely isolated from storage details
+
+#+begin_src plantuml :exports both :file ./img/object.png
+@startuml
+
+card "Application" as app {
+    card cnx [
+    libhdf5
+    ----
+    VOL
+    ]
+}
+
+together {
+cloud "(Cloud) Object Store" as COS
+database "(P)FS" as PFS
+}
+
+cnx -- PFS : "VOC"
+cnx -- COS : "VOC"
+
+legend left
+    VOL - Virtual Object Layer
+    VOC - VOL Connector
+    (P)FS - (Parallel) File System
+endlegend
+
+@enduml
+#+end_src
+
+#+RESULTS:
+[[file:./img/object.png]]
+
+***** File
+- Applications are potentially "exposed" to storage details via a file-centric
+  view
+  - HDF5 library + VFL
+  - Target BLOBs directly (e.g., [[http://icesat2sliderule.org/h5coro/][H5Coro]])
+
+#+begin_src plantuml :exports both :file ./img/file.png
+@startuml
+
+card "Application" as app {
+    artifact cnx [
+    libhdf5
+    ----
+    VFL
+    ]
+    card "Facade" as pxy
+    }
+together {
+cloud "(Cloud) Object Store" as COS
+database "(P)FS" as PFS
+}
+
+cnx -- PFS : "VFD"
+cnx -- COS : "VFD"
+
+
+database "(P)FS" as PFS1 {
+  file "HDF5 File" as file
+}
+cloud "(Cloud) Object Store" as COS1 {
+  file "HDF5 File (BLOB)" as file1
+}
+
+pxy -- PFS1 : "POSIX\nMPI-IO"
+pxy -- COS1 : "REST"
+
+legend left
+    VFL - Virtual File Layer
+    VFD - Virtual File Driver
+    (P)FS - (Parallel) File System
+endlegend
+
+@enduml
+#+end_src
+
+#+RESULTS:
+[[file:./img/file.png]]
+
+**** Service-centric
+- State-less
+- Weak consistency
+- Cloud-native
+
+#+begin_src plantuml :exports both :file ./img/service.png
+@startuml
+
+card "Client" as app {
+    card "Proxy" as pxy
+    card cnx [
+    libhdf5
+    ----
+    VOL
+    ]
+}
+together {
+cloud "(Cloud) Object Store" as COS
+database "(P)FS" as PFS
+}
+
+
+database "(P)FS" as PFS
+hexagon HSDS
+cloud "(Cloud) Object Store" as COS
+
+pxy -- COS  : "server-less"
+pxy -- HSDS : "REST"
+cnx -- HSDS : "REST\nVOC"
+HSDS -- COS
+HSDS .. PFS
+
+legend right
+    HSDS - Highly-Scalable Data Service
+    (P)FS - (Parallel) File System
+    VOL - Virtual Object Layer
+    VOC - VOL Connector
+endlegend
+
+@enduml
+#+end_src
+
+#+RESULTS:
+[[file:./img/service.png]]
+
+
 * Clinic 2022-03-01
 ** Your Questions
 - Q :: ???
