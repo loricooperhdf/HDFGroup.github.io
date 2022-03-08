@@ -13,13 +13,36 @@
 - [[https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.13/hdf5-1.13.1/src/hdf5-1.13.1-RELEASE.txt][Release notes]]
 - Blog post [[https://www.hdfgroup.org/2022/03/parallel-compression-improvements-in-hdf5-1-13-1/][Parallel compression improvements in HDF5 1.13.1]]
   - Bug fixes & performance improvements and better support for collective I/O
-  - IOR results from =cori= at NERSC
+  - Much improved IOR results from =Cori= at NERSC
   - For parallel dataset creation early allocation was the only option
     - Incremental file space allocation is now supported for datasets created in
       parallel but /only if/ they have filters applied to them
 
 *** Forum
 **** [[https://forum.hdfgroup.org/t/extent-the-dataspace-of-an-existing-attribute/9464][Extent the dataspace of an existing attribute]]
+- Storing multiple physical quantities in a single scalar dataset, e.g.,
+  velocity, density and temperature of a cubic with dimensional elements of
+  =101 x 71 x 51= , the dataset would have for example an extent of =(3, 101, 71, 51)=
+- How to keep track of quantity metadata, e.g., unit symbol?
+  - What to do if we add a (e.g., fourth) quantity to the dataset?
+***** Idea
+Store the quantity metadata in an array-like attribute
+***** Problems
+- =H5T_ARRAY= class datatypes are fixed rank and extent
+- Attribute dataspaces are not extendable
+***** Solutions
+All solutions come with different trade-offs!
+
+- Assuming this doesn't happen too often: extend/re-write the attribute on
+  each dimension change
+- Use a variable-length sequence (VLEN) datatype: read/re-write the attribute
+  on each dimension change
+- Use a "shared" attribute (=attribute that is an object reference to an
+  extendable dataset)
+  - Note :: For the use case at hand, the sharing aspect is /not/
+    important. It's the extendability of the object-referenced dataset.
+  #+CAPTION: A "shared" attribute
+  [[./img/shared_attribute.png]]
 
 **** [[https://forum.hdfgroup.org/t/memory-leak-while-reading-data/9473][Memory Leak while Reading Data?]]
 - Loop over a directory of HDF5 files and populate a list of per-file
@@ -29,13 +52,13 @@
 
 ** Tips, tricks, & insights
 *** HDF5 applications and clients in Cloud-based environments
-Focal points: application or service
+Different focal points: _application_ or _service_
 
 **** Application-centric
 ***** Object
 - Applications are completely isolated from storage details
 
-#+begin_src plantuml :exports both :file ./img/object.png
+#+begin_src plantuml :file ./img/object.png
 @startuml
 
 card "Application" as app {
@@ -72,7 +95,7 @@ endlegend
   - HDF5 library + VFL
   - Target BLOBs directly (e.g., [[http://icesat2sliderule.org/h5coro/][H5Coro]])
 
-#+begin_src plantuml :exports both :file ./img/file.png
+#+begin_src plantuml :file ./img/file.png
 @startuml
 
 card "Application" as app {
@@ -119,7 +142,7 @@ endlegend
 - Weak consistency
 - Cloud-native
 
-#+begin_src plantuml :exports both :file ./img/service.png
+#+begin_src plantuml :file ./img/service.png
 @startuml
 
 card "Client" as app {
@@ -158,7 +181,6 @@ endlegend
 
 #+RESULTS:
 [[file:./img/service.png]]
-
 
 * Clinic 2022-03-01
 ** Your Questions
