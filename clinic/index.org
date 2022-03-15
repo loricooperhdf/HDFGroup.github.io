@@ -3,52 +3,40 @@
 #+OPTIONS: num:nil H:2 toc:t
 #+SETUPFILE: ../themes/theme-readtheorg.setup
 
-* Clinic 2022-03-08
-** Your Questions
-- Q :: ???
+* Clinic 2022-03-15
+** Your questions
+Re: split/multi driver question from Session 55.  On review, just would like to
+confirm:
+- Q :: Once the member files (=-s.h5, -b.h5, …=) are written with the =MULTI=
+  driver (most likely on a POSIX filesystem), they must remain co-located.
+- A :: No, however care must be used when re-opening them.
+- Q :: They can, however, be copied into a (read-only) S3 bucket.
+- A :: Yes.
+- Q :: An application can read the S3 multi HDF5 "file" by configuring both
+  the =MULTI= file driver and the =ROS3= driver
+- A :: Yes, but this is untested.
+- Q :: There is no provision for putting the raw data =-r.h5= on S3 and the
+  others (=-s.h5, -b.h5, -g.h5, -l.h5, -o.h5=) on a local POSIX filesystem.
+- A :: This should be possible, but has not been tested, AFAIK.
 
 ** Last week's highlights
 *** Announcements
-**** [[https://portal.hdfgroup.org/display/support/HDF5%201.13.1][HDF5 1.13.1 release]]
-- [[https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.13/hdf5-1.13.1/src/hdf5-1.13.1-RELEASE.txt][Release notes]]
-- Blog post [[https://www.hdfgroup.org/2022/03/parallel-compression-improvements-in-hdf5-1-13-1/][Parallel compression improvements in HDF5 1.13.1]]
-  - Bug fixes & performance improvements and better support for collective I/O
-  - Much improved IOR results from =Cori= at NERSC
-  - For parallel dataset creation early allocation was the only option
-    - Incremental file space allocation is now supported for datasets created in
-      parallel but /only if/ they have filters applied to them
+**** 2022 European HDF5 Users Group (HUG)
+- [[https://www.hdfgroup.org/hug/europeanhug22/][Website]]
+- May 31 - June 2, 2022
+- Face-to-face at [[https://www.iter.org/][ITER]] in Saint Paul-lez-Durance, France
+- Reserve your spot before telling your friends! =;-)=
 
 *** Forum
-**** [[https://forum.hdfgroup.org/t/extent-the-dataspace-of-an-existing-attribute/9464][Extent the dataspace of an existing attribute]]
-- Storing multiple physical quantities in a single scalar dataset, e.g.,
-  velocity, density and temperature of a cubic with dimensional elements of
-  =101 x 71 x 51= , the dataset would have for example an extent of =(3, 101, 71, 51)=
-- How to keep track of quantity metadata, e.g., unit symbol?
-  - What to do if we add a (e.g., fourth) quantity to the dataset?
-***** Idea
-Store the quantity metadata in an array-like attribute
-***** Problems
-- =H5T_ARRAY= class datatypes are fixed rank and extent
-- Attribute dataspaces are not extendable
-***** Solutions
-All solutions come with different trade-offs!
-
-- Assuming this doesn't happen too often: extend/re-write the attribute on
-  each dimension change
-- Use a variable-length sequence (VLEN) datatype: read/re-write the attribute
-  on each dimension change
-- Use a "shared" attribute (=attribute that is an object reference to an
-  extendable dataset)
-  - Note :: For the use case at hand, the sharing aspect is /not/
-    important. It's the extendability of the object-referenced dataset.
-  #+CAPTION: A "shared" attribute
-  [[./img/shared_attribute.png]]
-
-**** [[https://forum.hdfgroup.org/t/memory-leak-while-reading-data/9473][Memory Leak while Reading Data?]]
-- Loop over a directory of HDF5 files and populate a list of per-file
-  dictionaries
-- A bit of a mystery; appears to happen only under macOS
-  - No issues under Windows w/ =h5py= 2.x or 3.x, according to the user
+**** [[https://forum.hdfgroup.org/t/reading-multiple-hdf5-files-mounted-on-remote-folder/7238][Reading multiple hdf5 files mounted on remote folder]]
+- (Blast from the past)
+- Not sure if that's an =h5py= issue
+**** [[https://forum.hdfgroup.org/t/a-problem-when-saving-native-ldouble-variables/9504][A problem when saving =NATIVE_LDOUBLE= variables]]
+- [[https://en.wikipedia.org/wiki/Long_double][Wikipedia:long double]]
+- Need more information
+**** [[https://forum.hdfgroup.org/t/reading-and-writing-multiple-files-using-multiple-threads-c/9503][Reading and Writing Multiple Files Using Multiple Threads C++]]
+- Steven posted a good comment
+- Too many options w/o additional context
 
 ** Tips, tricks, & insights
 *** HDF5 applications and clients in Cloud-based environments
@@ -70,8 +58,8 @@ card "Application" as app {
 }
 
 together {
-cloud "(Cloud) Object Store" as COS
-database "(P)FS" as PFS
+    cloud "(Cloud) Object Store" as COS
+    database "(P)FS" as PFS
 }
 
 cnx -- PFS : "VOC"
@@ -105,10 +93,10 @@ card "Application" as app {
     VFL
     ]
     card "Facade" as pxy
-    }
+}
 together {
-cloud "(Cloud) Object Store" as COS
-database "(P)FS" as PFS
+    cloud "(Cloud) Object Store" as COS
+    database "(P)FS" as PFS
 }
 
 cnx -- PFS : "VFD"
@@ -116,10 +104,10 @@ cnx -- COS : "VFD"
 
 
 database "(P)FS" as PFS1 {
-  file "HDF5 File" as file
+    file "HDF5 File" as file
 }
 cloud "(Cloud) Object Store" as COS1 {
-  file "HDF5 File (BLOB)" as file1
+    file "HDF5 File (BLOB)" as file1
 }
 
 pxy -- PFS1 : "POSIX\nMPI-IO"
@@ -182,6 +170,55 @@ endlegend
 #+RESULTS:
 [[file:./img/service.png]]
 
+* Clinic 2022-03-08
+** Your Questions
+- Q :: ???
+
+** Last week's highlights
+*** Announcements
+**** [[https://portal.hdfgroup.org/display/support/HDF5%201.13.1][HDF5 1.13.1 release]]
+- [[https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.13/hdf5-1.13.1/src/hdf5-1.13.1-RELEASE.txt][Release notes]]
+- Blog post [[https://www.hdfgroup.org/2022/03/parallel-compression-improvements-in-hdf5-1-13-1/][Parallel compression improvements in HDF5 1.13.1]]
+  - Bug fixes & performance improvements and better support for collective I/O
+  - Much improved IOR results from =Cori= at NERSC
+  - For parallel dataset creation early allocation was the only option
+    - Incremental file space allocation is now supported for datasets created in
+      parallel but /only if/ they have filters applied to them
+
+*** Forum
+**** [[https://forum.hdfgroup.org/t/extent-the-dataspace-of-an-existing-attribute/9464][Extent the dataspace of an existing attribute]]
+- Storing multiple physical quantities in a single scalar dataset, e.g.,
+  velocity, density and temperature of a cubic with dimensional elements of
+  =101 x 71 x 51= , the dataset would have for example an extent of =(3, 101, 71, 51)=
+- How to keep track of quantity metadata, e.g., unit symbol?
+  - What to do if we add a (e.g., fourth) quantity to the dataset?
+***** Idea
+Store the quantity metadata in an array-like attribute
+***** Problems
+- =H5T_ARRAY= class datatypes are fixed rank and extent
+- Attribute dataspaces are not extendable
+***** Solutions
+All solutions come with different trade-offs!
+
+- Assuming this doesn't happen too often: extend/re-write the attribute on
+  each dimension change
+- Use a variable-length sequence (VLEN) datatype: read/re-write the attribute
+  on each dimension change
+- Use a "shared" attribute (=attribute that is an object reference to an
+  extendable dataset)
+  - Note :: For the use case at hand, the sharing aspect is /not/
+    important. It's the extendability of the object-referenced dataset.
+  #+CAPTION: A "shared" attribute
+  [[./img/shared_attribute.png]]
+
+**** [[https://forum.hdfgroup.org/t/memory-leak-while-reading-data/9473][Memory Leak while Reading Data?]]
+- Loop over a directory of HDF5 files and populate a list of per-file
+  dictionaries
+- A bit of a mystery; appears to happen only under macOS
+  - No issues under Windows w/ =h5py= 2.x or 3.x, according to the user
+
+** Tips, tricks, & insights
+(Out of time...)
 * Clinic 2022-03-01
 ** Your Questions
 - Q :: ???
