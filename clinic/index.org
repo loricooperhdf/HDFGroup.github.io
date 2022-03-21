@@ -3,6 +3,116 @@
 #+OPTIONS: num:nil H:2 toc:t
 #+SETUPFILE: ../themes/theme-readtheorg.setup
 
+* Clinic 2022-03-22
+** Your questions
+- Q :: ???
+
+** Last week's highlights
+*** Announcements
+**** [[https://forum.hdfgroup.org/t/free-seminar-using-hdf5-and-hsds-for-open-science-research-at-scale/9532][Free seminar: Using HDF5 and HSDS for Open Science Research at Scale]]
+- Friday, April 1, 2022, 11:00 am - 12:30 pm EDT
+
+**** 2022 European HDF5 Users Group (HUG)
+- [[https://www.hdfgroup.org/hug/europeanhug22/][Website]]
+- May 31 - June 2, 2022
+- Face-to-face at [[https://www.iter.org/][ITER]] in Saint Paul-lez-Durance, France
+- Reserve your spot before telling your friends! =;-)=
+
+*** Forum
+**** [[https://forum.hdfgroup.org/t/a-problem-when-saving-native-ldouble-variables/9504][A problem when saving =NATIVE_LDOUBLE= variables]]
+**** [[https://forum.hdfgroup.org/t/error-read-failed/9531][Error: Read failed]]
+**** [[https://forum.hdfgroup.org/t/reading-and-writing-multiple-files-using-multiple-threads-c/9503][Reading and Writing Multiple Files Using Multiple Threads C++]]
+**** [[https://forum.hdfgroup.org/t/memory-management-in-h5fd-class-t/9452][Memory management in =H5FD_class_t=]]
+** Tips, tricks, & insights
+*** HDF5 applications and clients in Cloud-based environments
+#+begin_src plantuml :exports both :file ./img/options.png
+@startuml
+
+note "It's not a trick.\nIt's HDF5!" as n1
+
+actor "User 1" as user1
+actor "User 2" as user2
+
+card "App" as app {
+    card cnx [
+    libhdf5-API
+    ----
+    VOL
+    ]
+    card "Facade" as pxy
+    artifact cnx1 [
+    libhdf5-API
+    ----
+    VOL
+    ----
+    ...
+    ----
+    Native VOC
+    ----
+    VFL
+    ]
+}
+
+card "Client" as app1 {
+    card "HTTP(S)" as pxy1
+}
+
+hexagon "<b>HSDS" as HSDS
+
+database "(P)FS" as PFS {
+    entity "object" as object
+    file "HDF5 File" as file
+}
+cloud "(Cloud) Object Store" as COS {
+    interface "object" as object1
+    file "HDF5 File (BLOB)" as file1
+}
+
+n1 ~~ user1
+n1 ~~ user2
+user1 .. app
+user2 .. app1
+
+cnx -[#red]- object : <color:red>VOC
+cnx -[#red]- object1 : <color:red>VOC
+cnx -[#red]- HSDS : <color:red>VOC
+
+cnx1 -[#green]- file : <color:green>VFD
+cnx1 -[#green]- file1 : <color:green>VFD
+
+pxy .[#blue]. file
+pxy .[#blue]. file1
+
+pxy1 -[#magenta]- object1  : <color:magenta>server-less
+pxy1 -[#teal]- HSDS :<color:teal>REST\n<color:teal>GraphQL
+HSDS -- object1
+HSDS -- file1
+
+legend left
+    HSDS - Highly-Scalable Data Service
+    (P)FS - (Parallel) File System
+    VFL - Virtual File Layer
+    VFD - Virtual File Driver
+    VOL - Virtual Object Layer
+    VOC - VOL Connector
+endlegend
+
+@enduml
+#+end_src
+
+#+RESULTS:
+[[file:./img/options.png]]
+
+**** Application-centric
+***** Object
+- Application is completely isolated from storage details
+***** File
+- Application is potentially "exposed" to storage details via a file-centric view
+**** Service-centric
+- State-less
+- Cloud-native
+- Weak consistency
+
 * Clinic 2022-03-15
 ** Your questions
 Re: split/multi driver question from Session 55.  On review, just would like to
@@ -39,136 +149,7 @@ confirm:
 - Too many options w/o additional context
 
 ** Tips, tricks, & insights
-*** HDF5 applications and clients in Cloud-based environments
-Different focal points: _application_ or _service_
-
-**** Application-centric
-***** Object
-- Applications are completely isolated from storage details
-
-#+begin_src plantuml :file ./img/object.png
-@startuml
-
-card "Application" as app {
-    card cnx [
-    libhdf5
-    ----
-    VOL
-    ]
-}
-
-together {
-    cloud "(Cloud) Object Store" as COS
-    database "(P)FS" as PFS
-}
-
-cnx -- PFS : "VOC"
-cnx -- COS : "VOC"
-
-legend left
-    VOL - Virtual Object Layer
-    VOC - VOL Connector
-    (P)FS - (Parallel) File System
-endlegend
-
-@enduml
-#+end_src
-
-#+RESULTS:
-[[file:./img/object.png]]
-
-***** File
-- Applications are potentially "exposed" to storage details via a file-centric
-  view
-  - HDF5 library + VFL
-  - Target BLOBs directly (e.g., [[http://icesat2sliderule.org/h5coro/][H5Coro]])
-
-#+begin_src plantuml :file ./img/file.png
-@startuml
-
-card "Application" as app {
-    artifact cnx [
-    libhdf5
-    ----
-    VFL
-    ]
-    card "Facade" as pxy
-}
-together {
-    cloud "(Cloud) Object Store" as COS
-    database "(P)FS" as PFS
-}
-
-cnx -- PFS : "VFD"
-cnx -- COS : "VFD"
-
-
-database "(P)FS" as PFS1 {
-    file "HDF5 File" as file
-}
-cloud "(Cloud) Object Store" as COS1 {
-    file "HDF5 File (BLOB)" as file1
-}
-
-pxy -- PFS1 : "POSIX\nMPI-IO"
-pxy -- COS1 : "REST"
-
-legend left
-    VFL - Virtual File Layer
-    VFD - Virtual File Driver
-    (P)FS - (Parallel) File System
-endlegend
-
-@enduml
-#+end_src
-
-#+RESULTS:
-[[file:./img/file.png]]
-
-**** Service-centric
-- State-less
-- Weak consistency
-- Cloud-native
-
-#+begin_src plantuml :file ./img/service.png
-@startuml
-
-card "Client" as app {
-    card "Proxy" as pxy
-    card cnx [
-    libhdf5
-    ----
-    VOL
-    ]
-}
-together {
-cloud "(Cloud) Object Store" as COS
-database "(P)FS" as PFS
-}
-
-
-database "(P)FS" as PFS
-hexagon HSDS
-cloud "(Cloud) Object Store" as COS
-
-pxy -- COS  : "server-less"
-pxy -- HSDS : "REST"
-cnx -- HSDS : "REST\nVOC"
-HSDS -- COS
-HSDS .. PFS
-
-legend right
-    HSDS - Highly-Scalable Data Service
-    (P)FS - (Parallel) File System
-    VOL - Virtual Object Layer
-    VOC - VOL Connector
-endlegend
-
-@enduml
-#+end_src
-
-#+RESULTS:
-[[file:./img/service.png]]
+(Out of time...)
 
 * Clinic 2022-03-08
 ** Your Questions
