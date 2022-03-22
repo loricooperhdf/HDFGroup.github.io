@@ -19,13 +19,36 @@
 - Reserve your spot before telling your friends! =;-)=
 
 *** Forum
+**** [[https://forum.hdfgroup.org/t/check-if-hard-soft-external-link-is-broken/9543][Check if Hard/Soft/External link is broken]]
+- How to detect broken soft or external links?
+  - [[https://docs.hdfgroup.org/hdf5/develop/group___h5_l.html#ga171be6e41dc1a464edc402df0ebdf801][=H5Lexists=]] checks only for link existence in a group, not validity of destination
+- Not a perfect match, but [[https://docs.hdfgroup.org/hdf5/develop/group___h5_o.html#title16][=H5Oexists_by_name=]] might do the trick
 **** [[https://forum.hdfgroup.org/t/a-problem-when-saving-native-ldouble-variables/9504][A problem when saving =NATIVE_LDOUBLE= variables]]
+- Interesting discussion around =NATIVE_LDOUBLE=
+- Compiler and processor dependent => you are opening a can of worms
+- Two options:
+  - User-defined FP datatype + soft conversions (relatively safe)
+  - Opaque datatype + metadata (dangerous)
 **** [[https://forum.hdfgroup.org/t/error-read-failed/9531][Error: Read failed]]
+- Mystery continues
+- Trying to get a sample
+- Use the core VFD to check if it's potentially a POSIX VFD/Windows issue
 **** [[https://forum.hdfgroup.org/t/reading-and-writing-multiple-files-using-multiple-threads-c/9503][Reading and Writing Multiple Files Using Multiple Threads C++]]
+- The HDF5 library can be built thread-safe
+- Multiple threads can open HDF5 files independently
+- BUT, currently, only a single thread can be executing code in the HDF5 library,
+  i.e., there's no concurrency, at the moment
+- Two options:
+  - (Intermediate) Have a I/O request queue and a single thread servicing I/O
+    requests
+  - (Advanced) Carefully plan dataset allocation and file metadata discovery to
+    do concurrent writes and reads outside the HDF5 library
 **** [[https://forum.hdfgroup.org/t/memory-management-in-h5fd-class-t/9452][Memory management in =H5FD_class_t=]]
+- [[https://github.com/HDFGroup/hdf5/pull/1502][GitHub PR#1502]]
+- Good discussion
 ** Tips, tricks, & insights
 *** HDF5 applications and clients in Cloud-based environments
-#+begin_src plantuml :exports both :file ./img/options.png
+#+begin_src plantuml :file ./img/options.png
 @startuml
 
 note "It's not a trick.\nIt's HDF5!" as n1
