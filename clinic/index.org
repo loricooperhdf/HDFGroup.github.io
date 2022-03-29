@@ -3,7 +3,7 @@
 #+OPTIONS: num:nil H:2 toc:t
 #+SETUPFILE: ../themes/theme-readtheorg.setup
 
-* Clinic 2022-03-22
+* Clinic 2022-03-29
 ** Your questions
 - Q :: ???
 
@@ -19,33 +19,29 @@
 - Reserve your spot before telling your friends! =;-)=
 
 *** Forum
-**** [[https://forum.hdfgroup.org/t/check-if-hard-soft-external-link-is-broken/9543][Check if Hard/Soft/External link is broken]]
-- How to detect broken soft or external links?
-  - [[https://docs.hdfgroup.org/hdf5/develop/group___h5_l.html#ga171be6e41dc1a464edc402df0ebdf801][=H5Lexists=]] checks only for link existence in a group, not validity of destination
-- Not a perfect match, but [[https://docs.hdfgroup.org/hdf5/develop/group___h5_o.html#title16][=H5Oexists_by_name=]] might do the trick
-**** [[https://forum.hdfgroup.org/t/a-problem-when-saving-native-ldouble-variables/9504][A problem when saving =NATIVE_LDOUBLE= variables]]
-- Interesting discussion around =NATIVE_LDOUBLE=
-- Compiler and processor dependent => you are opening a can of worms
-- Two options:
-  - User-defined FP datatype + soft conversions (relatively safe)
-  - Opaque datatype + metadata (dangerous)
 **** [[https://forum.hdfgroup.org/t/error-read-failed/9531][Error: Read failed]]
+- Got a sample, nothing unusual
+- Core VFD works just fine
+- Need to find a way to reproduce the behavior (I/O kernel)
 - Mystery continues
-- Trying to get a sample
-- Use the core VFD to check if it's potentially a POSIX VFD/Windows issue
-**** [[https://forum.hdfgroup.org/t/reading-and-writing-multiple-files-using-multiple-threads-c/9503][Reading and Writing Multiple Files Using Multiple Threads C++]]
-- The HDF5 library can be built thread-safe
-- Multiple threads can open HDF5 files independently
-- BUT, currently, only a single thread can be executing code in the HDF5 library,
-  i.e., there's no concurrency, at the moment
-- Two options:
-  - (Intermediate) Have a I/O request queue and a single thread servicing I/O
-    requests
-  - (Advanced) Carefully plan dataset allocation and file metadata discovery to
-    do concurrent writes and reads outside the HDF5 library
-**** [[https://forum.hdfgroup.org/t/memory-management-in-h5fd-class-t/9452][Memory management in =H5FD_class_t=]]
-- [[https://github.com/HDFGroup/hdf5/pull/1502][GitHub PR#1502]]
-- Good discussion
+
+**** [[https://forum.hdfgroup.org/t/symbolic-links-with-relative-path/9552][Symbolic links with relative path]]
+- What's the meaning of 'relative' in HDF5? W.r.t. handle (file, group, ...)!
+- =..= does and cannot mean what it does in a shell (no tree structure)
+- Special characters in link names? (=/=, =.=, =./=, =/./=)
+- =..=, =...=, etc., and spaces are legitimate link names
+
+**** [[https://forum.hdfgroup.org/t/refresh-object-so-that-external-changes-were-applied/9544][Refresh object so that external changes were applied]]
+- The state of an /open/ HDF5 file is a hybrid (in-memory, in-file)
+- Simultaneously opening an HDF5 file in different processes with one or more
+  writers, without inter-process communication, creates a coherence problem!
+  (and potentially a consistency problem...)
+  - Don't go there!
+  - Use SWMR, IPC, or I/O request queue!
+
+**** [[https://forum.hdfgroup.org/t/read-portion-of-dataset/9545][Read Portion of Dataset]]
+
+
 ** Tips, tricks, & insights
 *** HDF5 applications and clients in Cloud-based environments
 #+begin_src plantuml :file ./img/options.png
@@ -135,6 +131,52 @@ endlegend
 - State-less
 - Cloud-native
 - Weak consistency
+
+* Clinic 2022-03-22
+** Your questions
+- Q :: ???
+
+** Last week's highlights
+*** Announcements
+**** [[https://forum.hdfgroup.org/t/free-seminar-using-hdf5-and-hsds-for-open-science-research-at-scale/9532][Free seminar: Using HDF5 and HSDS for Open Science Research at Scale]]
+- Friday, April 1, 2022, 11:00 am - 12:30 pm EDT
+
+**** 2022 European HDF5 Users Group (HUG)
+- [[https://www.hdfgroup.org/hug/europeanhug22/][Website]]
+- May 31 - June 2, 2022
+- Face-to-face at [[https://www.iter.org/][ITER]] in Saint Paul-lez-Durance, France
+- Reserve your spot before telling your friends! =;-)=
+
+*** Forum
+**** [[https://forum.hdfgroup.org/t/check-if-hard-soft-external-link-is-broken/9543][Check if Hard/Soft/External link is broken]]
+- How to detect broken soft or external links?
+  - [[https://docs.hdfgroup.org/hdf5/develop/group___h5_l.html#ga171be6e41dc1a464edc402df0ebdf801][=H5Lexists=]] checks only for link existence in a group, not validity of destination
+- Not a perfect match, but [[https://docs.hdfgroup.org/hdf5/develop/group___h5_o.html#title16][=H5Oexists_by_name=]] might do the trick
+**** [[https://forum.hdfgroup.org/t/a-problem-when-saving-native-ldouble-variables/9504][A problem when saving =NATIVE_LDOUBLE= variables]]
+- Interesting discussion around =NATIVE_LDOUBLE=
+- Compiler and processor dependent => you are opening a can of worms
+- Two options:
+  - User-defined FP datatype + soft conversions (relatively safe)
+  - Opaque datatype + metadata (dangerous)
+**** [[https://forum.hdfgroup.org/t/error-read-failed/9531][Error: Read failed]]
+- Mystery continues
+- Trying to get a sample
+- Use the core VFD to check if it's potentially a POSIX VFD/Windows issue
+**** [[https://forum.hdfgroup.org/t/reading-and-writing-multiple-files-using-multiple-threads-c/9503][Reading and Writing Multiple Files Using Multiple Threads C++]]
+- The HDF5 library can be built thread-safe
+- Multiple threads can open HDF5 files independently
+- BUT, currently, only a single thread can be executing code in the HDF5 library,
+  i.e., there's no concurrency, at the moment
+- Two options:
+  - (Intermediate) Have a I/O request queue and a single thread servicing I/O
+    requests
+  - (Advanced) Carefully plan dataset allocation and file metadata discovery to
+    do concurrent writes and reads outside the HDF5 library
+**** [[https://forum.hdfgroup.org/t/memory-management-in-h5fd-class-t/9452][Memory management in =H5FD_class_t=]]
+- [[https://github.com/HDFGroup/hdf5/pull/1502][GitHub PR#1502]]
+- Good discussion
+** Tips, tricks, & insights
+(Out of time...)
 
 * Clinic 2022-03-15
 ** Your questions
