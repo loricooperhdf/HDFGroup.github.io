@@ -40,7 +40,9 @@
   - Use SWMR, IPC, or I/O request queue!
 
 **** [[https://forum.hdfgroup.org/t/read-portion-of-dataset/9545][Read Portion of Dataset]]
-
+- That's what HDF5 is all about
+- Great responses from a number of people
+- Most comprehensive example by Steven ([[http://h5cpp.org/][H5CPP]])
 
 ** Tips, tricks, & insights
 *** HDF5 applications and clients in Cloud-based environments
