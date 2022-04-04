@@ -3,6 +3,110 @@
 #+OPTIONS: num:nil H:2 toc:t
 #+SETUPFILE: ../themes/theme-readtheorg.setup
 
+* Clinic 2022-04-05
+** Your questions
+- Q :: ???
+
+** Last week's highlights
+*** Announcements
+**** 2022 European HDF5 Users Group (HUG)
+- [[https://www.hdfgroup.org/hug/europeanhug22/][Website]]
+- May 31 - June 2, 2022
+- Face-to-face at [[https://www.iter.org/][ITER]] in Saint Paul-lez-Durance, France
+- Reserve your spot before telling your friends! =;-)=
+
+*** Forum
+
+** Tips, tricks, & insights
+*** HDF5 applications and clients in Cloud-based environments
+#+begin_src plantuml :file ./img/options.png
+@startuml
+
+note "It's not a trick.\nIt's HDF5!" as n1
+
+actor "User 1" as user1
+actor "User 2" as user2
+
+card "App" as app {
+    card cnx [
+    libhdf5-API
+    ----
+    VOL
+    ]
+    card "Facade" as pxy
+    artifact cnx1 [
+    libhdf5-API
+    ----
+    VOL
+    ----
+    ...
+    ----
+    Native VOC
+    ----
+    VFL
+    ]
+}
+
+card "Client" as app1 {
+    card "HTTP(S)" as pxy1
+}
+
+hexagon "<b>HSDS" as HSDS
+
+database "(P)FS" as PFS {
+    entity "object" as object
+    file "HDF5 File" as file
+}
+cloud "(Cloud) Object Store" as COS {
+    interface "object" as object1
+    file "HDF5 File (BLOB)" as file1
+}
+
+n1 ~~ user1
+n1 ~~ user2
+user1 .. app
+user2 .. app1
+
+cnx -[#red]- object : <color:red>VOC
+cnx -[#red]- object1 : <color:red>VOC
+cnx -[#red]- HSDS : <color:red>VOC
+
+cnx1 -[#green]- file : <color:green>VFD
+cnx1 -[#green]- file1 : <color:green>VFD
+
+pxy .[#blue]. file
+pxy .[#blue]. file1
+
+pxy1 -[#magenta]- object1  : <color:magenta>server-less
+pxy1 -[#teal]- HSDS :<color:teal>REST\n<color:teal>GraphQL
+HSDS -- object1
+HSDS -- file1
+
+legend left
+    HSDS - Highly-Scalable Data Service
+    (P)FS - (Parallel) File System
+    VFL - Virtual File Layer
+    VFD - Virtual File Driver
+    VOL - Virtual Object Layer
+    VOC - VOL Connector
+endlegend
+
+@enduml
+#+end_src
+
+#+RESULTS:
+[[file:./img/options.png]]
+
+**** Application-centric
+***** Object
+- Application is completely isolated from storage details
+***** File
+- Application is potentially "exposed" to storage details via a file-centric view
+**** Service-centric
+- State-less
+- Cloud-native
+- Weak consistency
+
 * Clinic 2022-03-29
 ** Your questions
 - Q :: ???
