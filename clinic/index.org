@@ -15,7 +15,27 @@
 - Face-to-face at [[https://www.iter.org/][ITER]] in Saint Paul-lez-Durance, France
 - Reserve your spot before telling your friends! =;-)=
 
+**** ASCR Workshop January 2022 on the Managment and Storage of Scientific Data
+- [[https://www.osti.gov/biblio/1843500-position-papers-ascr-workshop-management-storage-scientific-data][Position Papers]]
+- [[https://www.osti.gov/biblio/1845705][Technical Report]]
+
 *** Forum
+**** [[https://forum.hdfgroup.org/t/file-remains-open-after-calling-hd5f-close/9602][File remains open after calling =HD5F.close=]]
+- Context: .NET, =HDF5.PInvoke= migrating from 1.8.x to 1.10.x
+- Biggest change: switch to 64-bit handles
+- Symptoms: Change in unit test behavior, file closure
+- User forgot to switch from =int= to =long= in one place
+- C-style =typedef= has no equivalent in C#; hack:
+  #+begin_src C
+  #if HDF5_VER1_10
+  using hid_t = System.Int64;
+  #else
+  using hid_t = System.Int32;
+  #endif
+  #+end_src
+- How to discover open handles?
+  - [[https://docs.hdfgroup.org/hdf5/develop/group___h5_f.html#gadcdae0aca7c88064db0d32de7f1e31f2][=H5Fget_obj_count=]], [[https://docs.hdfgroup.org/hdf5/develop/group___h5_f.html#ga35e72579bd07433162b80ddc0bd0c5b1][=H5Fget_obj_ids=]]
+  - [[https://docs.hdfgroup.org/hdf5/develop/group___h5_i_u_d.html#ga3bc2a11a594bf484cc5dc69ac987d0f4][=H5Iiterate=]] (since HDF5 1.12)
 
 ** Tips, tricks, & insights
 *** HDF5 applications and clients in Cloud-based environments
