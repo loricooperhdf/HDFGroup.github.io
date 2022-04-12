@@ -3,6 +3,115 @@
 #+OPTIONS: num:nil H:2 toc:t
 #+SETUPFILE: ../themes/theme-readtheorg.setup
 
+* Clinic 2022-04-12
+** Your questions
+- Q :: ???
+
+** Last week's highlights
+*** Announcements
+**** 2022 European HDF5 Users Group (HUG)
+- [[https://www.hdfgroup.org/hug/europeanhug22/][Website]]
+- May 31 - June 2, 2022
+- Face-to-face at [[https://www.iter.org/][ITER]] in Saint Paul-lez-Durance, France
+- Reserve your spot before telling your friends! =;-)=
+
+
+*** Forum
+**** [[https://forum.hdfgroup.org/t/what-kind-of-stl-containers-do-you-use-in-your-field/9636][What kind of STL containers do you use in your field?]]
+- Does anybody use the STL? =;-)=
+**** [[https://forum.hdfgroup.org/t/bug-h5tcopy-of-empty-enum/9634][Bug? H5TCopy of empty enum]]
+- Looks like one
+**** [[https://forum.hdfgroup.org/t/broken-hdf5-file-cannot-be-opened/9618][Broken HDF5 file cannot be opened]]
+- Don't make a fuzz! =;-)=
+- Cornering the HDF5 library by feeding it random byte sequences as attribute
+  and link names (or values)
+- Mission accomplished!
+  [[file:./img/fuzz.png]]
+**** [[https://forum.hdfgroup.org/t/automated-formatted-display-of-stl-like-containers/9641][Automated formatted display of STL-like containers]]
+#+begin_example
+g++ -I./include -o pprint-test.o   -std=c++17 -DFMT_HEADER_ONLY -c pprint-test.cpp
+g++ pprint-test.o -lhdf5  -lz -ldl -lm  -o pprint-test
+./pprint-test
+
+
+LISTS/VECTORS/SETS:
+---------------------------------------------------------------------
+array<string,7>:[xSs,wc,gu,Ssi,Sx,pzb,OY]
+vector:[CDi,PUs,zpf,Hm,teO,XG,bu,QZs]
+deque:[256,233,23,89,128,268,69,278,130]
+list:[95,284,24,124,49,40,200,108,281,251,57, ...]
+forward_list:[147,76,81,193,44]
+set:[V,f,szy,v]
+unordered_set:[2.59989,1.86124,2.93324,1.78615,2.43869,2.04857,1.69145]
+multiset:[3,5,12,21,23,28,30,30]
+unordered_multiset:[gZ,rb,Dt,Q,Ark,dW,Ez,wmE,GwF]
+
+
+ADAPTORS:
+---------------------------------------------------------------------
+stack<T,vector<T>>:[172,252,181,11]
+stack<T,deque<T>>:[54,278,66,70,230,44,121,15,58,149,224, ...]
+stack<T,list<T>>:[251,82,278,86,66,40,278,45,211,225,271, ...]
+priority_queue:[zdbUzd,tTknDw,qorxgk,mCcEay,gDeJ,FYPOEd,CIhMU]
+queue<T,deque<T>>:[bVG,Bbs,vchuT,FfxEw,CXFrr,JAx,sVlcI]
+queue<T,list<T>>:[ARPl,dddmHT,mEiCJ,OVEYS,FIJi,jbQwb,tpJnpj,rlCRoKn,nBKjJ,KPlU,jatsUI, ...]
+
+ASSOCIATE CONTAINERS:
+---------------------------------------------------------------------
+map<string,int>:[{LID:2},{U:2},{Xr:1},{e:2},{esU:1},{kbj:1},{qFc:3}]
+map<short,list<string>>:[{LjwUkey:5},{jZxhk:6},{sxKKVu:8},{vSmHmu:8},{wRBTdGS:7}]
+multimap<short,list<int>>:[{ALpPkqbJ:[6,6,8,7,8,5,7,8,5,5,6, ...]},{AwsHR:[8,5,6,6,5,6,7,6,7,6,8, ...]},{HtLQMvHv:[5,7,6,7,8,6,7]},{KbseLYEs:[5,8,6,8]},{RzsJm:[7,6,8,7,7,7,7,6,6,8,7, ...]},{XpNSkhDa:[7,5,8,8,7,8,5,5,5]},{cXPImNk:[6,8,6,5,8,7,5,6,6,8,6, ...]},{gkKHyh:[5,8,6,6,6,6,5,5,6]},{iPmaraP:[7,6,7,6,7,7,5,7,5,7,7, ...]},{pLmqL:[6,5,5,5,6]}]
+unordered_map<short,list<string>>:[{udXahPXD:7},{hUgYjak:5},{OpOmaBqA:7},{vTldeWdS:5},{jEHQST:8},{UZxId:7},{IslGsnGY:8}]
+unordered_multimap<short,list<int>>:[{JldxFw:[5,6,8,6,6]},{tnzhP:[8,6,8,5,5,8,8,8]},{cvMaS:[5,7,5,5,5,5]},{eGlyp:[8,7,8,8,7]}]
+
+
+RAGGED ARRAYS:
+---------------------------------------------------------------------
+vector<vector<string>>:[[pkwZZ,lBqsR,cmKt,PDjaS,Zj],[Nr,jj,xe,uC,bixzV],[uBAU,pXCa,fZEH,FIAIO],[Vczda,HKEzO,ySqr,Fjd,nh,pgb,zcsw],[fLCgg,qQ,Reul,aTXp,DENn,ZDtkV,VXcB]]
+array<vector<short>,N>:[[29,49,29,42,25,33,49,33,44,49],[50,48,35,22,35,33,33],[46,27,23,20,48,38,45,28,45],[25,33,41,22,36]]
+array<array<short,M>,N>:[[90,35,99],[47,58,53],[82,25,72],[76,92,62],[39,88,32]]
+
+MISC:
+---------------------------------------------------------------------
+pair<int,string>:{6:hJnCm}
+pair<string,vector<int>>:{iLclgkjnoY:[2,5,6,6,7,3,7,3,3,4,8, ...]}
+tuple<string,int,float,short>:<XTK,3,2.63601,6>
+tuple<string,list<int>,vector<float>,short>:<[TaPryDWKv,attpFqqIc,geHwbX,vdZ,kvruDeaxpZ,dSOqbVpr,jTciLPgBbI,duc,yUZiCP,zGrTsweTk,LNouX, ...],4,5.81555,[2,3,5,6,8]>
+#+end_example
+**** [[https://forum.hdfgroup.org/t/group-overhead-file-size-problem-for-hierarchical-data/9640][Group Overhead - File size problem for hierarchical data]]
+#+begin_quote
+We found that a group has quite a memory overhead (was it 2 or 20 kb?).
+#+end_quote
+- How was that measured?
+- What's in a group?
+- Responses from Steven, John, and GH
+- The figure quoted looks unusual/too high
+**** [[https://forum.hdfgroup.org/t/h5pset-est-link-info-regression-in-1-13-1/9645][=H5Pset_est_link_info= regression in 1.13.1?]]
+- Yup, looks like it!
+- Compact vs. dense group storage
+- The [[https://docs.hdfgroup.org/hdf5/develop/group___g_c_p_l.html#gaa8571642d45e73ab5a9ae71cf00501f9][documentation]] has a few clues
+**** [[https://forum.hdfgroup.org/t/corrupted-file-due-to-shutdown/9658][Corrupted file due to shutdown]]
+#+begin_quote
+I have a problem with a HDF5 file created with h5py. I have the suspicion that
+the process writing to the file was killed.
+#+end_quote
+- Try common household tools
+  #+begin_src shell
+  strings -t d file.h5
+  #+end_src
+- Then reach for the heavier guns ([[https://guix.gnu.org/packages/h5check-2.0.1/][=h5check=]])
+
+** Tips, tricks, & insights
+*** HDFView in Web-browsers?
+- Great community projects (Thanks to Andy Gotz at [[https://www.esrf.fr/][ESRF]]!)
+- [[https://github.com/silx-kit/h5web][=h5web=]] - React components for data visualization and exploration
+  - [[https://h5web.panosc.eu/][Demo]]
+  - [[https://h5web.panosc.eu/hsds][HSDS support]]
+  - [[https://hdflab.hdfgroup.org/][HDFLab]] integration?
+- [[https://github.com/usnistgov/h5wasm][=h5wasm=]] - A WebAssembly HDF5 reader/writer library
+  - [[https://developer.mozilla.org/en-US/docs/Web/API/FileSystem][HTML5 =FileSystem= API]]
+  - [[https://ncnr.nist.gov/ncnrdata/view/panosc-hdf-viewer.html?pathlist=ncnrdata/ngbsans/201708/nonims152/data][NeXuS-HDF5 file viewer]]
+
 * Clinic 2022-04-05
 ** Your questions
 - Q :: ???
