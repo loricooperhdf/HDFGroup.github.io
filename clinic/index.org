@@ -3,6 +3,145 @@
 #+OPTIONS: num:nil H:2 toc:t
 #+SETUPFILE: ../themes/theme-readtheorg.setup
 
+* Clinic 2022-04-19
+** Your questions
+- Q :: ???
+
+** Last week's highlights
+*** Announcements
+**** 2022 European HDF5 Users Group (HUG)
+- [[https://www.hdfgroup.org/hug/europeanhug22/][Website]]
+- May 31 - June 2, 2022
+- Face-to-face at [[https://www.iter.org/][ITER]] in Saint Paul-lez-Durance, France
+- Reserve your spot before telling your friends! =;-)=
+**** [[https://forum.hdfgroup.org/t/hdf5-1-12-2-3-rc-1-source-available-for-testing/9666][HDF5 1.12.2-3-rc-1 source available for testing]]
+- Parallel compression improvements backported from HDF5 1.13.1
+**** HSDS v0.7beta13
+- Support for [[https://docs.h5py.org/en/stable/high/dataset.html?highlight=fancy#fancy-indexing][Fancy Indexing]]
+  - Unlike with h5py though, HSDS works well with long lists of indexes by
+    parallelizing access across the chunks in the selection.
+  - For example, retrieving 4000 random columns from a 17,520 by 2,018,392
+    dataset demonstrated good scaling as the number of HSDS nodes was increased:
+    - 4 nodes: 65.4s
+    - 8 nodes: 35.7s
+    - 16 nodes: 23.4 s
+- The limit on the number of chunks accesses per request has been removed
+  [[file:./img/chunk_1000.png]]
+
+*** Forum
+**** [[https://forum.hdfgroup.org/t/help-request-regarding-java-3-3-2/9672][Help Request regarding Java 3.3.2]]
+- Switched from HDF Java 2.6.1 to 3.3.2 & seeing errors not seen before
+- Artifact of checking for [[https://docs.hdfgroup.org/hdf5/develop/_i_m_g.html][HDF5 Image convention]] attributes
+- Prior versions ignored exceptions silently =8-(=
+- Now we have "expected errors"???
+**** [[https://forum.hdfgroup.org/t/h5f-get-obj-count-f-extremely-buggy/9678][=h5f_get_obj_count_f= Extremely Buggy?]]
+- User is trying to use =h5fget_obj_count_f= to establish the number of open
+  handles; it appears that the result depends on the number of times =h5open_f=
+  was called (???)
+- Calling =H5open= w/ the C-API is usually not necessary and multiple calls have
+  no side-effects
+- =h5open_f= (Fortran API) appears to behave differently, [[https://jira.hdfgroup.org/browse/HDFFV-11306][buggy]]?
+- Fixed by Scot Breitenfeld in [[https://github.com/HDFGroup/hdf5/pull/1657][HDFFV-11306 Fixed #1657]]
+  - /What a turnaround!/
+**** [[https://forum.hdfgroup.org/t/c-read-h5-cmpd-struct-dataset-that-each-field-is-vector/9677][C++ Read h5 cmpd (/struct) dataset that each field is vector]]
+- User's data
+  #+begin_src C++
+  typedef struct { std::vector FieldA, FieldB, FieldC; } TestH5;
+  TestH5.FieldA = {1.0,2.0,3.0,4.0}; // similar to FieldB, FieldC
+  #+end_src
+- Q :: How to read this =TestH5= using C++?
+
+This brings us to today's ...
+
+** Tips, tricks, & insights
+*** How [[https://github.com/steven-varga/h5cpp][H5CPP]] makes you ask the right questions
+
+/(All quotations from Steven Varga's response!)/
+
+The expression below is a [templated] Class datatype in C++, placed in a
+non-contiguous memory location, requiring scatter-gather operators and a
+mechanism to dis-assemble reassemble the components. Becuase of the complexity
+AFAIK there is no automatic support for this sort of operation.
+
+#+begin_src C++
+template <typename T>
+struct TestH5{
+    std::vector<T> FieldA, FieldB, FieldC;
+};
+#+end_src
+
+The structure above maybe modelled in HDF5 in the following way:
+
+- (Columnar) =/group/[fieldA, fieldB, fieldC]= fast indexing by columns, more
+  complex and slower indexing by rows; also easier read/write from
+  Julia/Python/R/C/ etc…
+- (Records) by a vector of tuples: =std::vector<std::tuple<T,T,T>>= where you
+  work with a single dataset, fast indexing by rows and slower indexing by
+  columns
+- (Blocked) exotic custom solution based on direct chunk write/read: fast
+  indexing of blocks by row and column wise at the increased complexity of the
+  code.
+- (Hybrid) ...
+
+H5CPP provides mechanism for the first two solutions:
+
+#+begin_src C++
+TestH5<int> data = {std::vector<int>{1,2,3,4},
+  std::vector<int>{5,6,7},
+  std::vector<int>{8,9,10}};
+
+h5::fd_t fd = h5::create("example.h5",H5F_ACC_TRUNC);
+h5::write(fd, "/some_path/fieldA", data.fieldA);
+h5::write(fd, "/some_path/fieldB", data.fieldB);
+h5::write(fd, "/some_path/fieldC", data.fieldC);
+#+end_src
+
+Ok the above is simple and well behaved, the second solution needs a POD struct
+backing, as tuples are not supported in the current H5CPP version (the upcoming
+will support arbitrary STL)
+
+#+begin_src C++
+struct my_t {
+   int fieldA;
+   int fieldB;
+   int fieldC;
+}
+#+end_src
+
+You can have any data types and arbitrary combination in the POD struct, as long
+as it qualifies as POD type in C++. This approach involves H5CPP LLVM based
+compiler assisted reflection – long word, I know; sorry about that. The bottom
+line you need the type descriptor and this compiler does it for you, without
+lifting a pinky.
+
+#+begin_src C++
+std::vector<my_t> data;
+h5::fd_t fd = h5::create("example.h5",H5F_ACC_TRUNC);
+h5::write(fd, "some_path/some_name", data);
+#+end_src
+
+This approach is often used in event recorders, hence there is this =h5::append=
+operator to help you out:
+
+#+begin_src C++
+h5::ds_t ds = h5::open(...);
+for(const auto& event: event_provider)
+  h5::append(ds, event);
+#+end_src
+
+Both of the layouts are used to model sparse matrices, the second resembling COO
+or coordinate of points, whereas the first is for Compressed Sparse Row|Column
+format.
+
+[[http://sandbox.h5cpp.org/presentations/][Slides are here]], the [[https://github.com/steven-varga/h5cpp/tree/master/examples][examples are here]].
+
+#+begin_example
+best wishes: steve
+#+end_example
+
+_Go on and read the rest of the thread_! There is a lot of good information there
+(layouts, strings, array types, ...).
+
 * Clinic 2022-04-12
 ** Your questions
 - Q :: ???
@@ -14,7 +153,6 @@
 - May 31 - June 2, 2022
 - Face-to-face at [[https://www.iter.org/][ITER]] in Saint Paul-lez-Durance, France
 - Reserve your spot before telling your friends! =;-)=
-
 
 *** Forum
 **** [[https://forum.hdfgroup.org/t/what-kind-of-stl-containers-do-you-use-in-your-field/9636][What kind of STL containers do you use in your field?]]
