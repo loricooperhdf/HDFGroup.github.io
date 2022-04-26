@@ -3,6 +3,77 @@
 #+OPTIONS: num:nil H:2 toc:t
 #+SETUPFILE: ../themes/theme-readtheorg.setup
 
+* Clinic 2022-04-26
+** Your questions
+- Q :: ???
+
+** Last week's highlights
+*** Announcements
+**** 2022 European HDF5 Users Group (HUG)
+- [[https://www.hdfgroup.org/hug/europeanhug22/][Website]]
+- May 31 - June 2, 2022
+- Face-to-face at [[https://www.iter.org/][ITER]] in Saint Paul-lez-Durance, France
+- Reserve your spot before telling your friends! =;-)=
+
+**** HDF5 1.12.2 is around the corner
+- As early as this week
+
+*** Forum
+**** [[https://forum.hdfgroup.org/t/bug-h5tcopy-of-empty-enum/9634][Bug? H5TCopy of empty enum]]
+- Is an empty enumeration datatype legit?
+- I couldn't find that ticket @Elena mentioned a while ago
+  - Where is it?
+
+** Tips, tricks, & insights
+*** [[https://github.com/HDFGroup/hdf5/issues/1682][Documentation - variable-length datatype description seems incomplete (doesn't mention global heap)]]
+- Interesting GitHub issue
+  #+begin_quote
+  I'm working on trying to decode an HDF5 file (attached) manually using the
+  specification (for the purpose of writing rust code for a decoder that quickly
+  extracts raw signal data from nanopore FAST5 files)...
+  #+end_quote
+- Tools of the trade =h5dump=, =h5debug=, =h5check=
+- Highlights gaps/inaccuracies/inconveniences in the [[https://docs.hdfgroup.org/hdf5/develop/_f_m_t3.html][file format specification]]
+  - Bit-level representation of variable-length string datatypes
+    - What's a /parent type/? (spec. doesn't say)
+    - What's the parent type of a VLEN string? (character)
+    - (How) Is it encoded in the datatype message?
+  - Use of the global heap for VLEN data
+    - Not discussed where VLEN datatype message is discussed
+- Sample
+  #+begin_example
+  HDF5 "perfect_guppy_3.6.0_LAST_gci_vs_Nb_mtDNA.fast5" {
+  GROUP "/" {
+     ATTRIBUTE "file_version" {
+        DATATYPE  H5T_STRING {
+           STRSIZE H5T_VARIABLE;
+           STRPAD H5T_STR_NULLTERM;
+           CSET H5T_CSET_UTF8;
+           CTYPE H5T_C_S1;
+        }
+        DATASPACE  SCALAR
+        DATA {
+        (0): "2.0"
+        }
+     }
+     GROUP "read_44dcef85-283e-4782-b7b1-1c9a0f682597" {
+        ATTRIBUTE "run_id" {
+           DATATYPE  H5T_STRING {
+              STRSIZE H5T_VARIABLE;
+              STRPAD H5T_STR_NULLTERM;
+              CSET H5T_CSET_ASCII;
+              CTYPE H5T_C_S1;
+           }
+           DATASPACE  SCALAR
+           DATA {
+           (0): "cb45e5bda47a362d52bcfa146df9083b463bf65e"
+           }
+        }
+  ...
+  #+end_example
+- =2.0\0= is =322e 3000= in hex.
+  - Let's find it!
+
 * Clinic 2022-04-19
 ** Your questions
 - Q :: ???
