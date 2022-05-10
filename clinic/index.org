@@ -9,8 +9,9 @@
 
 ** Last week's highlights
 *** Announcements
-**** 2022 European HDF5 Users Group (HUG)
+**** 2022 European HDF5 Users Group (HUGE)
 - [[https://www.hdfgroup.org/hug/europeanhug22/][Website]]
+- *Registration closes on Sunday May 15!*
 - May 31 - June 2, 2022
 - Face-to-face at [[https://www.iter.org/][ITER]] in Saint Paul-lez-Durance, France
 - Reserve your spot before telling your friends! =;-)=
@@ -43,9 +44,133 @@
 **** [[https://forum.hdfgroup.org/t/hdf5-write-perf-regular-api-vs-direct-chunk-on-uncompressed-dataset/9731][HDF5 write perf - Regular API vs Direct Chunk on uncompressed dataset]]
 - =h5py= has ~write_direct~ and ~write_direct_chunk~
   - About a 50% difference in performance. Why?
+- What could slow down ~H5Dwrite~ (vs ~H5Dwrite_chunk~) when having no data
+  conversion, no data scattering (contiguous layout), no chunking, no filters?
+**** [[https://forum.hdfgroup.org/t/failures-with-insufficient-disk-space/9712][Failures with insufficient disk space]]
+- The HDF5 library state appears to be inconsistent after a disk-full error
+  (=ENOSPC=)
+  - What's the state of a file in that situation? (Undefined)
+    - Recovering to the last sane state is harder than it may seem, if not
+      impossible
+  - But things appear to be worse: The library crashes (assertion failure) on
+    shutdown
+    - Open handle accounting is screwed up
+- Reproducer
+  #+begin_src C
 
+  #include "hdf5.h"
 
+  #include <stdint.h>
+  #include <stdlib.h>
+
+  #define SIZE (1024 * 1024 * 128)
+
+  int work(const char* path)
+  {
+    int retval = EXIT_SUCCESS;
+
+    uint8_t* data = (uint8_t*) malloc(sizeof(uint8_t)*SIZE);
+
+    for (size_t i = 0; i < SIZE; ++i) {
+      *(data+i) = i % 256;
+    }
+
+    hid_t fapl = H5I_INVALID_HID;
+    if ((fapl = H5Pcreate(H5P_FILE_ACCESS))
+        == H5I_INVALID_HID) {
+      retval = EXIT_FAILURE;
+      goto fail_fapl;
+    }
+    if (H5Pset_fclose_degree(fapl, H5F_CLOSE_STRONG) < 0) {
+      retval = EXIT_FAILURE;
+      goto fail_file;
+    }
+
+    hid_t file = H5I_INVALID_HID;
+    if ((file = H5Fcreate(path, H5F_ACC_TRUNC, H5P_DEFAULT, fapl))
+        == H5I_INVALID_HID) {
+      retval = EXIT_FAILURE;
+      goto fail_file;
+    }
+
+    hid_t group = H5I_INVALID_HID;
+    if ((group = H5Gcreate(file, "H5::Group", H5P_DEFAULT, H5P_DEFAULT,
+                           H5P_DEFAULT)) == H5I_INVALID_HID) {
+      retval = EXIT_FAILURE;
+      goto fail_group;
+    }
+
+    hid_t fspace = H5I_INVALID_HID;
+    if ((fspace = H5Screate_simple(1, (hsize_t[]) {(hsize_t) SIZE}, NULL))
+        == H5I_INVALID_HID) {
+      retval = EXIT_FAILURE;
+      goto fail_fspace;
+    }
+
+    hid_t dset = H5I_INVALID_HID;
+    if ((dset = H5Dcreate(group, "H5::Dataset", H5T_NATIVE_UINT8, fspace,
+                          H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT))
+        == H5I_INVALID_HID) {
+      retval = EXIT_FAILURE;
+      goto fail_dset;
+    }
+
+    if (H5Dwrite(dset, H5T_NATIVE_UINT8, fspace, fspace, H5P_DEFAULT, data) < 0) {
+      retval = EXIT_FAILURE;
+      goto fail_write;
+    }
+    printf("Write successed.\n");
+
+    if (H5Fflush(file, H5F_SCOPE_GLOBAL) < 0) {
+      retval = EXIT_FAILURE;
+      goto fail_flush;
+    }
+    printf("Flush succeeded.\n");
+
+  fail_flush:
+  fail_write:
+    if (H5Dclose(dset) < 0) {
+      printf("H5Dclose failed.\n");
+    }
+
+  fail_dset:
+    if (H5Sclose(fspace) < 0) {
+      printf("H5Sclose failed.\n");
+    }
+
+  fail_fspace:
+    if (H5Gclose(group) < 0) {
+      printf("H5Gclose failed.\n");
+    }
+
+  fail_group:
+    if (H5Fclose(file) < 0) {
+      printf("H5Fclose failed.\n");
+    }
+
+  fail_file:
+    if (H5Pclose(fapl) < 0) {
+      printf("H5Pclose failed.\n");
+    }
+
+  fail_fapl:
+    return retval;
+  }
+
+  int main()
+  {
+      int retval = EXIT_SUCCESS;
+      retval &= work("O:/foo.h5"); // limited available space to force failure
+      retval &= work("D:/foo.h5"); // lots of free space
+      return retval;
+  }
+
+  #+end_src
+
+**** [[https://forum.hdfgroup.org/t/external-datasets-relative-to-current-directory-or-hdf5-file-as-documented/9742][External datasets relative to current directory or HDF5 file as documented?]]
+- Documentation error: /Thanks to the user who reported it./
 ** Tips, tricks, & insights
+Next time...
 
 * Clinic 2022-04-26
 ** Your questions
