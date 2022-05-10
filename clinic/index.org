@@ -3,6 +3,50 @@
 #+OPTIONS: num:nil H:2 toc:t
 #+SETUPFILE: ../themes/theme-readtheorg.setup
 
+* Clinic 2022-05-10
+** Your questions
+- Q :: ???
+
+** Last week's highlights
+*** Announcements
+**** 2022 European HDF5 Users Group (HUG)
+- [[https://www.hdfgroup.org/hug/europeanhug22/][Website]]
+- May 31 - June 2, 2022
+- Face-to-face at [[https://www.iter.org/][ITER]] in Saint Paul-lez-Durance, France
+- Reserve your spot before telling your friends! =;-)=
+
+**** [[https://forum.hdfgroup.org/t/hermes-0-6-0-beta-release/9704][Hermes 0.6.0-beta release]]
+- Highlight: Hermes HDF5 Virtual File Driver
+- [[https://github.com/HDFGroup/hermes/tree/master/adapter/vfd][GitHub]]
+**** [[https://forum.hdfgroup.org/t/release-of-hdf5-1-12-2-newsletter-183/9702][HDF5 1.12.2 is out]]
+- Parallel compression improvements
+- Support for macOS Apple M1 11.6 Darwin 20.6.0 arm64 with Apple clang version 12.0.5.
+- The shortened versions of the long options (ex: =--datas= instead of
+  =--dataset=) have been removed from all the tools.
+**** [[https://forum.hdfgroup.org/t/sharing-experience-on-hdf5-vol-connectors-development-and-maintenance-public-talk/9749][Sharing Experience on HDF5 VOL Connectors Development and Maintenance]]
+- Wednesday, May 11, 1:00-2:00 PM ET
+- Part of the [[https://www.exascaleproject.org/event/ecp-community-bof-days-2022/][ECP 2022 Community BOF days]]
+- [[https://exascaleproject.zoomgov.com/meeting/register/vJIsdOyvrjorHa4v2i8Chiza1GLF1W1yCzc][Open registration]]
+
+*** Forum
+**** [[https://forum.hdfgroup.org/t/select-mulptiple-hyperslabs-in-some-order/9706][Select mulptiple hyperslabs in some order]]
+- (Hyperslab) Selections can be combined via set-theoretic operations (union,
+  intersection, ...)
+- There's an implicit (C or Fortran) ordering of the selected grid points, i.e.,
+  (within commutativity rules of set theory) the order of those operations
+  doesn't matter
+- Q :: What about point selections?
+**** [[https://forum.hdfgroup.org/t/hdf5-vs-hf-file/9734][=hdf5= vs =hf= file]]
+- Naming conventions (extensions) for HDF5 files
+- Technically, it doesn't matter
+- Tools, such as [[https://www.hdfgroup.org/downloads/hdfview/][HDFView]], use search filters, e.g., =*.h5= and =*.hdf5=
+**** [[https://forum.hdfgroup.org/t/hdf5-write-perf-regular-api-vs-direct-chunk-on-uncompressed-dataset/9731][HDF5 write perf - Regular API vs Direct Chunk on uncompressed dataset]]
+- =h5py= has ~write_direct~ and ~write_direct_chunk~
+  - About a 50% difference in performance. Why?
+
+
+** Tips, tricks, & insights
+
 * Clinic 2022-04-26
 ** Your questions
 - Q :: ???
