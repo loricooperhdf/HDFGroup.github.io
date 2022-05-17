@@ -3,6 +3,81 @@
 #+OPTIONS: num:nil H:2 toc:t
 #+SETUPFILE: ../themes/theme-readtheorg.setup
 
+* Clinic 2022-05-17
+** Your questions
+- Q :: Element order preservation in point selections?
+- Q :: ???
+
+** Last week's highlights
+*** Announcements
+**** 2022 European HDF5 Users Group (HUGE)
+- [[https://www.hdfgroup.org/hug/europeanhug22/][Website]]
+- *Registration for in-person attendance is now closed.*
+- You can still register for online attendance. Please do!
+- May 31 - June 2, 2022
+- Face-to-face/online hybrid hosted at [[https://www.iter.org/][ITER]] in Saint Paul-lez-Durance, France
+
+**** [[https://www.hdfgroup.org/2022/05/release-of-hdfview-3-2-0-newsletter-184/][Release of HDFView 3.2.0]]
+- SWMR support (configurable refresh timer)
+- Display and edit attribute data in table views, the same way as datasets
+- Read and display non-standard floating-point numbers
+**** [[https://www.hdfgroup.org/2022/05/hdf5-vol-status-report-exascale-computing-project/][HDF5 VOL Status Report – Exascale Computing Project]]
+- Includes early DAOS VOL connector performance numbers
+**** [[https://hdfgroup.us14.list-manage.com/track/click?u=1e990656e9cfaeda233d0858d&id=ff720f0edb&e=26e5bab6bd][HSDS Data Streaming Arrives]]
+- 100 MB (configurable) cap on HTTP request size
+  - Otherwise =413 - Payload Too Large= error
+  - Increasing the =max_request_size= can help only if HSDS Docker container or
+    Kubernetes pod has sufficient RAM
+  - Now what? /Streaming to the rescue!/
+    - Let clients see bytes returning from the server while that is still
+      processing the tail chunks in the selection
+*** Forum
+**** [[https://forum.hdfgroup.org/t/hdf5-write-perf-regular-api-vs-direct-chunk-on-uncompressed-dataset/9731][HDF5 write perf - Regular API vs Direct Chunk on uncompressed dataset]]
+- We provided a little [[https://dbkt.hdfgroup.org/original/2X/f/ff98069f1dbae5568a38855eac72be49a83a8593.c][test program]] to eliminate as many layers as possible
+- The user ran the tests and obtained these results (seconds via
+  =clock_gettime(CLOCK_PROCESS_CPUTIME_ID,.)=):
+  | -                          | direct chunk | hyperslab chunk | hyperslab contiguous |
+  |----------------------------+--------------+-----------------+----------------------|
+  | regular                    |     1.631005 |        3.368258 |             2.069583 |
+  | never fill                 |     1.632858 |        1.641345 |             2.069205 |
+  | latest fmt                 |     1.643421 |        3.233817 |             2.068250 |
+  | never fill + latest format |     1.633859 |        1.611976 |             2.029573 |
+- Why is =hyperslab contiguous= consistently 25% slower than the chunky versions?
+  - Perhaps some extra buffer copying going on here??? TBD
+
+**** [[https://forum.hdfgroup.org/t/failures-with-insufficient-disk-space/9712][Failures with insufficient disk space]]
+- The HDF5 library state appears to be inconsistent after a disk-full error
+  (=ENOSPC=)
+  - What's the state of a file in that situation? (Undefined)
+    - Recovering to the last sane state is harder than it may seem, if not
+      impossible
+  - But things appear to be worse: The library crashes (assertion failure) on
+    shutdown
+    - Open handle accounting is screwed up
+- See the reproducer in last week's notes!
+- Update :: It appears that the problem might be Windows-specific.
+  - @Dana tried to reproduce the problem under Linux and couldn't
+  - Nobody has come forward so far with a non-Windows error report
+
+**** [[https://forum.hdfgroup.org/t/corrupted-file-due-to-shutdown/9658][Corrupted file due to shutdown]]
+#+begin_quote
+Thank you for all your help and all of the very useful pointers. I managed to
+recover the data in the file. I did not get all the names of the datasets but
+with the mentioned attribute i was able to reconstruct the data.
+
+Thank you and all the best,
+Christian
+#+end_quote
+
+- Great!
+- A lost business opportunity =;-)=, but also a sign that skill, determination,
+  and documentation go a long way
+- Our way always was and will be: _Open-Source Software and Specifications_
+
+** Tips, tricks, & insights
+Next time...
+
+
 * Clinic 2022-05-10
 ** Your questions
 - Q :: ???
