@@ -92,6 +92,9 @@
         - You can store both iteration orders, if that's what you need
 - _Food for thought_: Sometimes HDF5 is about finding balance between appearance
   and performance
+- We will have a few HEP (High-Energy Physics)-themed presentations at HUG
+  Europe 2022
+  - You have been warned =;-)=
 
 * Clinic 2022-05-17
 ** Your questions
