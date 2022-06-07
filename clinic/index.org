@@ -3,6 +3,46 @@
 #+OPTIONS: num:nil H:2 toc:t
 #+SETUPFILE: ../themes/theme-readtheorg.setup
 
+* Clinic 2022-06-07
+** Your questions
+- Q :: ???
+
+** Last week's highlights
+*** Announcements
+**** [[https://forum.hdfgroup.org/t/release-of-hdf5-1-10-9-newsletter-186/9808][Release of HDF5-1.10.9]]
+- Parallel compression improvements
+- Doxygen-based User Guide draft
+- HDF5 is now tested and supported on macOS 11.6 M1
+- VS 2015 will no longer be supported starting in 2023
+**** [[https://forum.hdfgroup.org/t/vfd-swmr-beta-2-release/9796][VFD SWMR beta 2 release]]
+- Testers wanted
+**** [[https://forum.hdfgroup.org/t/european-hdf5-user-group-hug-meeting-2022-the-hdf-group/9518][2022 European HDF5 Users Group]]
+- Was a HUGE success
+- Thanks to Lana Abadie of ITER, Andy Gotz of ESRF, and Lori Cooper of HDFG
+- Stay tuned for the presentation videos!
+  - They will be posted on the [[https://www.youtube.com/channel/UCRhtsIZquL3r-zH-R-r9-tQ][YouTube channel]]
+*** Forum
+**** [[https://forum.hdfgroup.org/t/make-hdfview-available-on-flathub-org/9476][Make HDFView available on Flathub.org]]
+- There's been some [[https://github.com/t-chaik/flathub/tree/HDFView][progress]]
+  #+begin_quote
+  Mostly working except filesystem portal integration, which makes the entire
+  thing pretty useless for now, the code may need patching…
+  #+end_quote
+  - Not sure what that means
+**** [[https://forum.hdfgroup.org/t/hdf5-write-perf-regular-api-vs-direct-chunk-on-uncompressed-dataset/9731][HDF5 write perf - Regular API vs Direct Chunk on uncompressed dataset]]
+- Samuel posted =pprof= [[https://forum.hdfgroup.org/t/hdf5-write-perf-regular-api-vs-direct-chunk-on-uncompressed-dataset/9731/27][profiles]]
+  - Need time to digest
+** Tips, tricks, & insights
+*** I can't create a compound datatype with XXX (too many) fields
+- *Cause:* size limitation of the datatype message
+- _Possible solutions_:
+  1. Break up the compound type into multiple compound types
+  2. Use a group and make each field a dataset
+  3. Use an opaque type and store metadata to parse
+  4. Use multiple (extendible) 2D datasets
+     - One dataset for each field datatype
+     - Keep the field metadata (names, order) in attributes
+
 * Clinic 2022-05-24
 ** Your questions
 - Q :: Element order preservation in point selections?
