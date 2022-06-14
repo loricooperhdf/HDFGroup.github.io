@@ -2,6 +2,101 @@
 #+STARTUP: overview
 #+OPTIONS: num:nil H:2 toc:t
 #+SETUPFILE: ../themes/theme-readtheorg.setup
+* Clinic 2022-06-14
+** Your questions
+- Q :: ???
+
+** Last week's highlights
+*** Announcements
+**** [[https://forum.hdfgroup.org/t/hermes-0-7-0-beta-release/9853][Hermes 0.7.0-beta release]]
+- Bug fixes
+- [[https://developers.google.com/optimization][Google OR tools]] replaced by [[https://www.gnu.org/software/glpk/][GLPK]]
+**** [[https://forum.hdfgroup.org/t/vfd-swmr-beta-2-release/9796][VFD SWMR beta 2 release]]
+- Testers wanted
+**** HUG 2022 Europe videos available
+- [[https://www.hdfgroup.org/hug/europeanhug22/agenda/][Agenda]] and [[https://youtube.com/playlist?list=PLPyhR4PdEeGbKtlUy2yLe6OPhj_iGHP1Y][YouTube playlist]]
+- Thanks to Lori Cooper
+*** Forum
+**** [[https://forum.hdfgroup.org/t/multithread-writing-to-two-files/9850][Multithread Writing to two files]]
+#+begin_quote
+Reading Image data from single file and writing to two h5 files using
+threads. Getting run time error doing this. What could be the reason ?
+#+end_quote
+- It turns out the user is using high-level library (=hdf5_hl.h=) functions,
+  e.g., [[https://portal.hdfgroup.org/display/HDF5/H5IM_MAKE_IMAGE_24BIT][=H5IMmake_image_24bit=]]
+- These functions are *not* thread-safe, even if the underlying HDF5 library
+  was built w/ thread-safety enabled
+- *Workaround:* Use the thread-safe core library and follow the specification,
+  such as [[https://docs.hdfgroup.org/hdf5/develop/_i_m_g.html][HDF5 Image and Palette Specification Version 1.2]]
+**** [[https://forum.hdfgroup.org/t/h5rdestroy-when-stored/9860][=H5Rdestroy= when stored]]
+#+begin_quote
+If a reference is stored as an attribute to an object, should =H5Rdestroy= still
+be called?
+#+end_quote
+- Yes
+**** [[https://forum.hdfgroup.org/t/fake-it-till-you-make-it-gans-with-hdf5/9857][Fake it till you make it: GANs with HDF5]]
+- Never the same HDF5 dataset (value) twice!
+- A clever combination of [[https://github.com/lucasvr/hdf5-udf][HDF5-UDF]] and [[https://en.wikipedia.org/wiki/Generative_adversarial_network][generative adversarial networks (GAN)]]
+  - Competition between two neural networks a (synthetic-) data generator and a
+    discriminator
+- TensorFlow Keras API supports [[https://www.tensorflow.org/guide/keras/save_and_serialize#keras_h5_format][storing trained model weights in HDF5 files]]
+- We can collocate the HDF5-UDF to synthesize data with the generator model
+  - Reading from this dataset creates a new sample every time
+
+** Tips, tricks, & insights
+*** HDF5 command-line tools and HDF5 path names w/ special characters
+- Example: =/equilibrium/time_slice[]&profiles_2d[]&theta_SHAPE=
+- We have a problem!
+**** =h5ls=
+- First try
+  #+begin_example
+  gerd@penguin:~$ h5ls equilibrium.h5/equilibrium/time_slice[]&profiles_2d[]&theta_SHAPE
+  [2] 8959
+  [3] 8960
+  -bash: profiles_2d[]: command not found
+  -bash: theta_SHAPE: command not found
+  [3]+  Exit 127                profiles_2d[]
+  gerd@penguin:~$ time_slice[]**NOT FOUND** ^C
+  [2]+  Exit 1                  h5ls equilibrium.h5/equilibrium/time_slice[]
+  gerd@penguin:~$
+  #+end_example
+- Double quotes to the rescue
+  #+begin_example
+  gerd@penguin:~$ h5ls "equilibrium.h5/equilibrium/time_slice[]&profiles_2d[]&theta_SHAPE"
+  time_slice[]&profiles_2d[]&theta_SHAPE Dataset {107/Inf, 3/Inf, 2/Inf}
+  #+end_example
+**** =h5dump=
+- First attempt
+  #+begin_example
+gerd@penguin:~$ h5dump -pH -d "/equilibrium/vacuum_toroidal_field&b0" equilibrium.h5
+HDF5 "equilibrium.h5" {
+DATASET "/equilibrium/vacuum_toroidal_field&b0" {
+   DATATYPE  H5T_IEEE_F64LE
+   DATASPACE  SIMPLE { ( 107 ) / ( H5S_UNLIMITED ) }
+   STORAGE_LAYOUT {
+      CHUNKED ( 107 )
+      SIZE 656 (1.305:1 COMPRESSION)
+   }
+   FILTERS {
+      COMPRESSION DEFLATE { LEVEL 1 }
+   }
+   FILLVALUE {
+      FILL_TIME H5D_FILL_TIME_IFSET
+      VALUE  -9e+40
+   }
+   ALLOCATION_TIME {
+      H5D_ALLOC_TIME_INCR
+   }
+}
+}
+  #+end_example
+- Second attempt
+  #+begin_example
+  gerd@penguin:~$ ~/packages/bin/h5dump -pH -d "/equilibrium/time_slice[]&profiles_2d[]&z_SHAPE" equilibrium.h5
+  HDF5 "equilibrium.h5" {h5dump error: unable to get link info from "/equilibrium/time_slice[]&profiles_2d"}
+  #+end_example
+
+/Not good./ Need to investigate.
 
 * Clinic 2022-06-07
 ** Your questions
