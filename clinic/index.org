@@ -2,6 +2,62 @@
 #+STARTUP: overview
 #+OPTIONS: num:nil H:2 toc:t
 #+SETUPFILE: ../themes/theme-readtheorg.setup
+
+* Clinic 2022-06-21
+** Your questions
+- Q :: ???
+
+** Last week's highlights
+*** Announcements
+**** [[https://forum.hdfgroup.org/t/vfd-swmr-beta-2-release/9796][VFD SWMR beta 2 release]]
+- Testers wanted
+**** [[https://forum.hdfgroup.org/t/release-of-hdfview-3-1-4-newsletter-186-the-hdf-group/9874][HDFView 3.1.4 released]]
+- Some confusion around versioning
+  - HDFView 3.2.x series is based on the HDF5 1.12.x releases.
+  - HDFView 3.1.x series is based on the HDF5 1.10.x releases.
+  - HDFView 3.3.x series will be based on the future 1.14.x releases.
+- Known issue in 3.2.0: HDFView crashes on an attribute of VLEN of REFERENCE
+*** Forum
+**** [[https://forum.hdfgroup.org/t/check-if-two-identifiers-refer-to-the-same-object/7160][Check if two identifiers refer to the same object]]
+- [[https://docs.hdfgroup.org/hdf5/develop/group___h5_i.html][=H5I=]] module
+- Identifiers are transient
+- Pre-defined and user-defined identifier types
+- Pre-defined IDs identify HDF5 objects but also VFL and VOL plugins, etc.
+  - See [[https://docs.hdfgroup.org/hdf5/develop/_h5_ipublic_8h.html#a13afe14178faf81b89fa2167e7ab832b][=H5I_type_t=]]
+- [[https://docs.hdfgroup.org/hdf5/develop/group___h5_i_u_d.html][User-defined ID]] types must be first registered w/ the library before use
+  - Certain functions are only available for user-defined IDs
+    #+begin_example
+   [1] H5Iobject_verify: Object atom/Unable to find ID group information
+       cannot call public function on library type
+    #+end_example
+- Assuming pre-defined HDF5 IDs for objects, use [[https://docs.hdfgroup.org/hdf5/develop/group___h5_o.html#title4][=H5Oget_info=]] to retrieve a
+  structure that contains an address or token which can then be compared
+**** Issue w/ [[https://forum.hdfgroup.org/t/memory-backed-files/9878][memory backed files]]
+- Workflow:
+  1. Create a memory-backed file (w/ core VFD)
+  2. Make changes
+  3. Get a file image (in memory) and share w/ another process (shared mem. or
+     network)
+  4. Create another memory-backed file from this file image
+- Should work just fine w/ =H5P[g,s]et_file_image=
+**** [[https://forum.hdfgroup.org/t/multithread-writing-to-two-files/9850][Multithread Writing to two files]]
+- Some users don't know how to help themselves.
+
+** Tips, tricks, & insights
+*** SWMR (old) and compression "issues"
+- Reports:
+  - [[https://forum.hdfgroup.org/t/bug-compression-doesnt-compress-data-on-swmr/5280][Compression doesn’t compress data on SWMR]]
+  - [[https://forum.hdfgroup.org/t/swmr-with-compression-fails-to-compress/8428][SWMR with Compression Fails to Compress]]
+- Elena answered in both cases
+- /It's not a bug but a "feature"/
+- File space recycling is disabled in SWMR mode
+- Every time a dataset chunk is flushed, new space is allocated in the file
+- How to alleviate?
+  - Keep the chunk in cache & flush only once it's baked
+  - Don't compress edge chunks
+- *Bigger picture:* We need a _feature (in-)compatibility matrix_! Long overdue!
+- Question: How does the new SWMR implementation behave?
+
 * Clinic 2022-06-14
 ** Your questions
 - Q :: ???
