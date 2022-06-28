@@ -3,6 +3,61 @@
 #+OPTIONS: num:nil H:2 toc:t
 #+SETUPFILE: ../themes/theme-readtheorg.setup
 
+* Clinic 2022-06-27
+** Your questions
+- Q :: ???
+
+** Last week's highlights
+*** Announcements
+**** [[https://forum.hdfgroup.org/t/vfd-swmr-beta-2-release/9796][VFD SWMR beta 2 release]]
+- Testers wanted
+**** [[https://www.hdfgroup.org/2022/06/2022-hdf5-release-schedule/][2022 HDF5 Release Schedule]] announced
+[[file:./img/release-schedule.png]]
+- HDF5 1.8.x and 1.12.x are coming to an end (1.8.23, 1.12.3)
+- HDF5 1.10.x and 1.14.x are here to stay for a while
+  - Performance work over the Summer
+  - HDF5 1.13.2: Selection I/O, VFD SWMR, Onion VFD (late July/early August)
+  - HDF5 1.13.3: Multi-dataset I/O, Subfiling (late September/early October)
+  - HDF5 1.14.0 in late December/early January
+**** We are hiring
+- [[https://forum.hdfgroup.org/t/director-of-software-engineering-the-hdf-group/9892][Director of Software Engineering]]
+- [[https://forum.hdfgroup.org/t/chief-hdf5-software-architect-the-hdf-group/9893][Chief HDF5 Software Architect]]
+- Interested in working for The HDF Group? [[mailto:jobs@hdfgroup.org][/Send us your resume!/]]
+**** [[https://www.hdfgroup.org/2022/06/speed-up-cloud-access-using-multiprocessing/][Speed up cloud access using multiprocessing!]] by John Readey (Mr. HSDS)
+#+begin_quote
+Each file is slightly more than 1 TB in size, so downloading the entire
+collection would take around a month with a 80 Mbit/s connection. Instead, let’s
+suppose we need to retrieve the data for just one location index, but for the
+entire time range 2007-2014. How long will this take?
+#+end_quote
+
+*** Forum
+**** [[https://forum.hdfgroup.org/t/how-efficient-is-hdf5-for-data-retrieval-as-opposed-to-data-storage/6362][How efficient is HDF5 for data retrieval as opposed to data storage?]]
+#+begin_quote
+I would like to a keyed 500GB table into HDF5, and then then retrieve rows
+matching specific keys.
+
+For an HDF5 file, items like all the data access uses an integer “row” number,
+so seems like I would have to implement a 'key to row number map" outside of
+HDF5.
+
+Isn’t retrieval more efficient with a distributed system like Spark which uses
+HDFS?
+#+end_quote
+
+**** [[https://forum.hdfgroup.org/t/hdf5-1-10-1-12-dramatic-drop-of-performance-vs-1-8/9896][HDF5 1.10, 1.12 dramatic drop of performance vs 1.8]]
+
+**** Issue w/ [[https://forum.hdfgroup.org/t/memory-backed-files/9878][memory backed files]]
+
+** Tips, tricks, & insights
+*** SWMR (old) and compression "issues" - take 2
+- Free-space managment is disabled in the original SWMR implementation
+- Can lead to file bloat when compression is enabled & overly aggressive
+  flushing
+- **Question:** How does the new SWMR VFD implementation behave?
+  - Untested, but should work in principle
+- There is an updated [[https://github.com/HDFGroup/hdf5/blob/feature/vfd_swmr/doc/VFD_SWMR_RFC_200916.pdf][VFD SWMR RFC]]
+
 * Clinic 2022-06-21
 ** Your questions
 - Q :: ???
