@@ -45,9 +45,39 @@ Isn’t retrieval more efficient with a distributed system like Spark which uses
 HDFS?
 #+end_quote
 
+- Too open-ended question w/o additional context
+- There are no querying or indexing capabilities built into HDF5
+- Can something like this be implemented on top of HDF5? It's been done many
+  times, /for specific requirements./
+- Are other tools more efficient? Maybe. Maybe not.
+
 **** [[https://forum.hdfgroup.org/t/hdf5-1-10-1-12-dramatic-drop-of-performance-vs-1-8/9896][HDF5 1.10, 1.12 dramatic drop of performance vs 1.8]]
+- Profiling ([[https://github.com/gperftools/gperftools][gperftools]]) revealed
+  #+begin_quote
+  85% of the time is spent in =H5Fget_obj_count=.
+  #+end_quote
+- The user correctly inferred that this is related to frequent
+  =h5open_f/h5close_f=, and [[https://forum.hdfgroup.org/t/h5f-get-obj-count-f-extremely-buggy/9678][an issue]] we covered in the past
+  - Bug in =h5f_get_obj_count_f= & fixed in [[https://github.com/HDFGroup/hdf5/pull/1657][PR#1657]] by Scot.
+- After applying that fix performance is on par w/ 1.8
+- Happy ending! (almost)
+  #+begin_example
+  h5stat output:
+
+  ...
+  Summary of file space information:
+  File metadata: 1201344 bytes
+  Raw data: 99260 bytes
+  Amount/Percent of tracked free space: 0 bytes/0.0%
+  Unaccounted space: 17392 bytes
+  Total space: 1317996 bytes
+  #+end_example
+  - Greater than 1:10 data to metadata ratio
+    - Usually means trouble
+  - Culprit: chunk size of 1
 
 **** Issue w/ [[https://forum.hdfgroup.org/t/memory-backed-files/9878][memory backed files]]
+- Still puzzled
 
 ** Tips, tricks, & insights
 *** SWMR (old) and compression "issues" - take 2
