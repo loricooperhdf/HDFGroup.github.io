@@ -3,6 +3,159 @@
 #+OPTIONS: num:nil H:2 toc:t
 #+SETUPFILE: ../themes/theme-readtheorg.setup
 
+* Clinic 2022-07-05
+** Your questions
+- Q :: ???
+
+** Last week's highlights
+*** Announcements
+**** [[https://forum.hdfgroup.org/t/vfd-swmr-beta-2-release/9796][VFD SWMR beta 2 release]]
+- Testers wanted
+*** Forum
+**** [[https://forum.hdfgroup.org/t/hdf5-1-10-1-12-dramatic-drop-of-performance-vs-1-8/9896][HDF5 1.10, 1.12 dramatic drop of performance vs 1.8]]
+- Recap: =h5open_f/h5close_f= overhead, chunk size 1 issue...
+- User provided a nice table
+  | *chunk size* | *data* (bytes) | *metadata* (bytes) |
+  |--------------+----------------+--------------------|
+  |            1 |         120000 |            1128952 |
+  |           50 |         120000 |              26456 |
+  |         2048 |         122880 |               3400 |
+  |       131072 |         524288 |               3400 |
+- No compression
+- Steven Varga suggested that
+  1. The application might benefit from a dedicated I/O handler, and he provided
+     a multithreaded queue example
+  2. Data generationn can be decoupled from recording via ZeroMQ, and he
+     provided an example with the generator (sender) in Fortran and the recorder
+     (receiver) in C
+**** Issue w/ [[https://forum.hdfgroup.org/t/memory-backed-files/9878][memory backed files]]
+- We are able to reproduce the issue!
+- Slowdown in =H5Oget_info= because of =H5O_INFO_ALL= option
+- The difference between the in-file and in-memory image sizes can be explained
+  by incremental (re-)allocation in the core VFD
+- The real issue is this:
+  #+begin_example
+  HDF5-DIAG: Error detected in HDF5 (1.13.2-1) thread 0:
+  #000: H5F.c line 837 in H5Fopen(): unable to synchronously open file
+    major: File accessibility
+    minor: Unable to open file
+  #001: H5F.c line 797 in H5F__open_api_common(): unable to open file
+    major: File accessibility
+    minor: Unable to open file
+  #002: H5VLcallback.c line 3686 in H5VL_file_open(): open failed
+    major: Virtual Object Layer
+    minor: Can't open object
+  #003: H5VLcallback.c line 3498 in H5VL__file_open(): open failed
+    major: Virtual Object Layer
+    minor: Can't open object
+  #004: H5VLnative_file.c line 128 in H5VL__native_file_open(): unable to open file
+    major: File accessibility
+    minor: Unable to open file
+  #005: H5Fint.c line 1964 in H5F_open(): unable to read superblock
+    major: File accessibility
+    minor: Read failed
+  #006: H5Fsuper.c line 450 in H5F__super_read(): unable to load superblock
+    major: File accessibility
+    minor: Unable to protect metadata
+  #007: H5AC.c line 1396 in H5AC_protect(): H5C_protect() failed
+    major: Object cache
+    minor: Unable to protect metadata
+  #008: H5C.c line 2368 in H5C_protect(): can't load entry
+    major: Object cache
+    minor: Unable to load metadata into cache
+  #009: H5C.c line 7315 in H5C__load_entry(): incorrect metadata checksum after all read attempts
+    major: Object cache
+    minor: Read failed
+  #+end_example
+- It appears that the superblock checksum (in versions 2, 3) is not correctly
+  set or updated
+- Maybe this is a corner case of the use of HDF5 file image w/ core VFD?
+  Investigating...
+**** [[https://forum.hdfgroup.org/t/authenticated-aws-s3/9924][Authenticated AWS S3]]
+- Use of the read-only S3 VFD w/ Python?
+#+begin_quote
+The ros3 driver is very slick. It works great for public h5 files.
+
+I am trying to perform a read of an H5 file using ros3 that requires
+authentication credentials.  I have been successful in using h5ls/h5dump in
+accessing an h5 file against an authenticated AWS S3 call using --vfd=ros3 and
+--s3-cred=(<region,<key_id>,<key_secret>).
+
+However, I cannot get this to work with h5py.
+#+end_quote
+- The user answered his on question, =h5py= does support this VFD and AWS
+  credentials as documented [[https://docs.h5py.org/en/stable/high/file.html#file-drivers][here]]
+- He also commented that this is not limited to AWS S3, but also works with
+  other S3-compatible storage options
+- And he's looking for [[https://forum.hdfgroup.org/t/hsds-on-google-cloud-platform/9925][HSDS on GCP (Google Cloud)]]
+
+** Tips, tricks, & insights
+*** What others are doing with HDF5
+- Subscribe for alerts on [[https://scholar.google.com/][Google Scholar]]
+  - Alert query :: =hdf5=
+  - Email :: ...
+  - Type :: Most relevant results
+- You will get 2-4 emails a week with about 6-10 citations
+**** Recent highlights
+- [[https://www.osti.gov/biblio/1867160][Fission Matrix Processing Using the MCNP6.3 HDF5 Restart File]]
+  - See the Wikipedia article for [[https://en.wikipedia.org/wiki/Monte_Carlo_N-Particle_Transport_Code#:~:text=Monte%20Carlo%20N%2DParticle%20Transport%20(MCNP)%20is%20a%20general,by%20Los%20Alamos%20National%20Laboratory.][Monte Carlo N-Particle Transport Code]]
+- [[https://sdm.lbl.gov/~sbyna/research/papers/2022/2022-FAST-WIP-Posters-ProvIO-Abstract.pdf][Towards A Practical Provenance Framework for Scientific Data on HPC Systems]]
+  #+begin_quote
+  So we derive an I/O-centric provenance model, which enriches the W3C PROV
+  standard with a variety of concrete sub-classes to describe both the data
+  and the associated I/O operations and execution environments precisely with
+  extensibility.
+
+  Moreover, based on the unique provenance model, we are building a practical
+  prototype which includes three major components: (1) Provenance Tracking for
+  capturing diverse I/O operations; (2) Provenance Storage for persisting the
+  captured provenance information as standard RDF triples; (3) User Engine
+  for querying and visualizing provenance.
+  #+end_quote
+- [[http://www.cs.iit.edu/~scs/assets/files/stimulus2022.pdf][Stimulus: Accelerate Data Management for Scientific AI applications in HPC]]
+  #+begin_quote
+  ... a lack of support for scientific data formats in AI frameworks.  We need a
+  cohesive mechanism to effectively integrate at scale complex scientific data
+  formats such as HDF5, PnetCDF, ADIOS2, GNCF, and Silo into popular AI
+  frameworks such as TensorFlow, PyTorch, and Caffe. To this end, we designed
+  Stimulus, a data management library for ingesting scientific data effectively
+  into the popular AI frameworks.  We utilize the StimOps functions along with
+  StimPack abstraction to enable the integration of scientific data formats
+  with any AI framework. The evaluations show that Stimulus outperforms several
+  large-scale applications with different use-cases such as Cosmic Tagger
+  (consuming HDF5 dataset in PyTorch), Distributed FFN (consuming HDF5 dataset
+  in TensorFlow), and CosmoFlow (converting HDF5 into TFRecord and then
+  consuming that in TensorFlow) by 5.3x, 2.9x, and 1.9x respectively with ideal
+  I/O scalability up to 768 GPUs on the Summit supercomputer. Through Stimulus,
+  we can portably extend existing popular AI frameworks to cohesively support
+  any complex scientific data format and efficiently scale the applications on
+  large-scale supercomputers.
+  #+end_quote
+- [[https://meetingorganizer.copernicus.org/EGU22/EGU22-11201.html][DIARITSup: a framework to supervise live measurements, Digital Twins modelscomputations and predictions for structures monitoring.]]
+  #+begin_quote
+  DIARITSup is a chain of various softwares following the concept of ”system of
+  systems”. It interconnects hardware and software layers dedicated to in-situ
+  monitoring of structures or critical components. It embeds data assimilation
+  capabilities combined with specific Physical or Statistical models like
+  inverse thermal and/or mechanical ones up to the predictive ones. It aims at
+  extracting and providing key parameters of interest for decision making
+  tools. Its framework natively integrates data collection from local sources
+  but also from external systems. DIARITSup is a milestone in our roadmap
+  for SHM Digital Twins research framework. Furthermore, it intends providing
+  some useful information for maintenance operations not only for surveyed
+  targets but also for deployed sensors.
+
+  Meanwhile, a recorder manage the recording of all data and metadata in the
+  Hierarchical Data Format (HDF5). HDF5 is used to its full potential with its
+  Single-Writer-Multiple-Readers feature that enables a graphical user interface
+  to represent the saved data in real-time, or the live computation of SHM
+  Digital Twins models for example. Furthermore, the flexibility of HDF5 data
+  storage allows the recording of various type of sensors such as punctual
+  sensors or full field ones.
+  #+end_quote
+- It's impossible to keep up, but always a great source of inspiration!
+
+*** Next time: datatype conversions
 * Clinic 2022-06-27
 ** Your questions
 - Q :: ???
