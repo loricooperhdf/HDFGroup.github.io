@@ -3,6 +3,153 @@
 #+OPTIONS: num:nil H:2 toc:t
 #+SETUPFILE: ../themes/theme-readtheorg.setup
 
+* Clinic 2022-07-12
+** Your questions
+- Q :: ???
+
+** Last week's highlights
+*** Announcements
+**** [[https://www.hdfgroup.org/2022/07/deep-dive-hsds-container-types/][Deep Dive: HSDS Container Types]]
+- New blog post by Mr. HSDS (John Readey)
+**** [[https://forum.hdfgroup.org/t/webinar-announcement-an-introduction-to-hdf5-for-hpc-data-models-analysis-and-performance/9947][Webinar Announcement: An Introduction to HDF5 for HPC Data Models, Analysis, and Performance]]
+- Presented by The HDF Group's one and only Scot Breitenfeld
+- [[https://events.cels.anl.gov/event/277/][Register here!]]
+**** [[https://forum.hdfgroup.org/t/vfd-swmr-beta-2-release/9796][VFD SWMR beta 2 release]]
+- Testers wanted
+
+*** Forum
+It was all quiet on the forum. What happened? Everybody must be happy, I
+guess...
+
+** Tips, tricks, & insights
+*** HDF5-style datatype conversion
+- *Use case:* A lot of data coming from devices in physical experiments are
+  bitfields. To be useful for analysts, the data needs to be converted to
+  engineering types and units. Does that mean we always must store 2 or more
+  data copies?
+  - There is no intrinsic reason to have multiple copies, but there might be
+    other reasons, e.g., performance, to maintain multiple copies.
+  - How do we pull this off? Filters? (No! Same datatype...)
+    - /Datatype transformations!/
+- *Example:* Use an in-memory bitfield representation and store as a compound w/
+  two fields
+- =Code=
+  #+begin_src C
+  #include "hdf5.h"
+
+  #include <assert.h>
+  #include <stdint.h>
+  #include <stdio.h>
+  #include <stdlib.h>
+
+  // our compound destination type in memory
+  typedef struct
+  {
+    uint16_t low;
+    uint16_t high;
+  } low_high_t;
+
+  // our conversion function
+  // HACK: in a production version, you would inspect SRC_ID and DST_ID, etc.
+  herr_t bits2cmpd(hid_t src_id, hid_t dst_id, H5T_cdata_t *cdata, size_t nelmts,
+                   size_t buf_stride, size_t bkg_stride, void *buf, void *bkg,
+                   hid_t dxpl)
+  {
+    herr_t retval = EXIT_SUCCESS;
+
+    switch (cdata->command)
+    {
+    case H5T_CONV_INIT:
+      printf("Initializing conversion function...\n");
+      // do non-trivial initialization here
+      break;
+    case H5T_CONV_CONV:
+      printf("Converting...\n");
+      // the conversion function simply splits and swaps bitfield halves
+      low_high_t* ptr = (low_high_t*) buf;
+      for (size_t i = 0; i < nelmts; ++i)
+      {
+        uint16_t swap = ptr[i].low;
+        ptr[i].low = ptr[i].high;
+        ptr[i].high = swap;
+      }
+      break;
+    case H5T_CONV_FREE:
+      printf("Finalizing conversion function...\n");
+      // do non-trivial finalization here
+      break;
+    default:
+      break;
+    }
+
+    return retval;
+  }
+
+  int main()
+  {
+    int retval = EXIT_SUCCESS;
+
+    // in-memory bitfield datatype
+    hid_t btfd = H5T_NATIVE_B32;
+
+    // compound of two unsigned shorts
+    hid_t cmpd = H5Tcreate(H5T_COMPOUND, 4);
+    H5Tinsert(cmpd, "low", 0, H5T_NATIVE_USHORT);
+    H5Tinsert(cmpd, "high", 2, H5T_NATIVE_USHORT);
+
+    // register our conversion function w/ the HDF5 library
+    assert(H5Tregister(H5T_PERS_SOFT, "bitfield->compound", btfd, cmpd,
+                       &bits2cmpd) >= 0);
+    // notice that the conversion function is its own inverse
+    assert(H5Tregister(H5T_PERS_SOFT, "compound->bitfield", cmpd, btfd,
+                       &bits2cmpd) >= 0);
+
+    // sample data
+    uint32_t buf[32];
+    for (size_t i = 0; i < 32; ++i)
+    {
+      buf[i] = 1 << i;
+      printf("%ud\n", buf[i]);
+    }
+
+    // we could check the conversion in-memory, in-place
+    //H5Tconvert(btfd, cmpd, 32, buf, NULL, H5P_DEFAULT);
+
+    hid_t file = H5Fcreate("cmpd.h5", H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
+    hid_t fspace = H5Screate_simple(1, (hsize_t[]) {32}, NULL);
+    hid_t dset = H5Dcreate(file, "shorties", cmpd, fspace,
+                           H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+
+    // the datatype conversion function will be invoked as part of H5Dwrite
+    H5Dwrite(dset, btfd, H5S_ALL, H5S_ALL, H5P_DEFAULT, (void*) buf);
+
+    // the datatype conversion function will be invoked as part of H5Dread
+    H5Dread(dset, btfd, H5S_ALL, H5S_ALL, H5P_DEFAULT, (void*) buf);
+
+    for (size_t i = 0; i < 32; ++i)
+      printf("%ud\n", buf[i]);
+
+    H5Dclose(dset);
+    H5Sclose(fspace);
+    H5Fclose(file);
+
+    // housekeeping
+    assert(H5Tunregister(H5T_PERS_SOFT, "compound->bitfield", cmpd, btfd,
+                       &bits2cmpd) >= 0);
+    assert(H5Tunregister(H5T_PERS_SOFT, "bitfield->compound", btfd, cmpd,
+                       &bits2cmpd) >= 0);
+
+    H5Tclose(cmpd);
+
+    return retval;
+  }
+  #+end_src
+- Datatype conversions do what it says on the tin and sometimes are just what
+  you need
+- Don't confuse them with /filters/!
+  - With [[https://github.com/lucasvr/hdf5-udf][HDF5-UDF]] it is possible to implement datatype conversions via filters,
+    but at the expense of additional datasets
+
 * Clinic 2022-07-05
 ** Your questions
 - Q :: ???
