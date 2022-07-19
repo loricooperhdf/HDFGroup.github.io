@@ -3,6 +3,52 @@
 #+OPTIONS: num:nil H:2 toc:t
 #+SETUPFILE: ../themes/theme-readtheorg.setup
 
+* Clinic 2022-07-19
+** Your questions
+- Q :: ???
+
+** Last week's highlights
+*** Announcements
+**** [[https://forum.hdfgroup.org/t/webinar-announcement-an-introduction-to-hdf5-for-hpc-data-models-analysis-and-performance/9947][Webinar Announcement: An Introduction to HDF5 for HPC Data Models, Analysis, and Performance]]
+- Presented by The HDF Group's one and only Scot Breitenfeld
+- [[https://events.cels.anl.gov/event/277/][Register here!]]
+**** [[https://forum.hdfgroup.org/t/vfd-swmr-beta-2-release/9796][VFD SWMR beta 2 release]]
+- Testers wanted
+**** [[https://forum.hdfgroup.org/t/vscode-extension-for-hdf5/9769][VSCode extension for HDF5]]
+- Brief demo later
+
+*** Forum
+The week before last was quiet, but then it got hot...
+**** [[https://forum.hdfgroup.org/t/ros3-driver-breaks-randomly/9957][=ros3= driver breaks randomly]]
+- Not properly recovering from S3 read failures
+  - No retries
+- On Python, [[https://filesystem-spec.readthedocs.io/en/latest/][=fsspec=]] might be the better option for the time being
+**** [[https://forum.hdfgroup.org/t/memory-mapping-paging-via-hdf5-vfd/9052][Memory mapping / Paging via HDF5 & VFD?]]
+- Goes back to a HUG 2021 discussion
+- Maybe we don't need memory mapping API, but
+  #+begin_quote
+  What we really need is the ability to allocate space in the HDF5 file without
+  writing. (@kittisopikulm)
+  #+end_quote
+- Interesting idea
+**** [[https://forum.hdfgroup.org/t/possibility-of-backporting-h5dchunk-iter-to-1-12/9971][Possibility of backporting =H5Dchunk_iter= to 1.12?]]
+- 1.12 is nearing EOL
+- 1.10 might be a better target
+**** [[https://forum.hdfgroup.org/t/hdfview-on-windows-not-displaying-fixed-length-utf-8-string-correctly/9962][HDFView on Windows not displaying fixed length UTF-8 string correctly]]
+- Probably an HDFView bug
+**** [[https://forum.hdfgroup.org/t/virtual-datasets-in-hsds/9964][Virtual datasets in HSDS?]]
+- Not currently supported in HSDS, but...
+  - You can fake it via [[https://github.com/HDFGroup/hsds/blob/master/docs/design/single_object/SingleObject.md][=H5D_CHUNKED_REF_INDIRECT=]]
+**** [[https://forum.hdfgroup.org/t/implement-hdf5-in-eclipse-cdt-for-a-c-tool/9990][implement hdf5 in eclipse cdt for a c tool]] and [[https://forum.hdfgroup.org/t/eclipse-mingw-32-need-help/9991][eclipse mingw 32 need help]]
+- Are we failing developers?
+
+** Tips, tricks, & insights
+**** First look at the [[https://forum.hdfgroup.org/t/vscode-extension-for-hdf5/9769][VSCode extension for HDF5]]
+- If you don't have a local installation of VSCode, you can use [[https://github.com/features/codespaces][GitHub
+  Codespaces]] and run in a Web browser
+- Or roll your own w/ [[https://github.com/coder/code-server][=code-server=]] and run in the browser
+[[file:./img/VSCode-ext-hdf5.png]]
+
 * Clinic 2022-07-12
 ** Your questions
 - Q :: ???
