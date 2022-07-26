@@ -3,6 +3,48 @@
 #+OPTIONS: num:nil H:2 toc:t
 #+SETUPFILE: ../themes/theme-readtheorg.setup
 
+* Clinic 2022-07-26
+** Corrections
+- The VSCode extension for HDF5 /works/ with NetCDF-4 files
+  - I grabbed a netCDF-3 file. Duh!
+
+** Your questions
+- Q :: ???
+
+** Last week's highlights
+*** Announcements
+**** [[https://forum.hdfgroup.org/t/webinar-announcement-an-introduction-to-hdf5-for-hpc-data-models-analysis-and-performance/9947][Webinar Announcement: An Introduction to HDF5 for HPC Data Models, Analysis, and Performance]]
+- Presented by The HDF Group's one and only Scot Breitenfeld
+- Final boarding call: [[https://events.cels.anl.gov/event/277/][Register here!]]
+**** [[https://forum.hdfgroup.org/t/vfd-swmr-beta-2-release/9796][VFD SWMR beta 2 release]]
+- Testers wanted
+**** New blog post [[https://www.hdfgroup.org/2022/07/hsds-docker-images/][HSDS Docker Images]] by Mr. HSDS (John Readey)
+- America runs on Dunkin, HSDS runs on Docker...
+- DockerHub, container registries, Kubernetes,etc.
+
+*** Forum
+**** [[https://forum.hdfgroup.org/t/loking-for-an-hdf5-version-compatible-with-go1-9-2/10021][Looking for an hdf5 version compatible with go1.9.2]]
+- Go HDF5! =;-)=
+  - Old software...
+
+*** Engineering Corner
+- Featuring: Dana Robinson
+- [[https://forum.hdfgroup.org/t/what-do-you-want-to-see-in-hdf5-2-0/10003][What do you want to see in “HDF5 2.0”?]]
+  - Evolution not revolution
+  - "Lessons learned" release
+
+** Tips, tricks, & insights
+*** Little HDF5 helpers for ML
+- Use case: Tons of tiny image, audio, or video files
+  - Poor ML training I/O performance, especially against PFS
+  - Can't read w/o un-=tar=-ing (uncompressing)
+  - No parallel I/O
+- [[https://github.com/HDFGroup/tar2h5][=tar2h5=]] - convert Tape ARchives to HDF5 files
+  - Different optimizations
+    - Size optimization (compact datasets)
+    - Duplicate removal (SHA-1 checksum)
+    - Compression
+
 * Clinic 2022-07-19
 ** Your questions
 - Q :: ???
