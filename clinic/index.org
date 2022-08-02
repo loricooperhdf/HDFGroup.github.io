@@ -3,6 +3,105 @@
 #+OPTIONS: num:nil H:2 toc:t
 #+SETUPFILE: ../themes/theme-readtheorg.setup
 
+* Clinic 2022-08-02
+** Your questions
+- Q ::
+  #+begin_quote
+  On the tar to h5 converter: Does the (standard) compactor simply skip the >64K
+  tar file entries if ones are encountered (w/ log or error message), or must
+  they all conform to 64K limit?  Also, what was the typical range on the number
+  of files extracted/converted?  –Robert
+  #+end_quote
+- A :: Currently, the code will skip entries >64K, because the underlying
+  =H5Dcreate= will fail. (The logic and code can be much improved.) It's better
+  to first run =archive_checker_64k= and see if there are any size warnings.
+  The =h5compactor= and =h5shredder= were sucessfully run on TAR archives with
+  tens of millions of small images (<64K).
+** Last week's highlights
+*** Announcements
+**** Webinar recording "An Introduction to HDF5 for HPC Data Models, Analysis, and Performance" [[https://youtu.be/Mt_v3yqUhCo][posted]].
+**** [[https://forum.hdfgroup.org/t/webinar-announcement-the-hermes-buffer-organizer/10034][Webinar Announcement: The Hermes Buffer Organizer]]
+- Friday, August 5, 2022 at 11:00 a.m. Central Time
+- [[https://us06web.zoom.us/meeting/register/tZwpd-mspjgtGteAY18R-QTw51H3lLRB3fQr][Registration]]
+
+*** Forum
+**** [[https://forum.hdfgroup.org/t/variable-length-list-of-strings/10025][Variable length list of strings]]
+- What's a string?
+  - What the user meant: array of characters
+- Ergo: list of variable-length strings ="="= list of arrays of characters of
+  varying length
+- This is *not* the same as an HDF5 dataset of variable-length strings
+- Aleksandar's example:
+  #+begin_src python :results none
+  import h5py
+  import numpy as np
+  import string
+
+  vlength = [3, 8, 6, 4]
+  dt = h5py.vlen_dtype(np.dtype('S1'))
+  with h5py.File('char-ragged-array.h5', 'w') as f:
+      dset = f.create_dataset('ragged_char_array', shape=(len(vlength),),
+                               dtype=dt)
+      for _ in range(len(vlength)):
+          dset[_] = np.random.choice(list(string.ascii_lowercase),
+                                     size=vlength[_]).astype('S1')
+  #+end_src
+  - Sample output:
+    #+begin_example
+    HDF5 "char-ragged-array.h5" {
+    GROUP "/" {
+       DATASET "ragged_char_array" {
+          DATATYPE  H5T_VLEN { H5T_STRING {
+             STRSIZE 1;
+             STRPAD H5T_STR_NULLPAD;
+             CSET H5T_CSET_ASCII;
+             CTYPE H5T_C_S1;
+          }}
+          DATASPACE  SIMPLE { ( 4 ) / ( 4 ) }
+          DATA {
+          (0): ("g", "b", "x"), ("k", "j", "u", "u", "i", "p", "a", "t"),
+          (2): ("t", "i", "b", "x", "u", "y"), ("q", "i", "r", "h")
+          }
+       }
+    }
+    }
+    #+end_example
+
+*** Engineering Corner
+- Featuring: Dana Robinson
+- [[https://forum.hdfgroup.org/t/what-do-you-want-to-see-in-hdf5-2-0/10003][What do you want to see in “HDF5 2.0”?]]
+- Releases on track?
+
+** Tips, tricks, & insights
+*** 9BN rows/sec + HDF5 support for all python datatypes
+- [[https://forum.hdfgroup.org/t/9bn-rows-sec-hdf5-support-for-all-python-datatypes/10046][Forum post]]
+- [[https://github.com/root-11/tablite][Tablite]] GitHub repo
+- [[https://github.com/root-11/tablite/blob/master/tutorial.ipynb][Tutorial]]
+- Where is HDF5?
+  #+begin_src python
+  from tablite.config import H5_STORAGE
+  H5_STORAGE
+  #+end_src
+
+  #+RESULTS:
+  =PosixPath('/tmp/tablite.hdf5')=
+- Simple schema: tables -> columns -> pages (via attributes)
+  #+begin_example
+  /                        Group
+  /column                  Group
+  /column/1                Dataset {NULL}
+  /column/16               Dataset {NULL}
+  ...
+  /page                    Group
+  /page/1                  Dataset {3/Inf}
+  /page/2                  Dataset {3/Inf}
+  ...
+  /table                   Group
+  /table/1                 Dataset {NULL}
+  /table/3                 Dataset {NULL}
+  ...
+  #+end_example
+
 * Clinic 2022-07-26
 ** Corrections
 - The VSCode extension for HDF5 /works/ with NetCDF-4 files
