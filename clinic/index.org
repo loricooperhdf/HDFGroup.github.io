@@ -3,6 +3,26 @@
 #+OPTIONS: num:nil H:2 toc:t
 #+SETUPFILE: ../themes/theme-readtheorg.setup
 
+* Clinic 2022-08-09
+** Your questions
+- Q :: ???
+** Last week's highlights
+*** Announcements
+- Webinar recording available now: [[https://forum.hdfgroup.org/t/webinar-announcement-the-hermes-buffer-organizer/10034][The Hermes Buffer Organizer]]
+- John's blog
+- Scot's ANL webinar
+*** Forum
+**** [[https://forum.hdfgroup.org/t/backporting-h5dchunk-iter-to-1-12-and-1-10/9971][Backporting H5Dchunk_iter to 1.12 and 1.10?]]
+**** [[https://forum.hdfgroup.org/t/using-hdf5-for-file-backed-array/10056][Using HDF5 for file backed Array]]
+**** [[https://forum.hdfgroup.org/t/h5p-setfilter-cd-values-parameter/10055][=H5P_set_filter= =cd_values= Parameter]]
+
+*** Engineering Corner
+- Featuring: Dana Robinson
+- [[https://forum.hdfgroup.org/t/what-do-you-want-to-see-in-hdf5-2-0/10003][What do you want to see in “HDF5 2.0”?]]
+- What else is new?
+** Tips, tricks, & insights
+*** Datatype conversion - reloaded
+- What if source and destination datatype are of different size?
 * Clinic 2022-08-02
 ** Your questions
 - Q ::
