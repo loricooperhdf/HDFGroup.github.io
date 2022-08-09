@@ -8,13 +8,66 @@
 - Q :: ???
 ** Last week's highlights
 *** Announcements
-- Webinar recording available now: [[https://forum.hdfgroup.org/t/webinar-announcement-the-hermes-buffer-organizer/10034][The Hermes Buffer Organizer]]
-- John's blog
-- Scot's ANL webinar
+- Webinar recording available now: [[https://www.youtube.com/watch?v=MMIlpx5YqFU][The Hermes Buffer Organizer]]
+- [[https://www.hdfgroup.org/2022/08/cloud-storage-options-for-hdf5/][Cloud Storage Options for HDF5]] - a new blog post by Mr. HSDS (John Readey)
+- Upcoming [[https://events.cels.anl.gov/event/331/][HDF5 Training Workshop for intermediate and advanced users]] with
+  Scot Breitenfeld (The HDF Group)
+  - (Free) Registration deadline: Monday, August 15 2022
+  - Event date/time: Aug 31, 2022, 10:00 AM - 3:00 PM (America/Chicago)
+  - *Note:* The participation of foreign nationals is subject to certain
+    restrictions. Check the [[https://events.cels.anl.gov/event/331/][website]] for details!
 *** Forum
-**** [[https://forum.hdfgroup.org/t/backporting-h5dchunk-iter-to-1-12-and-1-10/9971][Backporting H5Dchunk_iter to 1.12 and 1.10?]]
+**** [[https://forum.hdfgroup.org/t/backporting-h5dchunk-iter-to-1-12-and-1-10/9971][Backporting =H5Dchunk_iter= to 1.12 and 1.10?]]
+- Great contribution by [[https://github.com/mkitti][Mark Kittisopikul]]
+- Let's do more of this!
 **** [[https://forum.hdfgroup.org/t/using-hdf5-for-file-backed-array/10056][Using HDF5 for file backed Array]]
+- Sample
+  #+begin_src c++
+  // Describe the dimensions. This example would mimic a 3D regular grid
+  // of size 10 x 20 x 30 with another 2D array of 60 x 80 at each grid point.
+  std::array<size_t, 3> tupleDimensions = {10, 20, 30};
+  std::array<size_t, 2> componentDimensions = {60, 80};
+
+  // Instantiate the DataArray class as an array of floats using the file
+  // /tmp/foo.hdf5" as the hdf5 file and “/data” as the internal hdf5 path
+  // to the actual data
+  DataArray data("/tmp/foo.hdf5", "/data", tupleDimensions, componentDimensions);
+
+  // Now lets loop over the data
+  for(size_t z = 0; z < 10; z++)
+    for(size_t y = 0; y < 20; y++)
+      for(size_t x = 0; x < 30; x++)
+      {
+        size_t index = // compute proper index to the tuple
+        for(size_t pixel = 0; pixel < 80 * 60; pixel++)
+        {
+          data[index + pixel] = 0;
+        }
+      }
+  #+end_src
+- Responses from Steven (Mr. [[http://h5cpp.org/][H5CPP]]) and Rick (Mr. [[https://www.hdfql.com/][HDFql]])
+  - Sliding cursors are coming to HDFql
+    #+begin_src c++
+    int count;
+
+    HDFql::execute("SELECT FROM dset INTO SLIDING(5) CURSOR");
+
+    count = 0;
+    // whenever cursor goes beyond last element, HDFql automatically retrieves
+    // a new slice/subset thanks to an implicit hyperslab
+    // (with start=[0,5,10,...], stride=5, count=1 and block=5)
+    while(HDFql::cursorNext() == HDFql::Success)
+    {
+        if (*HDFql::cursorGetDouble() < 20)
+        {
+            count++;
+        }
+    }
+    std::cout << "Count: " << count << std::endl;
+    #+end_src
 **** [[https://forum.hdfgroup.org/t/h5p-setfilter-cd-values-parameter/10055][=H5P_set_filter= =cd_values= Parameter]]
+- Start w/ the [[https://portal.hdfgroup.org/display/support/Registered+Filter+Plugins][filter registry]]
+- Filter maintainers are responsible, ultimately
 
 *** Engineering Corner
 - Featuring: Dana Robinson
@@ -22,7 +75,108 @@
 - What else is new?
 ** Tips, tricks, & insights
 *** Datatype conversion - reloaded
-- What if source and destination datatype are of different size?
+- Q :: What if source and destination datatype are of different size?
+- A :: We use a conversion buffer!
+
+#+begin_src C
+#include "hdf5.h"
+
+#include <assert.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+// our conversion function
+// HACK: in a production version, you would inspect SRC_ID and DST_ID, etc.
+herr_t B32toU64(hid_t src_id, hid_t dst_id, H5T_cdata_t *cdata, size_t nelmts,
+                size_t buf_stride, size_t bkg_stride, void *buf, void *bkg,
+                hid_t dxpl)
+{
+  herr_t retval = EXIT_SUCCESS;
+
+  switch (cdata->command)
+  {
+  case H5T_CONV_INIT:
+    printf("Initializing conversion function...\n");
+    // do non-trivial initialization here
+    break;
+  case H5T_CONV_CONV:
+    printf("Converting...\n");
+    uint32_t* p32 = (uint32_t*) buf;
+    uint64_t* p64 = (uint64_t*) buf;
+    // the conversion happens in-place
+    // since we don't want to overwrite elements, we need to
+    // shift/convert starting with the last element and work our
+    // way to the beginning
+    for (size_t i = nelmts; i > 0; --i)
+    {
+      p64[i-1] = (uint64_t) p32[i-1];
+    }
+    break;
+  case H5T_CONV_FREE:
+    printf("Finalizing conversion function...\n");
+    // do non-trivial finalization here
+    break;
+  default:
+    break;
+  }
+
+  return retval;
+}
+
+int main()
+{
+  int retval = EXIT_SUCCESS;
+
+  // in-memory bitfield datatype
+  hid_t btfd = H5T_NATIVE_B32;
+
+  // in-file unsigned integer datatype
+  hid_t uint = H5T_STD_U64LE;
+
+  // register our conversion function w/ the HDF5 library
+  assert(H5Tregister(H5T_PERS_SOFT, "B32->U64", btfd, uint,
+                     &B32toU64) >= 0);
+
+  // sample data
+  uint32_t buf[32];
+  for (size_t i = 0; i < 32; ++i)
+  {
+    buf[i] = 1 << i;
+    printf("%u\n", buf[i]);
+  }
+
+  hid_t file = H5Fcreate("foo.h5", H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
+  hid_t fspace = H5Screate_simple(1, (hsize_t[]) {32}, NULL);
+  hid_t dset = H5Dcreate(file, "integers", uint, fspace,
+                         H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+
+  hid_t dxpl = H5Pcreate(H5P_DATASET_XFER);
+  // we supply a conversion buffer where can convert up to 6 elements
+  // at a time (48 = 6 x 8)
+  unsigned char tconv[48];
+  H5Pset_buffer(dxpl, 48, tconv, NULL);
+
+  // alternative: the HDF5 library will dynamically allocate conversion
+  // and background buffers if we pass NULL for the buffers
+  // H5Pset_buffer(dxpl, 48, NULL, NULL);
+
+  // the datatype conversion function will be invoked as part of H5Dwrite
+  H5Dwrite(dset, btfd, H5S_ALL, H5S_ALL, dxpl, (void*) buf);
+
+  H5Pclose(dxpl);
+  H5Dclose(dset);
+  H5Sclose(fspace);
+  H5Fclose(file);
+
+  // housekeeping
+  assert(H5Tunregister(H5T_PERS_SOFT, "B32->U64", btfd, uint,
+                     &B32toU64) >= 0);
+
+  return retval;
+}
+#+end_src
+
 * Clinic 2022-08-02
 ** Your questions
 - Q ::
