@@ -3,6 +3,118 @@
 #+OPTIONS: num:nil H:2 toc:t
 #+SETUPFILE: ../themes/theme-readtheorg.setup
 
+* Clinic 2022-08-16
+** Your questions
+- Q :: ???
+** Last week's highlights
+*** Announcements
+- HDF5 1.13.2 is out. Get it [[https://github.com/HDFGroup/hdf5/releases/tag/hdf5-1_13_2][here]]!
+  - Highlights: Onion VFD, Subfiling VFD
+  - Dana?
+*** Forum
+**** [[https://forum.hdfgroup.org/t/collective-vds-creation/10075][Collective VDS creation]]
+#+begin_quote
+We have data scattered across thousands of processes. But each process does not
+own an hyperslab of the data. It actually owns a somewhat random collection of
+pieces of data, which are all hyperslabs. To write this data to a file
+collectively, I first tried to make each process select a combination of
+hyperslabs using =H5Scombine_hyperslab=.
+
+...
+Now I am trying to reproduce this behaviour using VDS: all pieces are written in
+a dataset in disorder. Another dataset (virtual this time) maps all pieces in
+the right order. It works when using 1 process!
+
+*The problem: I am unable to create this VDS in a collective way.*
+
+...
+*-> is it possible to create a VDS collectively ?*
+#+end_quote
+- =H5Scombine_hyperslab= is for point selections only
+- Neil's answer RE: VDS
+  #+begin_quote
+  For the VDS question: to create a VDS collectively every process needs to add
+  every mapping. This conforms with the way collective metadata writes in HDF5
+  generally work - every process is assumed to make exactly the same (metadata
+  write) calls with exactly the same parameters. It would be possible to
+  implement what you are describing as a high level routine which would call
+  H5Pget_virtual then do an allgather on the VDS mappings, but for now it’s
+  easiest to handle it in the user application.
+
+  It’s also worth noting that there are some other limitations to parallel VDS
+  I/O:
+
+  - =printf= style mappings are not supported
+  - The VDS must be opened collectively
+  - When using separate source file(s), the source file(s) cannot be opened by
+    the library while the VDS is open.
+  - When using separate source file(s), data cannot be written through the VDS
+    unless the mapping is equivalent to 1 process per source file
+  - All I/O is independent internally (possible performance penalty)
+  - Each rank does an independent open of each source file it accesses (possible
+    performance penalty)
+
+  I should also note that VDS is not currently tested in the parallel regression
+  test suite so there may be other issues.
+  #+end_quote
+**** [[https://forum.hdfgroup.org/t/9bn-rows-sec-hdf5-support-for-all-python-datatypes/10046][9BN rows/sec + HDF5 support for all python datatypes]]
+#+begin_quote
+A minor update [[https://pypi.org/project/tablite/][tablite]] has reached 2k downloads in the past month, and now has
+support for arbitrary python classes. (example [[https://github.com/root-11/tablite/blob/master/tests/test_api_basics.py#L110][1]])
+#+end_quote
+**** [[https://forum.hdfgroup.org/t/allocating-chunks-in-a-specific-order/10086][Allocating chunks in a specific order?]]
+- Q :: Is there a way to allocate (not necessarily write) unfiltered chunks
+  in a specific order?
+- A :: Mimic w/ [[https://docs.hdfgroup.org/hdf5/develop/group___d_c_p_l.html#ga85ff7c9c827fa524041cd58c199b77b8][=H5Pset_external=]]. Then what?
+*** Engineering Corner
+- Featuring: [[https://github.com/derobins][Dana Robinson]]
+- [[https://forum.hdfgroup.org/t/what-do-you-want-to-see-in-hdf5-2-0/10003][What do you want to see in “HDF5 2.0”?]]
+- What else is new?
+** Tips, tricks, & ruminations
+*** Dealing w/ concurrency "in" HDF5: ZeroMQ
+- *Source:* [[https://www.pythonforthelab.com/blog/using-pyzmq-for-inter-process-communication-part-1/][Using pyZMQ for inter-process communication: Part 1]]
+#+begin_src python
+from datetime import datetime
+import h5py
+from time import sleep
+import zmq
+
+context = zmq.Context()
+socket = context.socket(zmq.SUB)
+socket.connect("tcp://localhost:5555")
+socket.setsockopt(zmq.SUBSCRIBE, b'camera_frame')
+sleep(2)
+
+
+with h5py.File('camera_data.hdf5', 'a') as file:
+    now = str(datetime.now())
+    g = file.create_group(now)
+
+    topic = socket.recv_string()
+    frame = socket.recv_pyobj()
+
+    x = frame.shape[0]
+    y = frame.shape[1]
+    z = frame.shape[2]
+
+    dset = g.create_dataset('images', (x, y, z, 1), maxshape=(x, y, z, None))
+    dset[:, :, :, 0] = frame
+    i=0
+    while True:
+        i += 1
+        topic = socket.recv_string()
+        frame = socket.recv_pyobj()
+        dset.resize((x, y, z, i+1))
+        dset[:, :, :, i] = frame
+        file.flush()
+        print('Received frame number {}'.format(i))
+        if i == 50:
+            break
+#+end_src
+- The HDF5 library as an application extension acts like a wall for threads
+- Before that wall becomes more permeable, maybe client/server is the better
+  approach?
+- Let's have a forum discussion around a suitable HDF5 ZeroMQ protocol!
 * Clinic 2022-08-09
 ** Your questions
 - Q :: ???
