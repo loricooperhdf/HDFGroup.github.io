@@ -14,6 +14,7 @@
 **** Jobs @ The HDF Group
 - [[https://www.hdfgroup.org/careers/hdf-software-engineer/][HDF Software Engineer]]
 - [[https://www.hdfgroup.org/careers/hdf-cloud-software-engineer/][HDF Cloud Software Engineer]]
+- [[https://www.hdfgroup.org/high-performance-computing-hpc-software-developer0822][HDF HPC Software Engineer]]
 **** New [[https://www.hdfgroup.org/2022/08/hsds-streaming/][blog post]] by Mr. HSDS (John Readey)
 - HSDS Streaming
 - Overcoming the =max_request_size= limit
@@ -59,7 +60,6 @@ specific field defined in input whether it will be an =array= or =double= or
   4. Construct an in-memory compound datatype via [[https://docs.hdfgroup.org/hdf5/develop/group___h5_t.html#gaa9afc38e1a7d35e4d0bec24c569b3c65][=H5Tcreate=]]/[[https://docs.hdfgroup.org/hdf5/develop/group___c_o_m_p_o_u_n_d.html#ga487d8f64a76f48b6eeb7f402d3b8b081][=H5Tinsert=]]
   5. Allocate a buffer of the right size
   6. [[https://docs.hdfgroup.org/hdf5/develop/group___h5_d.html#ga8287d5a7be7b8e55ffeff68f7d26811c][=H5Dread=]] & parse the buffer
-
 
 * Clinic 2022-08-16
 ** Your questions
