@@ -3,6 +3,64 @@
 #+OPTIONS: num:nil H:2 toc:t
 #+SETUPFILE: ../themes/theme-readtheorg.setup
 
+* Clinic 2022-08-23
+** Your questions
+- Q :: ???
+** Last week's highlights
+*** Announcements
+**** Webinar [[https://forum.hdfgroup.org/t/webinar-announcement-vscode-h5web-a-vscode-extension-to-explore-and-visualize-hdf5-files/10100][Vscode-h5web: A VSCode extension to explore and visualize HDF5 files]]
+- Aug 31, 2022 04:00 PM (Central) <-- Really?
+- Free [[https://us06web.zoom.us/meeting/register/tZElcOqqrT0vG9R16hiZjILDnSZwPekwC49A][Registration]]
+**** Jobs @ The HDF Group
+- [[https://www.hdfgroup.org/careers/hdf-software-engineer/][HDF Software Engineer]]
+- [[https://www.hdfgroup.org/careers/hdf-cloud-software-engineer/][HDF Cloud Software Engineer]]
+**** New [[https://www.hdfgroup.org/2022/08/hsds-streaming/][blog post]] by Mr. HSDS (John Readey)
+- HSDS Streaming
+- Overcoming the =max_request_size= limit
+- New performance numbers HSDS vs. HDF5 lib. and Mac Pro vs. [[https://hpdevone.com/][HP Dev One]]
+
+*** Forum
+**** [[https://forum.hdfgroup.org/t/allocating-chunks-in-a-specific-order/10086][Allocating chunks in a specific order?]]
+- Use case: [[https://zarr.dev/zeps/draft/ZEP0002.html][Zarr shards]]
+- No API currently
+- Potential issues:
+  - Relying on implementation details
+  - Undesirable constraints on library and tool behavior
+  - Performance impact
+**** [[https://forum.hdfgroup.org/t/machine-readable-units-format/5480][Machine-readable units format?]]
+- Blast from the past
+- (Physical) Units are part of the datatype
+  $1.0 \mathrm{[m]} \neq 1.0 \mathrm{[s]}$
+- User-defined datatypes extend to user-defined units
+- Datatype conversion pipeline extends to unit conversion pipeline
+- Maybe time for another proposal attempt?
+**** [[https://forum.hdfgroup.org/t/c-read-compound-dataset-without-taking-static-structure-for-different-fieldnames/10118][C++ Read Compound dataset without taking static structure for different fieldnames]]
+#+begin_quote
+I have multiple H5 files and i am creating a generic code where i need to read
+specific field defined in input whether it will be an =array= or =double= or
+=int=.
+#+end_quote
+- Great topic for tips and tricks...
+*** Engineering Corner
+- Featuring: [[https://github.com/derobins][Dana Robinson]]
+- [[https://forum.hdfgroup.org/t/what-do-you-want-to-see-in-hdf5-2-0/10003][What do you want to see in “HDF5 2.0”?]]
+- What else is new?
+
+** Tips, tricks, & insights
+*** HDF5 compound datatype introspection
+- /What's known at compile time?/
+  1. Field name(s) + in-memory type: =constexpr= or =template=
+  2. Field name(s) only: dataype introspection
+- _Datatype introspection "algorithm"_:
+  1. Retrieve the field in-file datatype via [[https://docs.hdfgroup.org/hdf5/develop/group___c_o_m_p_e_n_u_m.html#gabe31b13b2b8bf29d1a4c3b04cf917c6c][=H5Tget_member_index=]] and
+     [[https://docs.hdfgroup.org/hdf5/develop/group___c_o_m_p_o_u_n_d.html#gac8476d164fb972fbf7b8c4584b8e916b][=H5Tget_member_class=]]/[[https://docs.hdfgroup.org/hdf5/develop/group___c_o_m_p_o_u_n_d.html#gaf5de0eabe28246f040342e275b9a63eb][=H5Tget_member_type=]]
+  2. Retrieve the in-memory (or /native/) datatype via [[https://docs.hdfgroup.org/hdf5/develop/group___h5_t.html#ga05b99133058637e8daa5d745381ddd3d][=H5Tget_native_type=]]
+  3. Determine the size via [[https://docs.hdfgroup.org/hdf5/develop/group___h5_t.html#ga1b971589cd7a86f3e84affdee455564e][=H5Tget_size=]]
+  4. Construct an in-memory compound datatype via [[https://docs.hdfgroup.org/hdf5/develop/group___h5_t.html#gaa9afc38e1a7d35e4d0bec24c569b3c65][=H5Tcreate=]]/[[https://docs.hdfgroup.org/hdf5/develop/group___c_o_m_p_o_u_n_d.html#ga487d8f64a76f48b6eeb7f402d3b8b081][=H5Tinsert=]]
+  5. Allocate a buffer of the right size
+  6. [[https://docs.hdfgroup.org/hdf5/develop/group___h5_d.html#ga8287d5a7be7b8e55ffeff68f7d26811c][=H5Dread=]] & parse the buffer
+
+
 * Clinic 2022-08-16
 ** Your questions
 - Q :: ???
