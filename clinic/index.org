@@ -3,6 +3,48 @@
 #+OPTIONS: num:nil H:2 toc:t
 #+SETUPFILE: ../themes/theme-readtheorg.setup
 
+* Clinic 2022-08-30
+** Your questions
+- Q :: ???
+** Last week's highlights
+*** Announcements
+**** Webinar [[https://forum.hdfgroup.org/t/webinar-announcement-vscode-h5web-a-vscode-extension-to-explore-and-visualize-hdf5-files/10100][Vscode-h5web: A VSCode extension to explore and visualize HDF5 files]]
+- August 31 (tomorrow) at 9:00 AM (CDT)
+- Free [[https://us06web.zoom.us/meeting/register/tZElcOqqrT0vG9R16hiZjILDnSZwPekwC49A][registration]]
+**** Jobs @ The HDF Group
+- [[https://www.hdfgroup.org/careers/hdf-software-engineer/][HDF Software Engineer]]
+- [[https://www.hdfgroup.org/careers/hdf-cloud-software-engineer/][HDF Cloud Software Engineer]]
+- [[https://www.hdfgroup.org/high-performance-computing-hpc-software-developer0822][HDF HPC Software Engineer]]
+**** New RFC
+- [[https://docs.hdfgroup.org/hdf5/rfc/Terminal_VOL_Connector_Feature_Flags.pdf][Terminal VOL Connector Feature Flags]]
+- How do I know if a VOL connector implements everything I need for my
+  application?
+*** Forum
+Nothing stood out.
+*** Engineering Corner
+- Featuring: [[https://github.com/derobins][Dana Robinson]]
+- [[https://forum.hdfgroup.org/t/what-do-you-want-to-see-in-hdf5-2-0/10003][What do you want to see in “HDF5 2.0”?]]
+- What else is new?
+
+** Tips, tricks, & insights
+*** Where is the "official" HDF5 standard?
+- My colleague Aleksandar Jelenak just point me to [[https://www.earthdata.nasa.gov/esdis/esco/standards-and-references/hdf5][HDF5 Data Model, File Format
+  and Library—HDF5 1.6]]
+  - An uncluttered and clear presentation
+  - Needs to be updated (e.g., VOL, HSDS) and revised, but still accurate
+- The HDF Group maintains this [[https://docs.hdfgroup.org/hdf5/develop/][HDF5 documentation]]
+*** Proposed HDF Clinic format change
+- Four themed events per month:
+  - Ecosystem (Aleksandar Jelenak) :: HDF5 & Python, R, Julia, other formats &
+    frameworks, etc.
+  - HSDS (John Readey) :: HDF5 & Cloud, Kubernetes, server-less, etc.
+  - HPC (Scot Breitenfeld) :: Parallel I/O, file systems, DAOS, diagnostics,
+    troubleshooting, etc.
+  - Engineering (Dana Robinson) :: Everything about getting involved and
+    contributing to HDF5, PRs, issues, releases, new features, etc.
+- We might have to adjust the weekday/time
+- Thoughts?
+
 * Clinic 2022-08-23
 ** Your questions
 - Q :: ???
