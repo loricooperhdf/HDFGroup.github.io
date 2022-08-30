@@ -28,8 +28,8 @@ Nothing stood out.
 
 ** Tips, tricks, & insights
 *** Where is the "official" HDF5 standard?
-- My colleague Aleksandar Jelenak just point me to [[https://www.earthdata.nasa.gov/esdis/esco/standards-and-references/hdf5][HDF5 Data Model, File Format
-  and Library—HDF5 1.6]]
+- My colleague Aleksandar Jelenak just pointed me to [[https://www.earthdata.nasa.gov/esdis/esco/standards-and-references/hdf5][HDF5 Data Model, File
+  Format and Library—HDF5 1.6]]
   - An uncluttered and clear presentation
   - Needs to be updated (e.g., VOL, HSDS) and revised, but still accurate
 - The HDF Group maintains this [[https://docs.hdfgroup.org/hdf5/develop/][HDF5 documentation]]
