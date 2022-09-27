@@ -2,6 +2,59 @@
 #+STARTUP: overview
 #+OPTIONS: num:nil H:2 toc:t
 #+SETUPFILE: ../themes/theme-readtheorg.setup
+* Clinic 2022-09-27
+** Your questions
+- Q :: ???
+** Last week's highlights
+*** Announcements
+**** Thanks to Scot Breitenfeld, Aleksandar Jelenak, and John Readey for stepping up!
+- Thanks to Lori the recordings are available on [[https://www.youtube.com/channel/UCRhtsIZquL3r-zH-R-r9-tQ/videos][YouTube]].
+**** Jobs @ The HDF Group
+- [[https://www.hdfgroup.org/careers/hdf-software-engineer/][HDF Software Engineer]]
+- [[https://www.hdfgroup.org/careers/hdf-cloud-software-engineer/][HDF Cloud Software Engineer]]
+- [[https://www.hdfgroup.org/high-performance-computing-hpc-software-developer0822][HDF HPC Software Engineer]]
+*** Forum
+**** [[https://forum.hdfgroup.org/t/type-confusion-for-chunk-sizes/10235][Type confusion for chunk sizes]]
+- Size matters =;-)=
+- Use of =size= in APIs as =size_t= (C-type) or =hsize_t= (HDF5 API type)
+- What the =size= unit?
+  - Element count -> =hsize_t=
+  - Storage bytes -> =size_t=
+- And we still managed to make a holy mess of it...
+**** [[https://forum.hdfgroup.org/t/zstandard-plugin-for-hdf5-does-not-allow-negative-compression-levels/10236][Zstandard plugin for HDF5 does not allow negative compression levels]]
+- Community life
+**** [[https://forum.hdfgroup.org/t/store-a-group-in-a-contiguous-file-space/10198][Store a group in a contiguous file space]]
+#+begin_quote
+Can one store all datasets in a group into a contiguous file space?
+I have an application that reads groups as units and all the datasets
+use the contiguous data layout. I believe this option, if available,
+can yield a good read performance.
+#+end_quote
+- Intersting suggestions
+  - Elena suggested to first create all datasets with =H5D_ALLOC_TIME_LATE=
+  - Mark suggested to =H5Pget_meta_block_size= to set aside sufficient
+    "group space" (Maybe also =H5Pset_est_link_info=?)
+**** [[https://forum.hdfgroup.org/t/msc-nastran-h5/10248][MSC Nastran *.H5]]
+- HDFView "in distress" - it's not a substitute for a domain-specific viz tool
+- What do people think of HDFView?
+**** [[https://forum.hdfgroup.org/t/make-hdfview-available-on-flathub-org/9476][Make HDFView available on Flathub.org]]
+#+begin_quote
+The app. has been accepted and is now available on flathub.org as
+org.hdfgroup.HDFView! That is HDFView 3.2.0 with HDF5 + HDF4 support for
+x86-64 & aarch64 CPUs.
+#+end_quote
+- Let's try it!
+**** [[https://forum.hdfgroup.org/t/performance-improvements-for-many-small-datasets/10259][Performance improvements for many small datasets]]
+- We just talked about multi-dataset I/O
+- REST round-tripping
+- GraphQL?
+**** [[https://forum.hdfgroup.org/t/phdf-h5fflush-and-compression/10228][pHDF, =H5Fflush= and compression]]
+- (Seemingly) Odd behavior of =H5Fflush= in parallel with vs. w/o compression.
+*** Engineering Corner
+- Featuring: [[https://github.com/derobins][Dana Robinson]]
+- Is Dana back from his from trip?
+** Tips, tricks, & insights
+Nada. (Just catching up on the forum...)
 
 * Clinic 2022-08-30
 ** Your questions
