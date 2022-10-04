@@ -2,6 +2,99 @@
 #+STARTUP: overview
 #+OPTIONS: num:nil H:2 toc:t
 #+SETUPFILE: ../themes/theme-readtheorg.setup
+
+* Clinic 2022-10-04
+** Your questions
+- Q :: ???
+** Last week's highlights
+*** Announcements
+**** [[https://www.hdfgroup.org/team/neil-fortner/][Neil Fortner]] is our new Chief HDF5 Software Architect
+- Happy days!
+**** Jobs @ The HDF Group
+- [[https://www.hdfgroup.org/careers/hdf-software-engineer/][HDF Software Engineer]]
+- [[https://www.hdfgroup.org/careers/hdf-cloud-software-engineer/][HDF Cloud Software Engineer]]
+- [[https://www.hdfgroup.org/high-performance-computing-hpc-software-developer0822][HDF HPC Software Engineer]]
+**** Webinar /Subfiling and Multiple dataset APIs: An introduction to two new features in HDF5 version 1.14/
+- [[https://youtu.be/psl2iZmP2SY][Recording]]
+- Slides: [[https://www.hdfgroup.org/wp-content/uploads/2022/09/HDF5-Subfiling-VFD.pdf][HDF5 Subfiling VFD]] & [[https://www.hdfgroup.org/wp-content/uploads/2022/09/Multi_Dataset_9_30_22.pdf][Multiple Dataset APIs]]
+**** Recent [[https://docs.hdfgroup.org/hdf5/develop/][documentation updates]]
+- [[https://docs.hdfgroup.org/hdf5/develop/_getting_started.html][Getting Started]]
+- [[https://docs.hdfgroup.org/hdf5/develop/_u_g.html][User Guide]]
+- [[https://docs.hdfgroup.org/hdf5/develop/_r_m.html][Reference Manual]] w/ language bindings (C, C++, Fortran, Java)
+- Far from perfect but a big step forward
+*** Forum
+**** [[https://forum.hdfgroup.org/t/c-thread-unable-to-open-file/10267][C++ Thread unable to open file]]
+- If you want threat-safety, use the C-API with a threat-safe build of the HDF5
+  library!
+- Other language bindings (C++, Java, Fortran) and the high-level libs. are *not*
+  thread-safe
+**** [[https://forum.hdfgroup.org/t/performance-improvements-for-many-small-datasets/10259][Performance improvements for many small datasets]]
+- GraphQL is a bigger task
+- John provided an Python asynchronous I/O [[https://gist.github.com/jreadey/8030e8a7fc3d0c9067c5a8d01d8507a8][example]]
+  #+begin_src python :results output :exports both
+  import asyncio
+  import time
+
+  async def say_after(delay, what):
+      await asyncio.sleep(delay)
+      print(what)
+
+  async def main():
+      task1 = asyncio.create_task(
+          say_after(2, 'hello'))
+
+      task2 = asyncio.create_task(
+          say_after(1, 'world'))
+
+      print(f"started at {time.strftime('%X')}")
+
+      # Wait until both tasks are completed (should take
+      # around 2 seconds.)
+      await task1
+      await task2
+
+      print(f"finished at {time.strftime('%X')}")
+
+  asyncio.run(main())
+  #+end_src
+
+  #+RESULTS:
+  : started at 08:25:31
+  : world
+  : hello
+  : finished at 08:25:33
+- Noticable speedup but not a panacea
+#+begin_quote
+Eventually I hope to have a version of =h5pyd= that supports =async= (or maybe
+an entirely new package), that would make it a little easier to use.
+#+end_quote
+**** [[https://forum.hdfgroup.org/t/variable-length-data-in-hdf5-sketch-rfc-status/10284][Variable-Length Data in HDF5 Sketch RFC Status?]]
+- [[https://docs.hdfgroup.org/hdf5/rfc/var_len_data_sketch_design_190715.pdf][RFC 2019-07-15 “Variable-Length Data in HDF5 Sketch Design"]]
+- Dana?
+**** [[https://forum.hdfgroup.org/t/compound-data-type-with-zero-sized-dimension/10269][Compound data type with zero-sized dimension]]
+- HDF5 array datatype field w/ a degenerate dimension
+  #+begin_example
+  HDF5 "test.h5" {
+  GROUP "/" {
+     DATASET "dset" {
+        DATATYPE  H5T_COMPOUND {
+           H5T_ARRAY { [2][2] H5T_IEEE_F32LE } "arr1";
+           H5T_ARRAY { [2][0] H5T_IEEE_F32LE } "arr2";
+        }
+        DATASPACE  SCALAR
+     }
+  }
+  }
+  #+end_example
+- Use case?
+**** [[https://forum.hdfgroup.org/t/metadata-and-structure-conventions/10287][Metadata and Structure conventions]]
+- ???
+*** Engineering Corner
+- Featuring: [[https://github.com/derobins][Dana Robinson]]
+- What's new?
+** Tips, tricks, & insights
+???
+
 * Clinic 2022-09-27
 ** Your questions
 - Q :: ???
