@@ -92,8 +92,13 @@ an entirely new package), that would make it a little easier to use.
 *** Engineering Corner
 - Featuring: [[https://github.com/derobins][Dana Robinson]]
 - What's new?
-** Tips, tricks, & insights
-???
+** Starry HDF clinic line-up going forward
+- 1st Tuesday of the month: Dana Robinson (HDF Engineering, Community)
+- 2nd Tuesday: John Readey (HSDS, Cloud) – starting Oct 11
+- 3rd Tuesday: Aleksandar Jelenak (Pythonic Science, Earth Science)
+- 4th Tuesday: Scot Breitenfeld (HPC, Research)
+- (In the unlikely event that there is a) 5th Tuesday: Gerd Heber + surprise
+  guest
 
 * Clinic 2022-09-27
 ** Your questions
