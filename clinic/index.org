@@ -3,6 +3,128 @@
 #+OPTIONS: num:nil H:2 toc:t
 #+SETUPFILE: ../themes/theme-readtheorg.setup
 
+* Clinic 2022-11-29
+** Your questions
+- Q :: ???
+** Types in the HDF5 Data Model
+*Reference:* C.J. Date: [[https://www.amazon.com/Foundation-Object-Relational-Databases-Manifesto/dp/0201309785][Foundation for Object / Relational Databases: The Third Manifesto]], 1998.
+
+*** Data Model
+
+In the realm of HDF5, there are usually _two_ data models in play.
+
+**** HDF5 Data Model
+
+A _data model_ is an abstract, self-contained, logical definition of
+the data structures, data operators, etc., that together make up the
+abstract machine with which users interact.
+
+*Metaphor:* A data model in this sense is like a programming language,
+whose constructs can be used to solve many specific problems but in
+and of themselves have no direct connection with any such specific
+problem.
+
+This is the sense in which I will be using the term 'data model.'  I'm
+talking about HDF5 files, groups, datasets, attributes, transfers,
+etc.
+
+An _implementation_ of a given data model is a physical realization on
+a real machine of the components of the abstract machine that together
+constitute that model. There are currently /two/ implementations of
+the HDF5 data model:
+
+1. HDF5 library + file format
+2. Highly Scalable Data Service (HSDS)
+
+
+**** Domain-specific Data Model
+
+A data model is a model of the data (especially the persistent data)
+of some particular domain or enterprise.
+
+*Metaphor:* A data model in this sense is like a specific program
+written in that language — it uses the facilities provided by the
+model, in the first sense of that term, to solve some specific
+problem.
+
+We sometimes call this an _HDF5 profile_, the mapping of domain concepts
+to HDF5 data model primitives.
+
+*** Types
+
+In essence, a type is a set of (at least two) _values_ — all possible
+values of some specific kind: for example, all possible integers, or
+all possible character strings, or all possible XML documents, or all
+possible relations with a certain heading (and so on).
+
+(Some people require types to be named and finite.)
+
+To define a type, we must:
+
+1. Specify the values that make up that type.
+2. Specify the hidden physical representation for values of that
+   type. (This is an implementation issue, not a data model issue.)
+3. Specify a selector operator for selecting, or specifying, values
+   of that type.
+4. Specify admissible type conversions and renderings.
+5. ...
+
+**** Atomicity
+
+The notion of atomicity has no absolute meaning; it just depends on
+what we want to do with the data. Sometimes we want to deal with an
+entire set of part numbers as a single thing, sometimes we want to
+deal with individual part numbers within that set—but then we’re
+descending to a lower level of detail, or lower level of abstraction.
+
+**** Scalar vs. Nonscalar Types
+
+Loosely, a type is scalar if it has no user visible components and
+nonscalar otherwise. As atomicity, this has no absolute meaning.
+Some people treat 'scalar' and 'atomic' as synonymous.
+
+**** Values vs. Variables
+
+Variables hold values. They have a location in space and time. Values
+"transcend" space and time.
+
+***** Questions
+
+1. What is the type of an HDF5 dataset?
+2. Is it a variable or a value?
+3. Is it scalar/nonscalar/atomic?
+4. What is an HDF5 datatype?
+5. What is the type of an HDF5 attribute?
+6. (How) Is an [[https://arxiv.org/abs/2109.11709][HDF5 user-defined function]] a dataset? (Extra credit!)
+
+*** HDF5 Datatypes
+
+The primary function of HDF5 datatypes is to describe the element type
+and physical layout of datasets, attributes, and maps. Documentation
+is a secondary function.
+
+HDF5 supports a set of customizable basic types and a mechanism,
+_datatype derivation_, to compose new datatypes from existing ones.
+Any datatype derivation is rooted in atomic datatypes.
+
+What's wrong with [[https://docs.hdfgroup.org/hdf5/develop/_h5_t__u_g.html#subsubsec_datatype_model_class][this figure]]? Nothing, but it's important to
+understand the context.
+
+1. What does 'Atomic' mean? (Not derived by composition. Composite =
+   non-atomic = molecular)
+2. Why is an =Enumeration= not 'Atomic'? (Derives from a integer
+   datatype.)
+3. Why are =Array= and =Variable Length= not 'Atomic'? (Ditto. Derive
+   from other datatype instances)
+
+'Atomic' is an overloaded term in this context.
+
+- Attribute values are treated as atomic under transfer by the HDF5 library
+- Dataset values are not atomic because of partial I/O
+  - Selections
+  - Fields (for compounds)
+- Dataset element values are atomic, except, records (values of compound)
+
 * Clinic 2022-10-04
 ** Your questions
 - Q :: ???
