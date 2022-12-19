@@ -1,0 +1,413 @@
+#+title: HSDS for Emacs Users and the Otherwise Curious
+#+author: Gerd Heber
+#+email: gheber@hdfgroup
+#+date: <2022-12-18 Sun>
+
+#+startup: indent
+#+export_file_name: index.html
+#+options: num:nil ^:nil H:5 toc:2
+
+#+setupfile: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
+
+* First steps
+
+
+  We have an HSDS instance running on =bruin.ad.hdfgroup.org= and
+  listening on port 5101. We use an SSH tunnel (=-L
+  8080:bruin.ad.hdfgroup.org:5101=) to map local port 8080. The HSDS
+  URL is going to be very simple:
+
+  #+name: hsds-url
+  : http://localhost:8080
+
+  #+begin_src restclient :var hsds=hsds-url :exports both
+  GET :hsds/about
+  #+end_src
+
+  #+RESULTS:
+  #+BEGIN_SRC js
+  {
+    "start_time": 1671191527,
+    "state": "READY",
+    "hsds_version": "0.7.0",
+    "name": "Highly Scalable Data Service (HSDS)",
+    "greeting": "Welcome to HSDS!",
+    "about": "HSDS is a webservice for HDF data",
+    "node_count": 4,
+    "dn_urls": [
+      "http://172.18.0.5:6101",
+      "http://172.18.0.6:6101",
+      "http://172.18.0.7:6101",
+      "http://172.18.0.8:6101"
+    ],
+    "dn_ids": [
+      "dn-cb2ae",
+      "dn-7e737",
+      "dn-51154",
+      "dn-d908f"
+    ],
+    "username": "anonymous",
+    "isadmin": false
+  }
+  // GET http://localhost:8080/about
+  // HTTP/1.1 200 OK
+  // Server: Highly Scalable Data Service (HSDS)
+  // X-XSS-Protection: 1; mode=block
+  // Content-Type: application/json; charset=utf-8
+  // Content-Length: 431
+  // Date: Mon, 19 Dec 2022 01:01:22 GMT
+  // Request duration: 0.227987s
+  #+END_SRC
+
+** Basic authentication
+
+   The HSDS instance is configured to use the so-called basic
+   authentication scheme, which requires clients to pass an
+   =Authorization= header of the form:
+
+   #+begin_example
+   Authorization: Basic <credentials>
+   #+end_example
+
+   Here =<credentials>= is just the base64 encoding of the username and
+   password combination separated by a colon.
+
+   #+name: auth-str
+   #+begin_src elisp
+  (concat "Authorization: Basic " (base64-encode-string "test_user1:test"))
+   #+end_src
+
+   #+begin_src restclient :var hsds=hsds-url :var auth=auth-str :exports both
+   GET :hsds/about
+   :auth
+   #+end_src
+
+   #+RESULTS:
+   #+BEGIN_SRC js
+   {
+     "start_time": 1671191527,
+     "state": "READY",
+     "hsds_version": "0.7.0",
+     "name": "Highly Scalable Data Service (HSDS)",
+     "greeting": "Welcome to HSDS!",
+     "about": "HSDS is a webservice for HDF data",
+     "node_count": 4,
+     "dn_urls": [
+       "http://172.18.0.5:6101",
+       "http://172.18.0.6:6101",
+       "http://172.18.0.7:6101",
+       "http://172.18.0.8:6101"
+     ],
+     "dn_ids": [
+       "dn-cb2ae",
+       "dn-7e737",
+       "dn-51154",
+       "dn-d908f"
+     ],
+     "username": "test_user1",
+     "isadmin": false
+   }
+   // GET http://localhost:8080/about
+   // HTTP/1.1 200 OK
+   // Server: Highly Scalable Data Service (HSDS)
+   // X-XSS-Protection: 1; mode=block
+   // Content-Type: application/json; charset=utf-8
+   // Content-Length: 432
+   // Date: Mon, 19 Dec 2022 01:01:43 GMT
+   // Request duration: 0.019271s
+   #+END_SRC
+
+   Notice the change in the value of the =username= key in the server response.
+
+* Domains
+
+  #+name: hsds-domain
+  : /home/test_user1/test/tall.h5
+
+  #+header: :var hsds=hsds-url :var auth=auth-str :var dom=hsds-domain :exports both
+  #+begin_src restclient
+  GET :hsds/?domain=:dom
+  :auth
+  #+end_src
+
+  #+RESULTS:
+  #+BEGIN_SRC js
+  {
+    "root": "g-7f13fdf7-18e3679c-f79b-757f90-6bef14",
+    "class": "domain",
+    "owner": "test_user1",
+    "created": 1671195137.856663,
+    "limits": {
+      "min_chunk_size": 1048576,
+      "max_chunk_size": 4194304,
+      "max_request_size": 104857600
+    },
+    "compressors": [
+      "blosclz",
+      "lz4",
+      "lz4hc",
+      "gzip",
+      "zstd",
+      "deflate"
+    ],
+    "version": "0.7.0",
+    "lastModified": 1671195137.856663,
+    "hrefs": [
+      {
+        "rel": "self",
+        "href": "http://bruin.ad.hdfgroup.org/?domain=/home/test_user1/test/tall.h5"
+      },
+      {
+        "rel": "database",
+        "href": "http://bruin.ad.hdfgroup.org/datasets?domain=/home/test_user1/test/tall.h5"
+      },
+      {
+        "rel": "groupbase",
+        "href": "http://bruin.ad.hdfgroup.org/groups?domain=/home/test_user1/test/tall.h5"
+      },
+      {
+        "rel": "typebase",
+        "href": "http://bruin.ad.hdfgroup.org/datatypes?domain=/home/test_user1/test/tall.h5"
+      },
+      {
+        "rel": "root",
+        "href": "http://bruin.ad.hdfgroup.org/groups/g-7f13fdf7-18e3679c-f79b-757f90-6bef14?domain=/home/test_user1/test/tall.h5"
+      },
+      {
+        "rel": "acls",
+        "href": "http://bruin.ad.hdfgroup.org/acls?domain=/home/test_user1/test/tall.h5"
+      },
+      {
+        "rel": "parent",
+        "href": "http://bruin.ad.hdfgroup.org/?domain=.default/home/test_user1/test"
+      }
+    ]
+  }
+  // GET http://localhost:8080/?domain=/home/test_user1/test/tall.h5
+  // HTTP/1.1 200 OK
+  // Server: Highly Scalable Data Service (HSDS)
+  // X-XSS-Protection: 1; mode=block
+  // Content-Type: application/json; charset=utf-8
+  // Content-Length: 1108
+  // Date: Mon, 19 Dec 2022 01:13:21 GMT
+  // Request duration: 0.176015s
+  #+END_SRC
+
+** The root group
+
+   The root group ID is contained in the domain =GET= response. We
+   tweeze it out via [[https://stedolan.github.io/jq/][=jq=]] and store it in a variable called =:id=.
+
+   #+name: get-domain
+   #+header: :var hsds=hsds-url :var auth=auth-str :var dom=hsds-domain :results value :exports none
+   #+begin_src restclient
+   GET :hsds/?domain=:dom
+   :auth
+   #+end_src
+
+   #+name: root-id
+   #+begin_src shell :var response=get-domain :results value raw :wrap src js :exports none
+   echo $response | jq '.hrefs[4].href' | cut -d '/' -f 5 | cut -d '?' -f 1
+   #+end_src
+
+   We can then retrieve a representation of the root group:
+
+   #+header: :var hsds=hsds-url :var auth=auth-str :var dom=hsds-domain :var id=root-id :exports both
+   #+begin_src restclient
+   GET :hsds/groups/:id?domain=:dom
+   :auth
+   #+end_src
+
+   #+RESULTS:
+   #+BEGIN_SRC js
+   {
+     "id": "g-7f13fdf7-18e3679c-f79b-757f90-6bef14",
+     "root": "g-7f13fdf7-18e3679c-f79b-757f90-6bef14",
+     "created": 1671195137.8518717,
+     "lastModified": 1671195138.1069381,
+     "linkCount": 2,
+     "attributeCount": 2,
+     "domain": "/home/test_user1/test/tall.h5",
+     "bucket": ".default",
+     "hrefs": [
+       {
+         "rel": "self",
+         "href": "http://bruin.ad.hdfgroup.org/groups/g-7f13fdf7-18e3679c-f79b-757f90-6bef14?domain=/home/test_user1/test/tall.h5"
+       },
+       {
+         "rel": "links",
+         "href": "http://bruin.ad.hdfgroup.org/groups/g-7f13fdf7-18e3679c-f79b-757f90-6bef14/links?domain=/home/test_user1/test/tall.h5"
+       },
+       {
+         "rel": "root",
+         "href": "http://bruin.ad.hdfgroup.org/groups/g-7f13fdf7-18e3679c-f79b-757f90-6bef14?domain=/home/test_user1/test/tall.h5"
+       },
+       {
+         "rel": "home",
+         "href": "http://bruin.ad.hdfgroup.org/?domain=/home/test_user1/test/tall.h5"
+       },
+       {
+         "rel": "attributes",
+         "href": "http://bruin.ad.hdfgroup.org/groups/g-7f13fdf7-18e3679c-f79b-757f90-6bef14/attributes?domain=/home/test_user1/test/tall.h5"
+       }
+     ]
+   }
+   // GET http://localhost:8080/groups/g-7f13fdf7-18e3679c-f79b-757f90-6bef14?domain=/home/test_user1/test/tall.h5
+   // HTTP/1.1 200 OK
+   // Server: Highly Scalable Data Service (HSDS)
+   // X-XSS-Protection: 1; mode=block
+   // Content-Type: application/json; charset=utf-8
+   // Content-Length: 957
+   // Date: Mon, 19 Dec 2022 01:54:55 GMT
+   // Request duration: 0.035388s
+   #+END_SRC
+
+*** Links
+
+    #+header: :var hsds=hsds-url :var auth=auth-str :var dom=hsds-domain :var id=root-id
+    #+begin_src restclient
+    GET :hsds/groups/:id/links?domain=:dom
+    :auth
+    #+end_src
+
+    #+RESULTS:
+    #+BEGIN_SRC js
+    {
+      "links": [
+        {
+          "class": "H5L_TYPE_HARD",
+          "id": "g-7f13fdf7-18e3679c-956c-3aed94-8cbdfc",
+          "created": 1671195137.8810215,
+          "title": "g1",
+          "collection": "groups",
+          "target": "http://bruin.ad.hdfgroup.org/groups/g-7f13fdf7-18e3679c-956c-3aed94-8cbdfc?domain=/home/test_user1/test/tall.h5",
+          "href": "http://bruin.ad.hdfgroup.org/groups/g-7f13fdf7-18e3679c-f79b-757f90-6bef14/links/g1?domain=/home/test_user1/test/tall.h5"
+        },
+        {
+          "class": "H5L_TYPE_HARD",
+          "id": "g-7f13fdf7-18e3679c-8417-5155e3-d6e175",
+          "created": 1671195138.1069381,
+          "title": "g2",
+          "collection": "groups",
+          "target": "http://bruin.ad.hdfgroup.org/groups/g-7f13fdf7-18e3679c-8417-5155e3-d6e175?domain=/home/test_user1/test/tall.h5",
+          "href": "http://bruin.ad.hdfgroup.org/groups/g-7f13fdf7-18e3679c-f79b-757f90-6bef14/links/g2?domain=/home/test_user1/test/tall.h5"
+        }
+      ],
+      "hrefs": [
+        {
+          "rel": "self",
+          "href": "http://bruin.ad.hdfgroup.org/groups/g-7f13fdf7-18e3679c-f79b-757f90-6bef14/links?domain=/home/test_user1/test/tall.h5"
+        },
+        {
+          "rel": "home",
+          "href": "http://bruin.ad.hdfgroup.org/?domain=/home/test_user1/test/tall.h5"
+        },
+        {
+          "rel": "owner",
+          "href": "http://bruin.ad.hdfgroup.org/groups/g-7f13fdf7-18e3679c-f79b-757f90-6bef14?domain=/home/test_user1/test/tall.h5"
+        }
+      ]
+    }
+    // GET http://localhost:8080/groups/g-7f13fdf7-18e3679c-f79b-757f90-6bef14/links?domain=/home/test_user1/test/tall.h5
+    // HTTP/1.1 200 OK
+    // Server: Highly Scalable Data Service (HSDS)
+    // X-XSS-Protection: 1; mode=block
+    // Content-Type: application/json; charset=utf-8
+    // Content-Length: 1210
+    // Date: Mon, 19 Dec 2022 01:48:49 GMT
+    // Request duration: 0.024394s
+    #+END_SRC
+
+*** Attributes
+
+    #+header: :var hsds=hsds-url :var auth=auth-str :var dom=hsds-domain :var id=root-id
+    #+begin_src restclient
+    GET :hsds/groups/:id/attributes?domain=:dom
+    :auth
+    #+end_src
+
+    #+RESULTS:
+    #+BEGIN_SRC js
+    {
+      "attributes": [
+        {
+          "created": 1671195138.8267665,
+          "type": {
+            "class": "H5T_INTEGER",
+            "base": "H5T_STD_I8LE"
+          },
+          "shape": {
+            "class": "H5S_SIMPLE",
+            "dims": [
+              10
+            ]
+          },
+          "name": "attr1",
+          "href": "http://bruin.ad.hdfgroup.org/groups/g-7f13fdf7-18e3679c-f79b-757f90-6bef14/attributes/attr1?domain=/home/test_user1/test/tall.h5"
+        },
+        {
+          "created": 1671195138.84054,
+          "type": {
+            "class": "H5T_INTEGER",
+            "base": "H5T_STD_I32BE"
+          },
+          "shape": {
+            "class": "H5S_SIMPLE",
+            "dims": [
+              2,
+              2
+            ]
+          },
+          "name": "attr2",
+          "href": "http://bruin.ad.hdfgroup.org/groups/g-7f13fdf7-18e3679c-f79b-757f90-6bef14/attributes/attr2?domain=/home/test_user1/test/tall.h5"
+        }
+      ],
+      "hrefs": [
+        {
+          "rel": "self",
+          "href": "http://bruin.ad.hdfgroup.org/groups/g-7f13fdf7-18e3679c-f79b-757f90-6bef14/attributes?domain=/home/test_user1/test/tall.h5"
+        },
+        {
+          "rel": "home",
+          "href": "http://bruin.ad.hdfgroup.org/?domain=/home/test_user1/test/tall.h5"
+        },
+        {
+          "rel": "owner",
+          "href": "http://bruin.ad.hdfgroup.org/groups/g-7f13fdf7-18e3679c-f79b-757f90-6bef14?domain=/home/test_user1/test/tall.h5"
+        }
+      ]
+    }
+    // GET http://localhost:8080/groups/g-7f13fdf7-18e3679c-f79b-757f90-6bef14/attributes?domain=/home/test_user1/test/tall.h5
+    // HTTP/1.1 200 OK
+    // Server: Highly Scalable Data Service (HSDS)
+    // X-XSS-Protection: 1; mode=block
+    // Content-Type: application/json; charset=utf-8
+    // Content-Length: 1007
+    // Date: Mon, 19 Dec 2022 01:49:22 GMT
+    // Request duration: 0.025968s
+    #+END_SRC
+
+** All groups
+
+   #+header: :var hsds=hsds-url :var auth=auth-str :var dom=hsds-domain
+   #+begin_src restclient
+   GET :hsds/groups?domain=:dom
+   :auth
+   #+end_src
+
+** All datasets
+
+   #+header: :var hsds=hsds-url :var auth=auth-str :var dom=hsds-domain
+   #+begin_src restclient
+   GET :hsds/datasets?domain=:dom
+   :auth
+   #+end_src
+
+** All committed/linked/named datatypes
+
+   #+header: :var hsds=hsds-url :var auth=auth-str :var dom=hsds-domain
+   #+begin_src restclient
+   GET :hsds/datatypes?domain=:dom
+   :auth
+   #+end_src
+
