@@ -1,5 +1,0 @@
-#+title: Projects
-
-- [[./hermes/][Hermes]] :: Extending the HDF Library to Support Intelligent I/O Buffering for
-            Deep Memory and Storage Hierarchy Systems
-
