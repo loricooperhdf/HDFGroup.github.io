@@ -1,36 +1,32 @@
-HDF Support Portal : Building HDF5 with CMake
-=============================================
+# Building HDF5 with CMake
+<span style="color:red">Under Construction</span>
 
-Created by Mike McGreevy, last modified by Binh-Minh Ribler on Feb 17, 2023
-
-Overview
---------
+## Overview
 
 A CTest script and platform configuration file can be used to simplify building with CMake. The following instructions are provided for this purpose.
 
 If you need to build with more complex options, you may prefer to follow the instructions in the [release\_docs/](https://bitbucket.hdfgroup.org/projects/HDFFV/repos/hdf5/browse/release_docs) directory of the HDF5 source code.
+<span style="color:red">**ABOVE LINK IS BAD**</span>
 
-*   *   [Preconditions](#BuildingHDF5withCMake-precond)
+    *   [Preconditions](#BuildingHDF5withCMake-precond)
     *   [Quick Instructions](#BuildingHDF5withCMake-quickins)
     *   [Build Instructions](#BuildingHDF5withCMake-buildins)
     *   [Compiling an Application](#BuildingHDF5withCMake-compile)
     *   [Troubleshooting](#BuildingHDF5withCMake-tshoot)
     *   [How to Change HDF5 CMake Build Options](How-to-Change-HDF5-CMake-Build-Options_50080311.html)
 
-Preconditions
--------------
+## Preconditions
 
 *   The CMake HDF5 source release file (for either Unix or Windows) **MUST** have been downloaded.  
       
     You can obtain the CMake HDF5 source file by either of these ways:
 
-1.  1.  Select a specific HDF5 release from the **[Downloads](Downloads_48807607.html)** page on the Support Portal (scroll down to see the releases). On the specific release page see the table under "Files". Select either the CMake-hdf5-N.N.N.tar.gz or CMake-hdf5.N.N.N.zip file.  
+1.  Select a specific HDF5 release from the **[Downloads](Downloads_48807607.html)** page on the Support Portal (scroll down to see the releases). On the specific release page see the table under "Files". Select either the CMake-hdf5-N.N.N.tar.gz or CMake-hdf5.N.N.N.zip file.  
         **_NOTE: Users should NOT use 1.10 releases prior to HDF5-1.10.3_.**  For more information see the [Software Changes from Release to Release for HDF5-1.10](https://confluence.hdfgroup.org/display/HDF5/Software+Changes+from+Release+to+Release+for+HDF5-1.10) page.  
           
         
-    2.  Go to the **[latest HDF5 source code](https://www.hdfgroup.org/downloads/hdf5/source-code/)** on [The HDF Group web site](https://www.hdfgroup.org/). (Scroll down to see _Cmake Versions_.)  
-          
-        
+2.  Go to the **[latest HDF5 source code](https://www.hdfgroup.org/downloads/hdf5/source-code/)** on [The HDF Group web site](https://www.hdfgroup.org/). (Scroll down to see _Cmake Versions_.)  
+                  
 
 *   [CMake](http://www.cmake.org/) **MUST** be installed. The configuration scripts require a minimum CMake version 3.12, although version 3.15 is recommended.  
       
