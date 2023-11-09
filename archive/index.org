@@ -1,5 +1,0 @@
-#+title: Archive
-
-- [[https://docs.hdfgroup.org/archive/support/HDF5/doc/index.html][HDF5 1.10.1 Documentation]] :: A copy of the HDF5 1.10.1 documentation website
-   from April 2017
-- [[https://docs.hdfgroup.org/archive/support/][Support]] :: A copy of The HDF Group's Support website from April 2017
