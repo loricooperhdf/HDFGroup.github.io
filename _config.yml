@@ -9,3 +9,9 @@ show_downloads: false
 site.github.is_user_page: false
 google_analytics:
 # theme: jekyll-theme-minimal
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default
