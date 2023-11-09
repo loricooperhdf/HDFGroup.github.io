@@ -8,11 +8,13 @@ Please download HDF5 1.14.3 Library and Tools from [www.hdfgroup.org](https://ww
 
 ### HDF5 1.12.3 
 
+[Download](/hdf5/hdf5_1_12_3.md) 
+
 
 ## HDFView
 
 ### HDFView 3.3.1
 
-Please download HDFView 3.3.1 from [wwww.hdfgroup.org](https://www.hdfgroup.org/downloads/hdfview/). 
+Please download HDFView 3.3.1 from [www.hdfgroup.org](https://www.hdfgroup.org/downloads/hdfview/). 
 
 ## HDF4 
