@@ -6,7 +6,7 @@
 A CTest script and platform configuration file can be used to simplify building with CMake. The following instructions are provided for this purpose.
 
 If you need to build with more complex options, you may prefer to follow the instructions in the [release\_docs/](https://bitbucket.hdfgroup.org/projects/HDFFV/repos/hdf5/browse/release_docs) directory of the HDF5 source code.
-<span style="color:red">**ABOVE LINK IS BAD**</span>
+<span style="color:red">ABOVE LINK IS BAD</span>
 
     *   [Preconditions](#BuildingHDF5withCMake-precond)
     *   [Quick Instructions](#BuildingHDF5withCMake-quickins)
@@ -18,14 +18,14 @@ If you need to build with more complex options, you may prefer to follow the ins
 ## Preconditions
 
 *   The CMake HDF5 source release file (for either Unix or Windows) **MUST** have been downloaded.  
-      
+  
     You can obtain the CMake HDF5 source file by either of these ways:
 
-1.  Select a specific HDF5 release from the **[Downloads](Downloads_48807607.html)** page on the Support Portal (scroll down to see the releases). On the specific release page see the table under "Files". Select either the CMake-hdf5-N.N.N.tar.gz or CMake-hdf5.N.N.N.zip file.  
+    1.  Select a specific HDF5 release from the **[Downloads](Downloads_48807607.html)** page on the Support Portal (scroll down to see the releases). On the specific release page see the table under "Files". Select either the `CMake-hdf5-N.N.N.tar.gz` or `CMake-hdf5.N.N.N.zip` file.  
         **_NOTE: Users should NOT use 1.10 releases prior to HDF5-1.10.3_.**  For more information see the [Software Changes from Release to Release for HDF5-1.10](https://confluence.hdfgroup.org/display/HDF5/Software+Changes+from+Release+to+Release+for+HDF5-1.10) page.  
           
         
-2.  Go to the **[latest HDF5 source code](https://www.hdfgroup.org/downloads/hdf5/source-code/)** on [The HDF Group web site](https://www.hdfgroup.org/). (Scroll down to see _Cmake Versions_.)  
+    2.  Go to the **[latest HDF5 source code](https://www.hdfgroup.org/downloads/hdf5/source-code/)** on [The HDF Group web site](https://www.hdfgroup.org/). (Scroll down to see _Cmake Versions_.)  
                   
 
 *   [CMake](http://www.cmake.org/) **MUST** be installed. The configuration scripts require a minimum CMake version 3.12, although version 3.15 is recommended.  
@@ -36,25 +36,23 @@ If you need to build with more complex options, you may prefer to follow the ins
     
 *   (Optional) On Windows, an NSIS or WiX should be installed in order to create an install image with CPack. NSIS will create a .exe installer. WiX will create a .msi installer.
 
-Quick Instructions
-------------------
+## Quick Instructions
 
 The quick instructions for building HDF5 with CMake are:
 
-1.  Download the CMake source code (CMake-hdf5-N.N.N.tar.gz or CMake-hdf5.N.N.N.zip).
+1.  Download the CMake source code (`CMake-hdf5-N.N.N.tar.gz` or C`Make-hdf5.N.N.N.zip`).
 2.  Uncompress it.
-3.  From the command line, go in to the top CMake-hdf5-N.N.N directory and execute the build script  (`build*`) for your platform.
+3.  From the command line, go in to the top `CMake-hdf5-N.N.N` directory and execute the build script  (`build*`) for your platform.
 
 If you encounter any issues, then see the instructions below.
 
-Build Instructions
-------------------
+## Build Instructions
 
-1\. Create a working directory. For HPC systems the working directory should be in a scratch or parallel file system space, since testing will use this space.
+1. Create a working directory. For HPC systems the working directory should be in a scratch or parallel file system space, since testing will use this space.
 
 2. Uncompress the HDF5 CMake source code file into the working directory. It will contain a `CMake-hdf5-N` directory (where N is the release version). ( See **[Preconditions](#BuildingHDF5withCMake-precond)** for how to obtain the software )
 
-3\. From the **_command line_**, go into the CMake-hdf5-N directory, which contains:
+3. From the **_command line_**, go into the CMake-hdf5-N directory, which contains:
 
 build\*.sh (.bat)
 

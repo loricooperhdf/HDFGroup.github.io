@@ -7,7 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
 {% seo %}
-    <link rel="stylesheet" href="{{ "/assets/css/style.css?v=" | append: site.github.build_revision | relative_url }}">
+    <link rel="stylesheet" href="{{ "/assets/css/style.css?v=" | append: site.github.build_revision | relative_url }}"> 
+    <link rel="stylesheet" href="../assets/css/style.css">
+
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -20,18 +22,20 @@
 
         {% if site.logo %}
           <a href="/"><img src="{{site.logo | relative_url}}" alt="Logo" /></a>
-        {% endif %}
-<ul><li>Solutions</li>
-       <ul>
-         <li><a href="/solutions/priority_support.html">HDF Software Priority Support</a>
-         <li><a href="/solutions/HDF_consulting.html">HDF Consulting</a></li>
-       </ul>
-  <li><a href="/downloads/index.html">Downloads</a></li>
-  <li>Community</li>
-  <li><a href="/documentation/index.html">Documentation</a></li>
-  <li><a href="https://help.hdfgroup.org">Help Desk</a></li>
-  <li><A href="https://www.hdfgroup.org/licenses">Licenses</A></li>
-</ul>
+        {% endif %} 
+
+  <p>
+          
+        </p>
+      <ul>
+        <li><a href="/solutions/priority_support.html">HDF Software Priority Support</a>
+        <li><a href="/solutions/HDF_consulting.html">HDF Consulting</a></li>
+        <li><a href="/downloads/index.html">Downloads</a></li>
+        <li>Community</li>
+        <li><a href="/documentation/index.html">Documentation</a></li>
+        <li><a href="https://help.hdfgroup.org">Help Desk</a></li>
+        <li><A href="https://www.hdfgroup.org/licenses">Licenses</A></li>
+      </ul>
         <br>
   Graphic link to HDF Lab
   
