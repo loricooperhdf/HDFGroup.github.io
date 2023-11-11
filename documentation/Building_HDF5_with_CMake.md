@@ -28,13 +28,10 @@ If you need to build with more complex options, you may prefer to follow the ins
         
     2.  Go to the **[latest HDF5 source code](https://www.hdfgroup.org/downloads/hdf5/source-code/)** on [The HDF Group web site](https://www.hdfgroup.org/). (Scroll down to see _Cmake Versions_.)  
                   
-
 *   [CMake](http://www.cmake.org/) **MUST** be installed. The configuration scripts require a minimum CMake version 3.12, although version 3.15 is recommended.  
       
-    
 *   Blank spaces **MUST NOT** be used in directory path names as this will cause the build to fail.  
-      
-    
+          
 *   (Optional) On Windows, an NSIS or WiX should be installed in order to create an install image with CPack. NSIS will create a .exe installer. WiX will create a .msi installer.
 
 ## Quick Instructions
@@ -53,13 +50,13 @@ If you encounter any issues, then see the instructions below.
 2. Uncompress the HDF5 CMake source code file into the working directory. It will contain a `CMake-hdf5-N` directory (where N is the release version). (See **[Preconditions](#BuildingHDF5withCMake-precond)** for how to obtain the software.)
 3. From the **_command line_**, go into the `CMake-hdf5-N` directory, which contains:
    
-| build\*.sh (.bat) | Build Script(s) | 
-| CTestScript.cmake | ctest Command 
-| hdf5-N | HDF5 Source Code |
-| HDF5config.cmake | Configuration File | 
-| HDF5options.cmake | User modifiable Options |
-| SZip.tar.gz | External Library for SZIP Compression |
-| ZLib.tar.gz | External Library for ZLIB Compression |
+   | build\*.sh (.bat) | Build Script(s) | 
+   | CTestScript.cmake | ctest Command 
+   | hdf5-N | HDF5 Source Code |
+   | HDF5config.cmake | Configuration File | 
+   | HDF5options.cmake | User modifiable Options |
+   | SZip.tar.gz | External Library for SZIP Compression |
+   | ZLib.tar.gz | External Library for ZLIB Compression |
 
 4. By default, HDF5 will be built:
    * Without Fortran
