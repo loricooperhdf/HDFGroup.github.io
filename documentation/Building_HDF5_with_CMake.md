@@ -176,7 +176,7 @@ If building HDF5 on Linux with CMake, compile scripts (`h5cc`, `h5c++`, `...`) a
 
 ## Troubleshooting
 
-**I can build HDF5 successfully but the findHDF5.cmake package does not populate HDF5\_LIBRARIES. How do you use the HDF5 libraries that you built?**
+**I can build HDF5 successfully but the findHDF5.cmake package does not populate HDF5_LIBRARIES. How do you use the HDF5 libraries that you built?**
 
 The `FindHDF5.cmake` package is not supported or provided by The HDF Group. The HDF Group cannot change it. However, you can use `find_package.`
 
@@ -184,15 +184,17 @@ See the question below on how to use `find_package`.
 
 **How do you use find_package with HDF5?**
 
-To use `find_package` you will first need to make sure that `HDF5\_DIR` is set correctly. For setting this environment variable see the Preconditions in the [USING\_HDF5\_CMake.txt](https://bitbucket.hdfgroup.org/projects/HDFFV/repos/hdf5/browse/release_docs/USING_HDF5_CMake.txt?at=f837afc8758c7c0394e2f40d636a8e6319b6b668&raw) file in the source code.
+To use `find_package` you will first need to make sure that `HDF5_DIR` is set correctly. For setting this environment variable see the Preconditions in the [USING\_HDF5\_CMake.txt](https://bitbucket.hdfgroup.org/projects/HDFFV/repos/hdf5/browse/release_docs/USING_HDF5_CMake.txt?at=f837afc8758c7c0394e2f40d636a8e6319b6b668&raw) file in the source code.
 
 See the `CMakeLists.txt` file provided with these examples for how to use find\_package with HDF5.
 
 Please note that the `find_package` invocation changed to require "shared" or "static":
+
    `FIND_PACKAGE(HDF5 COMPONENTS C HL NO\_MODULE REQUIRED shared)`
    `FIND_PACKAGE(HDF5 COMPONENTS C HL NO\_MODULE REQUIRED static)`
 
 Previously, the `find_package` invocation was: 
+
       `FIND_PACKAGE(HDF5 COMPONENTS C HL NO\_MODULE REQUIRED)`
 
 **My platform/compiler is not included. Can I still use the configuration files?**
