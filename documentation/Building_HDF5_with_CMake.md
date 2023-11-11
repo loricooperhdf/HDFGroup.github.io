@@ -183,20 +183,20 @@ The `FindHDF5.cmake` package is not supported or provided by The HDF Group. Th
 
 See the question below on how to use `find_package`.
 
-**How do you use `find\_package` with HDF5?**
+**How do you use find_package with HDF5?**
 
-To use `find_package` you will first need to make sure that `HDF5\_DIR` is set correctly. For setting this environment variable see the Preconditions in the `[USING\_HDF5\_CMake.txt](https://bitbucket.hdfgroup.org/projects/HDFFV/repos/hdf5/browse/release_docs/USING_HDF5_CMake.txt?at=f837afc8758c7c0394e2f40d636a8e6319b6b668&raw)` file in the source code.
+To use `find_package` you will first need to make sure that `HDF5\_DIR` is set correctly. For setting this environment variable see the Preconditions in the [USING\_HDF5\_CMake.txt](https://bitbucket.hdfgroup.org/projects/HDFFV/repos/hdf5/browse/release_docs/USING_HDF5_CMake.txt?at=f837afc8758c7c0394e2f40d636a8e6319b6b668&raw) file in the source code.
 
 See the `CMakeLists.txt` file provided with these examples for how to use find\_package with HDF5.
 
-Please note that the `find\_package` invocation changed to require "shared" or "static":
+Please note that the `find_package` invocation changed to require "shared" or "static":
 
-      FIND\_PACKAGE(HDF5 COMPONENTS C HL NO\_MODULE REQUIRED shared)
-      FIND\_PACKAGE(HDF5 COMPONENTS C HL NO\_MODULE REQUIRED static)  
+      FIND_PACKAGE(HDF5 COMPONENTS C HL NO\_MODULE REQUIRED shared)
+      FIND_PACKAGE(HDF5 COMPONENTS C HL NO\_MODULE REQUIRED static)  
 
-Previously, the `find\_package` invocation was: 
+Previously, the `find_package` invocation was: 
 
-      FIND\_PACKAGE(HDF5 COMPONENTS C HL NO\_MODULE REQUIRED)
+      FIND_PACKAGE(HDF5 COMPONENTS C HL NO\_MODULE REQUIRED)
 
 **My platform/compiler is not included. Can I still use the configuration files?**
 
@@ -204,7 +204,7 @@ Yes, you can but you will have to edit the HDF5config.cmake file and update th
 
    CTEST\_CMAKE\_GENERATOR
 
-Other variables may be updated for informational purposes but are not required (for example, `SITE\_OS\_BITS`). 
+Other variables may be updated for informational purposes but are not required (for example, `SITE_OS_BITS`). 
 
 The generators for your platform can be seen by typing:
 
