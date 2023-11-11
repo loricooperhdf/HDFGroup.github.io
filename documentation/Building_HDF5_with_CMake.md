@@ -9,12 +9,12 @@ If you need to build with more complex options, you may prefer to follow the ins
 
 <span style="color:red">ABOVE LINK IS BAD</span>
 
-* [Preconditions](#BuildingHDF5withCMake-precond)
-* [Quick Instructions](#BuildingHDF5withCMake-quickins)
-* [Build Instructions](#BuildingHDF5withCMake-buildins)
-* [Compiling an Application](#BuildingHDF5withCMake-compile)
-* [Troubleshooting](#BuildingHDF5withCMake-tshoot)
-* [How to Change HDF5 CMake Build Options](How-to-Change-HDF5-CMake-Build-Options_50080311.html)
+* [Preconditions](#Prconditions)
+* [Quick Instructions](#quick-instructions)
+* [Build Instructions](#build-instructions)
+* [Compiling an Application](#compiling-an-application)
+* [Troubleshooting](#troubleshooting)
+* [How to Change HDF5 CMake Build Options](#How-to-Change-HDF5-CMake-Build-Options_50080311.html) <span style="color=red">Need a new link</span>
 
 ## Preconditions
 
