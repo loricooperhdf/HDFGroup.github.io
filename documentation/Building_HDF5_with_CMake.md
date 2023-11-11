@@ -76,13 +76,14 @@ If you encounter any issues, then see the instructions below.
    Where the `ctest` command is using these options:
 
    * The `-S` option uses the script version of ctest. `HDF5config.cmake` is the configuration file.
-   * The `-C` option specifies the build configuration which matches `CTEST\_BUILD\_CONFIGURATION` in the configuration file.
+   * The `-C` option specifies the build configuration which matches `CTEST_BUILD_CONFIGURATION` in the configuration file.
    * The `-V` option indicates verbose. Using the `-VV` option indicates `_more_` verbose. If encountering problems, **specify `-VV` for more verbose output.**
-   * The `-O` option saves the output to a log file, `_hdf5.log._`
+   * The `-O` option saves the output to a log file, `hdf5.log.`
 
 6. Locate the built binary.
 
    The built binary will be in the build directory and will also be copied to the `CMake-hdf5-N` directory if successful. It will have the format:
+   
       `HDF5-N-<platform>.<zip or tar.gz>`
 
    On Unix, <platform> will be "Linux". A similar `.sh` file will also be created.
@@ -91,15 +92,15 @@ If you encounter any issues, then see the instructions below.
 
    If the built binary is not there, then see Troubleshooting for help.
 
-7. Check what is included with your built binaries.
+8. Check what is included with your built binaries.
 
    You will find the `libhdf5.settings` file in the build directory. It contains information on how the binaries were built.
 
-   If you uncompress the built binary, you will find the hdf5-config.cmake and hdf5-targets.cmake files (among others) in a cmakedirectory. This cmake directory can be found in the same location as the lib, include, and bin directories on Windows and under share/ on Unix. The options in the hdf5-config.cmake file match those in the libhdf5.settings file.
+   If you uncompress the built binary, you will find the `hdf5-config.cmake` and `hdf5-targets.cmake` files (among others) in a cmakedirectory. This cmake directory can be found in the same location as the lib, include, and bin directories on Windows and under `share/` on Unix. The options in the `hdf5-config.cmake` file match those in the `libhdf5.settings` file.
 
    The binaries by default will include the static HDF5 C and C++ libraries, as well as the SZIP and ZLIB external libraries. Please NOTE that they will NOT include the HDF5 Fortran library. See the [How to Change HDF5 CMake Build Options](How-to-Change-HDF5-CMake-Build-Options_50080311.html) page for instructions on building with Fortran.
 
-8. Follow the instructions below for compiling an application with the binaries that are built.
+9. Follow the instructions below for compiling an application with the binaries that are built.
 
 ## Compiling an Application
 
@@ -119,7 +120,7 @@ Uncompress the file to find the `HDF5Examples` directory. Go into the `HDF5Examp
 
 In general, users must first set the HDF5\_DIR environment variable to the installed location of the CMake configuration files for HDF5. For example, on Windows the following path might be set:
 
-   `HDF5\_DIR=C:/Program Files/HDF\_Group/HDF5/1.N.N/cmake`
+   `HDF5_DIR=C:/Program Files/HDF_Group/HDF5/1.N.N/cmake`
 
 You may look at `find_package` provided with the HDF5 Examples for how to compile an application. _Please be aware that `FindHDF5.cmake` is not provided by and cannot be fixed by The HDF Group._
 
@@ -139,7 +140,7 @@ Steps for building the HDF5 Examples
 
 A framework for building applications with CMake is available for convenience and can be obtained as follows:
 
-* Go to [hdf5\_app\_builder](https://bitbucket.hdfgroup.org/projects/HDFFV/repos/hdf5_app_builder/browse) in The HDF Group Bitbucket repository,
+* Go to [hdf5\_app\_builder](https://bitbucket.hdfgroup.org/projects/HDFFV/repos/hdf5_app_builder/browse) in The HDF Group <span style="color:red">Bitbucket repository</span>,
 * click on the three dots (...) to the left, 
 * select _Download_ as the action from the menu, and
 * save the compressed file to your machine.
@@ -165,9 +166,7 @@ set (hdf5app
 ```
 * Run the `ctest` command for your platform. For example:
 
-```
-ctest -S HDFconfig.cmake,BUILD_GENERATOR=VS201364,CTEST_SOURCE_NAME=mfapp,INSTALLDIR="C:/Program Files/HDF_Group/HDF5/1.10.2" -C Debug -VV -O test.log
-```
+`ctest -S HDFconfig.cmake,BUILD_GENERATOR=VS201364,CTEST_SOURCE_NAME=mfapp,INSTALLDIR="C:/Program Files/HDF_Group/HDF5/1.10.2" -C Debug -VV -O test.log`
 
 * Run your application. For a debug application, the executable will be here: `hdf5-app\build\bin\Debug\`
 
@@ -191,34 +190,34 @@ See the `CMakeLists.txt` file provided with these examples for how to use fin
 
 Please note that the `find_package` invocation changed to require "shared" or "static":
 
-      FIND_PACKAGE(HDF5 COMPONENTS C HL NO\_MODULE REQUIRED shared)
-      FIND_PACKAGE(HDF5 COMPONENTS C HL NO\_MODULE REQUIRED static)  
+      `FIND_PACKAGE(HDF5 COMPONENTS C HL NO\_MODULE REQUIRED shared)`
+      `FIND_PACKAGE(HDF5 COMPONENTS C HL NO\_MODULE REQUIRED static)`
 
 Previously, the `find_package` invocation was: 
 
-      FIND_PACKAGE(HDF5 COMPONENTS C HL NO\_MODULE REQUIRED)
+      `FIND_PACKAGE(HDF5 COMPONENTS C HL NO\_MODULE REQUIRED)`
 
 **My platform/compiler is not included. Can I still use the configuration files?**
 
 Yes, you can but you will have to edit the HDF5config.cmake file and update the variable:
 
-   CTEST\_CMAKE\_GENERATOR
+   `CTEST\_CMAKE\_GENERATOR`
 
 Other variables may be updated for informational purposes but are not required (for example, `SITE_OS_BITS`). 
 
 The generators for your platform can be seen by typing:
 
-   cmake --help
+   `cmake --help`
 
 **What do I do if the build fails?**
 
-I received an error during the build and the built and compressed HDF5 binary is not in the CMake-hdf5-N/build directory as I expected. How do I determine what the problem is?
+I received an error during the build and the built and compressed HDF5 binary is not in the `CMake-hdf5-N/build` directory as I expected. How do I determine what the problem is?
 
-If the error is not clear, then the first thing you may want to do is replace the -V (Dash Uppercase Vee) option for ctest in the build script to -VV (Dash Uppercase Vee Uppercase Vee). Then remove the build directory and re-run the build script. The output should be more verbose.
+If the error is not clear, then the first thing you may want to do is replace the `-V` (Dash Uppercase Vee) option for ctest in the build script to `-VV` (Dash Uppercase Vee Uppercase Vee). Then remove the build directory and re-run the build script. The output should be more verbose.
 
-If the error is still not clear, then check the log files. You will find those in the build directory under CMake-hdf5-N. For example, on Unix the log files will be in:
+If the error is still not clear, then check the log files. You will find those in the build directory under `CMake-hdf5-N`. For example, on Unix the log files will be in:
 
-   CMake-hdf5-N/build/Testing/Temporary/
+   `CMake-hdf5-N/build/Testing/Temporary/`
 
 There are log files for the configure, test, and build. 
 
