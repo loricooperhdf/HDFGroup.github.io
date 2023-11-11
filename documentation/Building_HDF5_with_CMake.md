@@ -191,11 +191,12 @@ See the `CMakeLists.txt` file provided with these examples for how to use fin
 Please note that the `find_package` invocation changed to require "shared" or "static":
 
    `FIND_PACKAGE(HDF5 COMPONENTS C HL NO\_MODULE REQUIRED shared)`
+
    `FIND_PACKAGE(HDF5 COMPONENTS C HL NO\_MODULE REQUIRED static)`
 
 Previously, the `find_package` invocation was: 
 
-      `FIND_PACKAGE(HDF5 COMPONENTS C HL NO\_MODULE REQUIRED)`
+   `FIND_PACKAGE(HDF5 COMPONENTS C HL NO\_MODULE REQUIRED)`
 
 **My platform/compiler is not included. Can I still use the configuration files?**
 
