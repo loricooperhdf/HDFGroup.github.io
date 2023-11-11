@@ -52,6 +52,7 @@ If you encounter any issues, then see the instructions below.
 1. Create a working directory. For HPC systems the working directory should be in a scratch or parallel file system space, since testing will use this space.
 2. Uncompress the HDF5 CMake source code file into the working directory. It will contain a `CMake-hdf5-N` directory (where N is the release version). (See **[Preconditions](#BuildingHDF5withCMake-precond)** for how to obtain the software.)
 3. From the **_command line_**, go into the `CMake-hdf5-N` directory, which contains:
+   
 | build\*.sh (.bat) | Build Script(s) | 
 | CTestScript.cmake | ctest Command 
 | hdf5-N | HDF5 Source Code |
@@ -59,17 +60,17 @@ If you encounter any issues, then see the instructions below.
 | HDF5options.cmake | User modifiable Options |
 | SZip.tar.gz | External Library for SZIP Compression |
 | ZLib.tar.gz | External Library for ZLIB Compression |
+
 4. By default, HDF5 will be built:
+   * Without Fortran
+   * With SZIP compression enabled
+   * With ZLIB compression enabled
+   * In Release Mode
+   * With shared libraries
 
-* Without Fortran
-* With SZIP compression enabled
-* With ZLIB compression enabled
-* In Release Mode
-* With shared libraries
+  Users can change the options that HDF5 is built with by adding options to the build command (see the batch files/test script below) or by modifying the HDF5options.cmake file. The HDF5options.cmake file will override any options set in the configuration file. For more information see the [How to Change HDF5 CMake Build Options](How-to-Change-HDF5-CMake-Build-Options_50080311.html) page.
 
-Users can change the options that HDF5 is built with by adding options to the build command (see the batch files/test script below) or by modifying the HDF5options.cmake file. The HDF5options.cmake file will override any options set in the configuration file. For more information see the [How to Change HDF5 CMake Build Options](How-to-Change-HDF5-CMake-Build-Options_50080311.html) page.
-
-REQUIRED: Visual Studio Express users must change the build options to turn off packaging or the build will fail.
+  REQUIRED: Visual Studio Express users must change the build options to turn off packaging or the build will fail.
 
 5. Execute the batch file or shell script for your platform. It contains the `ctest` command that you need to run to build HDF5. (See Troubleshooting if you do not see your platform).
 
@@ -84,10 +85,10 @@ Below are example build scripts that you may find:
 
 Where the `ctest` command is using these options:
 
-* The `-S` option uses the script version of ctest. `HDF5config.cmake` is the configuration file.
-* The `-C` option specifies the build configuration which matches `CTEST\_BUILD\_CONFIGURATION` in the configuration file.
-* The `-V` option indicates verbose. Using the `-VV` option indicates `_more_` verbose. If encountering problems, **specify `-VV` for more verbose output.**
-* The `-O` option saves the output to a log file, `_hdf5.log._`
+   * The `-S` option uses the script version of ctest. `HDF5config.cmake` is the configuration file.
+   * The `-C` option specifies the build configuration which matches `CTEST\_BUILD\_CONFIGURATION` in the configuration file.
+   * The `-V` option indicates verbose. Using the `-VV` option indicates `_more_` verbose. If encountering problems, **specify `-VV` for more verbose output.**
+   * The `-O` option saves the output to a log file, `_hdf5.log._`
 
 6. Locate the built binary.
 
