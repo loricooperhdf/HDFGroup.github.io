@@ -190,25 +190,25 @@ To use `find_package` you will first need to make sure that `HDF5\_DIR` is set
 See the `CMakeLists.txt` file provided with these examples for how to use find\_package with HDF5.
 
 Please note that the `find\_package` invocation changed to require "shared" or "static":
-```
+
       FIND\_PACKAGE(HDF5 COMPONENTS C HL NO\_MODULE REQUIRED shared)
       FIND\_PACKAGE(HDF5 COMPONENTS C HL NO\_MODULE REQUIRED static)  
-```
+
 Previously, the `find\_package` invocation was: 
 
-      `FIND\_PACKAGE(HDF5 COMPONENTS C HL NO\_MODULE REQUIRED)`
+      FIND\_PACKAGE(HDF5 COMPONENTS C HL NO\_MODULE REQUIRED)
 
 **My platform/compiler is not included. Can I still use the configuration files?**
 
 Yes, you can but you will have to edit the HDF5config.cmake file and update the variable:
 
-   `CTEST\_CMAKE\_GENERATOR`
+   CTEST\_CMAKE\_GENERATOR
 
 Other variables may be updated for informational purposes but are not required (for example, `SITE\_OS\_BITS`). 
 
 The generators for your platform can be seen by typing:
 
-   `cmake --help`
+   cmake --help
 
 **What do I do if the build fails?**
 
@@ -218,7 +218,7 @@ If the error is not clear, then the first thing you may want to do is replace th
 
 If the error is still not clear, then check the log files. You will find those in the build directory under CMake-hdf5-N. For example, on Unix the log files will be in:
 
-   `CMake-hdf5-N/build/Testing/Temporary/`  
+   CMake-hdf5-N/build/Testing/Temporary/
 
 There are log files for the configure, test, and build. 
 
