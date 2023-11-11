@@ -18,20 +18,13 @@ If you need to build with more complex options, you may prefer to follow the ins
 
 ## Preconditions
 
-*   The CMake HDF5 source release file (for either Unix or Windows) **MUST** have been downloaded.  
-  
+*   The CMake HDF5 source release file (for either Unix or Windows) **MUST** have been downloaded.    
     You can obtain the CMake HDF5 source file by either of these ways:
-
     1.  Select a specific HDF5 release from the **[Downloads](Downloads_48807607.html)** page on the Support Portal (scroll down to see the releases). On the specific release page see the table under "Files". Select either the `CMake-hdf5-N.N.N.tar.gz` or `CMake-hdf5.N.N.N.zip` file.  
         **_NOTE: Users should NOT use 1.10 releases prior to HDF5-1.10.3_.**  For more information see the [Software Changes from Release to Release for HDF5-1.10](https://confluence.hdfgroup.org/display/HDF5/Software+Changes+from+Release+to+Release+for+HDF5-1.10) page.  
-          
-        
-    2.  Go to the **[latest HDF5 source code](https://www.hdfgroup.org/downloads/hdf5/source-code/)** on [The HDF Group web site](https://www.hdfgroup.org/). (Scroll down to see _Cmake Versions_.)  
-                  
+    2.  Go to the **[latest HDF5 source code](https://www.hdfgroup.org/downloads/hdf5/source-code/)** on [The HDF Group web site](https://www.hdfgroup.org/). (Scroll down to see _Cmake Versions_.)                    
 *   [CMake](http://www.cmake.org/) **MUST** be installed. The configuration scripts require a minimum CMake version 3.12, although version 3.15 is recommended.  
-      
 *   Blank spaces **MUST NOT** be used in directory path names as this will cause the build to fail.  
-          
 *   (Optional) On Windows, an NSIS or WiX should be installed in order to create an install image with CPack. NSIS will create a .exe installer. WiX will create a .msi installer.
 
 ## Quick Instructions
@@ -80,7 +73,7 @@ If you encounter any issues, then see the instructions below.
    | Unix | build-unix.sh | ctest -S HDF5config.cmake,BUILD\_GENERATOR=Unix -C Release -V -O hdf5.log |
    | Unix (HPC | build-unix-hpc.sh | ctest -S HDF5config.cmake,HPC=sbatch,MPI=true,BUILD\_GENERATOR=Unix -C Release -V -O hdf5.log |
 
-Where the `ctest` command is using these options:
+   Where the `ctest` command is using these options:
 
    * The `-S` option uses the script version of ctest. `HDF5config.cmake` is the configuration file.
    * The `-C` option specifies the build configuration which matches `CTEST\_BUILD\_CONFIGURATION` in the configuration file.
@@ -126,7 +119,7 @@ Uncompress the file to find the `HDF5Examples` directory. Go into the `HDF5Examp
 
 In general, users must first set the HDF5\_DIR environment variable to the installed location of the CMake configuration files for HDF5. For example, on Windows the following path might be set:
 
-   HDF5\_DIR=C:/Program Files/HDF\_Group/HDF5/1.N.N/cmake
+   `HDF5\_DIR=C:/Program Files/HDF\_Group/HDF5/1.N.N/cmake`
 
 You may look at `find_package` provided with the HDF5 Examples for how to compile an application. _Please be aware that `FindHDF5.cmake` is not provided by and cannot be fixed by The HDF Group._
 
@@ -161,18 +154,20 @@ An example of building a multi-file application in C in debug mode is provided h
 * Edit `hdf5-app\mfapp\C\C_sourcefiles.cmake` and list your files. For example:
 
 ```
-`set (hdf5app_name "myapp")`
-`set (hdf5app`
-     `${PROJECT_SOURCE_DIR}/myfile1.c`
-     `${PROJECT_SOURCE_DIR}/myfile1.h`
-     `${PROJECT_SOURCE_DIR}/myfile2.c`
-     `${PROJECT_SOURCE_DIR}/myfile2.h`
-     `${PROJECT_SOURCE_DIR}/program.c`
-`)`
+set (hdf5app_name "myapp")
+set (hdf5app
+     ${PROJECT_SOURCE_DIR}/myfile1.c
+     ${PROJECT_SOURCE_DIR}/myfile1.h
+     ${PROJECT_SOURCE_DIR}/myfile2.c
+     ${PROJECT_SOURCE_DIR}/myfile2.h
+     ${PROJECT_SOURCE_DIR}/program.c
+)
 ```
 * Run the `ctest` command for your platform. For example:
 
-`ctest -S HDFconfig.cmake,BUILD_GENERATOR=VS201364,CTEST_SOURCE_NAME=mfapp,INSTALLDIR="C:/Program Files/HDF_Group/HDF5/1.10.2" -C Debug -VV -O test.log`
+```
+ctest -S HDFconfig.cmake,BUILD_GENERATOR=VS201364,CTEST_SOURCE_NAME=mfapp,INSTALLDIR="C:/Program Files/HDF_Group/HDF5/1.10.2" -C Debug -VV -O test.log
+```
 
 * Run your application. For a debug application, the executable will be here: `hdf5-app\build\bin\Debug\`
 
