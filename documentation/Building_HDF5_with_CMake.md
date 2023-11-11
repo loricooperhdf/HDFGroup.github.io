@@ -65,20 +65,20 @@ If you encounter any issues, then see the instructions below.
    * In Release Mode
    * With shared libraries
 
-  Users can change the options that HDF5 is built with by adding options to the build command (see the batch files/test script below) or by modifying the HDF5options.cmake file. The HDF5options.cmake file will override any options set in the configuration file. For more information see the [How to Change HDF5 CMake Build Options](How-to-Change-HDF5-CMake-Build-Options_50080311.html) page.
+   Users can change the options that HDF5 is built with by adding options to the build command (see the batch files/test script below) or by modifying the HDF5options.cmake file. The HDF5options.cmake file will override any options set in the configuration file. For more information see the [How to Change HDF5 CMake Build Options](How-to-Change-HDF5-CMake-Build-Options_50080311.html) page.
 
-  REQUIRED: Visual Studio Express users must change the build options to turn off packaging or the build will fail.
+   REQUIRED: Visual Studio Express users must change the build options to turn off packaging or the build will fail.
 
 5. Execute the batch file or shell script for your platform. It contains the `ctest` command that you need to run to build HDF5. (See Troubleshooting if you do not see your platform).
 
-Below are example build scripts that you may find:
+   Below are example build scripts that you may find:
 
-| Platform | Batch File or Shell Script | Contains following `ctest` command |
-| ----- | ----- | ----- |
-| Windows 64-bit VS 2015 | build-VS2015-64.bat | ctest -S HDF5config.cmake,BUILD\_GENERATOR=VS201564 -C Release -V -O hdf5.log |
-| Windows 32-bit VS 2015 | build-VS2015-32.bat | ctest -S HDF5config.cmake,BUILD\_GENERATOR=VS2015 -C Release -V -O hdf5.log | 
-| Unix | build-unix.sh | ctest -S HDF5config.cmake,BUILD\_GENERATOR=Unix -C Release -V -O hdf5.log |
-| Unix (HPC | build-unix-hpc.sh | ctest -S HDF5config.cmake,HPC=sbatch,MPI=true,BUILD\_GENERATOR=Unix -C Release -V -O hdf5.log |
+   | Platform | Batch File or Shell Script | Contains following `ctest` command |
+   | ----- | ----- | ----- |
+   | Windows 64-bit VS 2015 | build-VS2015-64.bat | ctest -S HDF5config.cmake,BUILD\_GENERATOR=VS201564 -C Release -V -O hdf5.log |
+   | Windows 32-bit VS 2015 | build-VS2015-32.bat | ctest -S HDF5config.cmake,BUILD\_GENERATOR=VS2015 -C Release -V -O hdf5.log | 
+   | Unix | build-unix.sh | ctest -S HDF5config.cmake,BUILD\_GENERATOR=Unix -C Release -V -O hdf5.log |
+   | Unix (HPC | build-unix-hpc.sh | ctest -S HDF5config.cmake,HPC=sbatch,MPI=true,BUILD\_GENERATOR=Unix -C Release -V -O hdf5.log |
 
 Where the `ctest` command is using these options:
 
@@ -89,22 +89,22 @@ Where the `ctest` command is using these options:
 
 6. Locate the built binary.
 
-The built binary will be in the build directory and will also be copied to the `CMake-hdf5-N` directory if successful. It will have the format:
-    `HDF5-N-<platform>.<zip or tar.gz>`
+   The built binary will be in the build directory and will also be copied to the `CMake-hdf5-N` directory if successful. It will have the format:
+      `HDF5-N-<platform>.<zip or tar.gz>`
 
-On Unix, <platform> will be "Linux". A similar `.sh` file will also be created.
+   On Unix, <platform> will be "Linux". A similar `.sh` file will also be created.
 
-On Windows, <platform> will be "win64" or "win32". If you have an installer on your system, you will also see a similar file that ends in either `.exe` (NSIS) or `.msi` (WiX).
+   On Windows, <platform> will be "win64" or "win32". If you have an installer on your system, you will also see a similar file that ends in either `.exe` (NSIS) or `.msi` (WiX).
 
-If the built binary is not there, then see Troubleshooting for help.
+   If the built binary is not there, then see Troubleshooting for help.
 
 7. Check what is included with your built binaries.
 
-You will find the `libhdf5.settings` file in the build directory. It contains information on how the binaries were built.
+   You will find the `libhdf5.settings` file in the build directory. It contains information on how the binaries were built.
 
-If you uncompress the built binary, you will find the hdf5-config.cmake and hdf5-targets.cmake files (among others) in a cmakedirectory. This cmake directory can be found in the same location as the lib, include, and bin directories on Windows and under share/ on Unix. The options in the hdf5-config.cmake file match those in the libhdf5.settings file.
+   If you uncompress the built binary, you will find the hdf5-config.cmake and hdf5-targets.cmake files (among others) in a cmakedirectory. This cmake directory can be found in the same location as the lib, include, and bin directories on Windows and under share/ on Unix. The options in the hdf5-config.cmake file match those in the libhdf5.settings file.
 
-The binaries by default will include the static HDF5 C and C++ libraries, as well as the SZIP and ZLIB external libraries. Please NOTE that they will NOT include the HDF5 Fortran library. See the [How to Change HDF5 CMake Build Options](How-to-Change-HDF5-CMake-Build-Options_50080311.html) page for instructions on building with Fortran.
+   The binaries by default will include the static HDF5 C and C++ libraries, as well as the SZIP and ZLIB external libraries. Please NOTE that they will NOT include the HDF5 Fortran library. See the [How to Change HDF5 CMake Build Options](How-to-Change-HDF5-CMake-Build-Options_50080311.html) page for instructions on building with Fortran.
 
 8. Follow the instructions below for compiling an application with the binaries that are built.
 
@@ -162,19 +162,12 @@ An example of building a multi-file application in C in debug mode is provided h
 
 ```
 `set (hdf5app_name "myapp")`
-
 `set (hdf5app`
-
      `${PROJECT_SOURCE_DIR}/myfile1.c`
-
      `${PROJECT_SOURCE_DIR}/myfile1.h`
-
      `${PROJECT_SOURCE_DIR}/myfile2.c`
-
      `${PROJECT_SOURCE_DIR}/myfile2.h`
-
      `${PROJECT_SOURCE_DIR}/program.c`
-
 `)`
 ```
 * Run the `ctest` command for your platform. For example:
