@@ -14,7 +14,7 @@ If you need to build with more complex options, you may prefer to follow the ins
 * [Build Instructions](#build-instructions)
 * [Compiling an Application](#compiling-an-application)
 * [Troubleshooting](#troubleshooting)
-* [How to Change HDF5 CMake Build Options](#How-to-Change-HDF5-CMake-Build-Options_50080311.html) <span style="color=red">Need a new link</span>
+* [How to Change HDF5 CMake Build Options](#How-to-Change-HDF5-CMake-Build-Options_50080311.html) <span style="color:red">Need a new link</span>
 
 ## Preconditions
 
@@ -189,19 +189,17 @@ To use `find_package` you will first need to make sure that `HDF5\_DIR` is set
 See the `CMakeLists.txt` file provided with these examples for how to use find\_package with HDF5.
 
 Please note that the `find_package` invocation changed to require "shared" or "static":
-
-      `FIND_PACKAGE(HDF5 COMPONENTS C HL NO\_MODULE REQUIRED shared)`
-      `FIND_PACKAGE(HDF5 COMPONENTS C HL NO\_MODULE REQUIRED static)`
+   `FIND_PACKAGE(HDF5 COMPONENTS C HL NO\_MODULE REQUIRED shared)`
+   `FIND_PACKAGE(HDF5 COMPONENTS C HL NO\_MODULE REQUIRED static)`
 
 Previously, the `find_package` invocation was: 
-
       `FIND_PACKAGE(HDF5 COMPONENTS C HL NO\_MODULE REQUIRED)`
 
 **My platform/compiler is not included. Can I still use the configuration files?**
 
 Yes, you can but you will have to edit the HDF5config.cmake file and update the variable:
 
-   `CTEST\_CMAKE\_GENERATOR`
+   `CTEST_CMAKE_GENERATOR`
 
 Other variables may be updated for informational purposes but are not required (for example, `SITE_OS_BITS`). 
 
