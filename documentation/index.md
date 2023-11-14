@@ -3,10 +3,7 @@ Look for more content here soon.
 Here are some of our most popular help topics.
 
 ## HDF5 
-* [Building HDF5 with Cmake](Building_HDF5_with_CMake.md)
-* How to change HDF5 Cmake build options
-* Software using HDF5
-* Cmake scripts for building applications
+* [Documentation](https://docs.hdfgroup.org/hdf5/develop/)
 
 ## HDF4 
 * Building HDF4 with Cmake
