@@ -13,12 +13,12 @@
 
 | File | Type | Install Instructions |
 | ---- | ---- | ---- | 
-| hdfview-3.3.1.tar.gz <br> (sha256) | Source Code (Unix) | Build Instructions | 
-| hdfview-3.3.1.zip <br> (sha256)	| Source Code	(Windows) | Build Instructions | 
+| [hdfview-3.3.1.tar.gz](https://hdf-wordpress-1.s3.amazonaws.com/wp-content/uploads/manual/HDFView/3.3.1/src/hdfview-3.3.1.tar.gz) <br> [(sha256)](https://hdf-wordpress-1.s3.amazonaws.com/wp-content/uploads/manual/HDFView/3.3.1/src/hdfview-3.3.1.tar.gz.sha256) | Source Code (Unix) | Build Instructions | 
+| [hdfview-3.3.1.zip](https://hdf-wordpress-1.s3.amazonaws.com/wp-content/uploads/manual/HDFView/3.3.1/src/hdfview-3.3.1.zip) <br> [(sha256)](https://hdf-wordpress-1.s3.amazonaws.com/wp-content/uploads/manual/HDFView/3.3.1/src/hdfview-3.3.1.zip.sha256)	| Source Code	(Windows) | Build Instructions | 
 | HDFView User's Guide <br> (sha256) | Documentation (PDF) | | 
-| UsersGuide.tar.gz <br> (sha256) | Documentation (HTML, Unix) | | 
-| UsersGuide.zip <br> (sha256) | Documentation (HTML, Windows) | | |
-| Pre-built binaries | Unix and Windows | All pre-built HDFView binary distributions provided
+| [UsersGuide.tar.gz](https://hdf-wordpress-1.s3.amazonaws.com/wp-content/uploads/manual/HDFView/3.3.1/docs/UsersGuide.tar.gz) <br> [(sha256)](https://hdf-wordpress-1.s3.amazonaws.com/wp-content/uploads/manual/HDFView/3.3.1/docs/UsersGuide.tar.gz.sha256) | Documentation (HTML, Unix) | | 
+| [UsersGuide.zip](https://hdf-wordpress-1.s3.amazonaws.com/wp-content/uploads/manual/HDFView/3.3.1/docs/UsersGuide.zip) <br> [(sha256)](https://hdf-wordpress-1.s3.amazonaws.com/wp-content/uploads/manual/HDFView/3.3.1/docs/UsersGuide.zip.sha256) | Documentation (HTML, Windows) | | |
+| [Pre-built binaries](https://support.hdfgroup.org/ftp/HDF5/releases/HDF-JAVA/hdfview-3.3.1/bin/) | Unix and Windows | All pre-built HDFView binary distributions provided
 
 HDFView 3.3.1 was built and tested with HDF5-1.14.0, HDF 4.2.16-2, and openjdk 19. 
 
@@ -35,4 +35,4 @@ See Known Problems if you encounter any issues.
 * Workaround for issue with launching HDFView: A path issue which causes HDFView to fail to launch can be resolved by using the included batch script in the binary under the app folder.
 * If installing HDFView with the installer method, please be aware that the installer does NOT overwrite "hardcoded" associations.  If there is a pre-existing user-defined file association, you must manually associate the extension with the HDFView application.
 
-Please see the Release notes for more information on known problems.
+Please see the [Release Notes](https://github.com/HDFGroup/hdf5/blob/hdf5_1_14_3/release_docs/RELEASE.txt) for more information on known problems.
