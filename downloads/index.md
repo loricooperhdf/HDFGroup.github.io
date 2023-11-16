@@ -13,8 +13,6 @@ This page is a temporary replacement for our download archive. We will be workin
 | ---- | ----| 
 | [HDFView 3.3.1](/hdfview/hdfview3_3_1.md) | Most Recent Version | 
 
-Please download HDFView 3.3.1 from [www.hdfgroup.org](https://www.hdfgroup.org/downloads/hdfview/). 
-
 ## HDF4 
 
 | Version | Usage | 
