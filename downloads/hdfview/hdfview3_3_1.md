@@ -7,7 +7,7 @@
 | Additional Release Information | [Release Notes](https://github.com/HDFGroup/hdf5/blob/hdf5_1_14_3/release_docs/RELEASE.txt) |
 | | [Release Announcement](https://www.hdfgroup.org/2023/04/release-of-hdfview-3-3-0-newsletter-193/) | 
 | | Documentation | 
-| | Known Problems |
+| | [Known Problems](#known-problems-in-this-release) |
 
 ## Files 
 
