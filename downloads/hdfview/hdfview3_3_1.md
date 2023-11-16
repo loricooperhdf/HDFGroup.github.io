@@ -11,6 +11,15 @@
 
 ## Files 
 
+| File | Type | Install Instructions |
+| ---- | ---- | ---- | 
+| hdfview-3.3.1.tar.gz <br> (sha256) | Source Code (Unix) | Build Instructions | 
+| hdfview-3.3.1.zip <br> (sha256)	| Source Code	(Windows) | Build Instructions | 
+| HDFView User's Guide <br> (sha256) | Documentation (PDF) | | 
+| UsersGuide.tar.gz <br> (sha256) | Documentation (HTML, Unix) | | 
+| UsersGuide.zip <br> (sha256) | Documentation (HTML, Windows) | | |
+| Pre-built binaries | Unix and Windows | All pre-built HDFView binary distributions provided
+
 HDFView 3.3.1 was built and tested with HDF5-1.14.0, HDF 4.2.16-2, and openjdk 19. 
 
 This release provides two ways to install the HDFView pre-built binary distribution for a platform:
@@ -20,15 +29,6 @@ This release provides two ways to install the HDFView pre-built binary distribut
 Once you have uncompressed the downloaded pre-built binary file, refer to the provided README file for details.
 
 See Known Problems if you encounter any issues.
-
-| File | Type | Install Instructions |
-| ---- | ---- | ---- | 
-| hdfview-3.3.1.tar.gz <br> (sha256) | Source Code (Unix) | Build Instructions | 
-| hdfview-3.3.1.zip <br> (sha256)	| Source Code	(Windows) | Build Instructions | 
-| HDFView User's Guide <br> (sha256) | Documentation (PDF) | | 
-| UsersGuide.tar.gz <br> (sha256) | Documentation (HTML, Unix) | | 
-| UsersGuide.zip <br> (sha256) | Documentation (HTML, Windows) | | |
-| Pre-built binaries | Unix and Windows | All pre-built HDFView binary distributions provided
 
 ## Known Problems In This Release
 
