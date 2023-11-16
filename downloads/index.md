@@ -11,7 +11,7 @@ This page is a temporary replacement for our download archive. We will be workin
  
 | Version | Usage | 
 | ---- | ----| 
-| [HDFView 3.3.1](/hdfview/hdfview3_3_1.md) | 
+| [HDFView 3.3.1](/hdfview/hdfview3_3_1.md) | Most Recent Version | 
 
 Please download HDFView 3.3.1 from [www.hdfgroup.org](https://www.hdfgroup.org/downloads/hdfview/). 
 
@@ -19,3 +19,4 @@ Please download HDFView 3.3.1 from [www.hdfgroup.org](https://www.hdfgroup.org/d
 
 | Version | Usage | 
 | ---- | ----| 
+| [HDF4 2.16-2](hdf4/hdf4_2_16-2.md) (Patch Release) || 
