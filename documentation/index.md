@@ -10,7 +10,7 @@ Here are some of our most popular help topics.
 * [1.8.x](https://docs.hdfgroup.org/hdf5/v1_8/index.html)
 
 ## HDF4 
-* Building HDF4 with Cmake
+* Building HDF4 with CMake
 
 ## Other Content 
 * Filters
