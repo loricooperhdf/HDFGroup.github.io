@@ -11,7 +11,7 @@ Here are some of our most popular help topics.
 * [Migrating from HD5 1.12 to HDF5 1.14](/hdf5-docs/Migrating+from+HDF5+1.12+to+HDF5+1.14.html)
   
 ## HDF4 
-* Building HDF4 with Cmake
+* Building HDF4 with CMake
 
 ## Other Content 
 * Filters
