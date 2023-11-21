@@ -24,12 +24,7 @@ The way optional operations are handled in the virtual object layer (VOL) change
    &emsp;`herr_t H5VLquery_optional(hid_t obj_id, H5VL_subclass_t subcls, int opt_type, uint64_t *flags);`
 
 ## Virtual File Layer (VFL) Changes
-The virtual file layer has changed in HDF5 1.14.0. Existing virtual file drivers (VFDs) will have to be updated to work with this version of the library..
-
-For details, see the (soon to be released) 1.12 to 1.14. VFL Migration Guide.
+The virtual file layer has changed in HDF5 1.14.0. Existing virtual file drivers (VFDs) will have to be updated to work with this version of the library.
 
 ## Virtual Object Layer (VOL) Changes
 The virtual object layer has changed significantly in HDF5 1.14.0 and the 1.12 VOL API is now considered deprecated and unsupported. Existing virtual object layer connectors shoul be updated to work with this version of the library.
-
-For details, see the (soon to be released) 1.12 to 1.14. VOL Migration Guide.
-
