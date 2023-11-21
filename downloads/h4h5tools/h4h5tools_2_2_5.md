@@ -3,7 +3,6 @@
 ## Release Information
 
 | Version | h4h5tools 2.2.5 |
-| --- | --- | 
 | Release Date | 3/10/2020|
 | Additional Release Information | Documentation |
 || Release Notes | 
