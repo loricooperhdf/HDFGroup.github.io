@@ -17,10 +17,9 @@ Here are some of our most popular help topics.
 
 ## HSDS 
 
-<! -- ## Other Content 
-* Filters
-* Registered filter plugins
-* HDF5 Filter Plugins
-* Registered VOL Connectors 
-* Contact information 
---> 
+[//]: # ## Other Content  
+[//]: # * Filters  
+[//]: # * Registered filter plugins  
+[//]: # * HDF5 Filter Plugins  
+[//]: # * Registered VOL Connectors   
+[//]: # * Contact information   
