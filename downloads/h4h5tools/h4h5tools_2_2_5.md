@@ -24,11 +24,9 @@
 
 Please note that macOS version 10.13.6 was also tested (with clang/clang++ 10.0.0).
 
-H4H5TOOLS version 2.2.5 released on 2020-03-10
-================================================================================
+### H4H5TOOLS version 2.2.5 released on 2020-03-10
 
 1. Introduction
-===============
 
 This document describes the H4H5TOOLS and contains information on
 the platforms tested and limitations. The H4H5TOOLS distribution includes
@@ -48,7 +46,7 @@ If you have any questions or comments, please send them to:
 
 
 2. Platforms Tested
-===================
+
 This release is tested with HDF4 v4.2.15 and HDF5 v1.8.21 and v1.10.6 on the following
 platforms and compilers:
 
