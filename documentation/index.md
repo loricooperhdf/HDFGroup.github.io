@@ -2,7 +2,7 @@ Look for more content here soon.
 
 Here are some of our most popular help topics.
 
-## HDF5 
+## HDF5 Library and Tools 
 * [Documentation - Develop](/hdf5/develop/)
 * [Documentation - 1.14.x](/hdf5/v1_14/index.html)
 * [Documentation - 1.12.x](https://docs.hdfgroup.org/hdf5/v1_12/index.html)
@@ -11,11 +11,13 @@ Here are some of our most popular help topics.
 * [Migrating from HD5 1.12 to HDF5 1.14](/documentation/hdf5-docs/Migrating+from+HDF5+1.12+to+HDF5+1.14.html)
   
 ## HDF4 
-* Building HDF4 with Cmake
+* User Guide
+* Reference Manual
 
 ## HDFView 
 
 ## HSDS 
+* [Github Documentation](https://github.com/HDFGroup/hsds/tree/master/docs) 
 
 [//]: # ## Other Content  
 [//]: # * Filters  
