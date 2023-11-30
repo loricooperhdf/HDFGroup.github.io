@@ -21,14 +21,14 @@ A CTest script and platform configuration file can be used to simplify building 
 2. Uncompress the HDF4 CMake source code file into the working directory. It will contain a `CMake-hdf-N` directory (where N is the release version).
 3. From the command line, go into the `CMake-hdf-N` directory, which contains:
 
-| build*.sh (.bat) | Build Script(s) |
-| CTestScript.cmake | ctest Command |
-| hdf-N/ | HDF4 Source Code | 
-| HDF4config.cmake | Configuration file |
-| HDF4options.cmake | User modifiable options |
-| JPEG8d.tar.gz | External library for JPEG Compression |
-| SZip.tar.gz | External library for SZIP Compression |
-| ZLib.tar.gz | External library for ZLIB Compression |
+   | build*.sh (.bat) | Build Script(s) |
+   | CTestScript.cmake | ctest Command |
+   | hdf-N/ | HDF4 Source Code | 
+   | HDF4config.cmake | Configuration file |
+   | HDF4options.cmake | User modifiable options |
+   | JPEG8d.tar.gz | External library for JPEG Compression |
+   | SZip.tar.gz | External library for SZIP Compression |
+   | ZLib.tar.gz | External library for ZLIB Compression |
 
 4. By default HDF4 will be built:
    * Without Fortran
@@ -43,18 +43,18 @@ A CTest script and platform configuration file can be used to simplify building 
 5. Execute the batch file or shell script containing the ctest command for your platform.  (See Troubleshooting if you do not see your platform).
 Example build files are shown below:
 
-| Platform | Batch File / Shell Script | ctest command | 
-| --- | ---- | ----- | 
-| Windows 64-bit VS 2015 | build-VS2015-64.bat | `ctest -S HDF4config.cmake,BUILD_GENERATOR=VS201564 -C Release -V -O hdf4.log` |
-| Windows 32-bit VS 2015 | build-VS2015-32.bat | `ctest -S HDF4config.cmake,BUILD_GENERATOR=VS2015 -C Release -V -O hdf4.log` |
-| Unix | build-unix.sh | `ctest -S HDF4config.cmake,BUILD_GENERATOR=Unix -C Release -V -O hdf4.log` |
+   | Platform | Batch File / Shell Script | ctest command | 
+   | --- | ---- | ----- | 
+   | Windows 64-bit VS 2015 | build-VS2015-64.bat | `ctest -S HDF4config.cmake,BUILD_GENERATOR=VS201564 -C Release -V -O hdf4.log` |
+   | Windows 32-bit VS 2015 | build-VS2015-32.bat | `ctest -S HDF4config.cmake,BUILD_GENERATOR=VS2015 -C Release -V -O hdf4.log` |
+   | Unix | build-unix.sh | `ctest -S HDF4config.cmake,BUILD_GENERATOR=Unix -C Release -V -O hdf4.log` |
 
 Where the ctest command is using these options:
 
-   a) The `-S` option uses the script version of ctest.
-   b) The `-C` option specifies the build configuration which matches `CTEST_BUILD_CONFIGURATION` in the configuration file.
-   c) The `-V` option indicates verbose. **`-VV` option indicates more verbose**.
-   d) The `-O` option saves the output to a log file, `hdf4.log`.
+a) The `-S` option uses the script version of ctest.
+b) The `-C` option specifies the build configuration which matches `CTEST_BUILD_CONFIGURATION` in the configuration file.
+c) The `-V` option indicates verbose. **`-VV` option indicates more verbose**.
+d) The `-O` option saves the output to a log file, `hdf4.log`.
 
 6. Locate the built binary.
 
