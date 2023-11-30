@@ -20,7 +20,6 @@ A CTest script and platform configuration file can be used to simplify building 
 1. Create a working directory.
 2. Uncompress the HDF4 CMake source code file into the working directory. It will contain a `CMake-hdf-N` directory (where N is the release version).
 3. From the command line, go into the `CMake-hdf-N` directory, which contains:
-
    | build*.sh (.bat) | Build Script(s) |
    | CTestScript.cmake | ctest Command |
    | hdf-N/ | HDF4 Source Code | 
@@ -41,7 +40,7 @@ A CTest script and platform configuration file can be used to simplify building 
    REQUIRED: Visual Studio Express users must change the build options to turn off packaging or the build will fail.
  
 5. Execute the batch file or shell script containing the ctest command for your platform.  (See Troubleshooting if you do not see your platform).
-Example build files are shown below:
+   Example build files are shown below:
 
    | Platform | Batch File / Shell Script | ctest command | 
    | --- | ---- | ----- | 
@@ -49,7 +48,7 @@ Example build files are shown below:
    | Windows 32-bit VS 2015 | build-VS2015-32.bat | `ctest -S HDF4config.cmake,BUILD_GENERATOR=VS2015 -C Release -V -O hdf4.log` |
    | Unix | build-unix.sh | `ctest -S HDF4config.cmake,BUILD_GENERATOR=Unix -C Release -V -O hdf4.log` |
 
-Where the ctest command is using these options:
+   Where the ctest command is using these options:
 
 a) The `-S` option uses the script version of ctest.
 b) The `-C` option specifies the build configuration which matches `CTEST_BUILD_CONFIGURATION` in the configuration file.
