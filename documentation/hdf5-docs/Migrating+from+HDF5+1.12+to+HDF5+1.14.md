@@ -1,4 +1,4 @@
-# Migrating from HDF4 1.12 to HDF5 1.14
+# Migrating from HDF5 1.12 to HDF5 1.14
 
 ## API Changes
 There are new API calls that require API Compatibility Macros in HDF5 1.14.0. There are, however, two API calls which have had their signature change.
