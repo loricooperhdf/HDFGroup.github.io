@@ -36,9 +36,9 @@ A CTest script and platform configuration file can be used to simplify building 
    * With ZLIB compression enabled
    * With static libraries enabled
 
-Users can change the options that HDF4 is built with by adding options to the build command (see the batch files/test script below) or by modifying the `HDF4options.cmake` file. The `HDF4options.cmake` file will override any options set in the configuration file. For more information see the **How to Change HDF4 CMake Build Options** page.
+   Users can change the options that HDF4 is built with by adding options to the build command (see the batch files/test script below) or by modifying the `HDF4options.cmake` file. The `HDF4options.cmake` file will override any options set in the configuration file. For more information see the **How to Change HDF4 CMake Build Options** page.
 
-REQUIRED: Visual Studio Express users must change the build options to turn off packaging or the build will fail.
+   REQUIRED: Visual Studio Express users must change the build options to turn off packaging or the build will fail.
  
 5. Execute the batch file or shell script containing the ctest command for your platform.  (See Troubleshooting if you do not see your platform).
 Example build files are shown below:
