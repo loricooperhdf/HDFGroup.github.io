@@ -17,8 +17,10 @@ Here are some of our most popular help topics.
 * [h4toh5 Conversion Library Programmer’s Notes](https://docs.hdfgroup.org/archive/support/ftp/HDF5/tools/h4toh5/src/unpacked/doc/H4H5ProgrammersNotes.pdf)
   
 ## HDF4 
-* User Guide
+* [Building HDF4 with CMake](/documentation/hdf4-docs/building_hdf4_with_cmake.html)
+* [How to Change HDF4 Cmake Build Options](/documentation/hdf4-docs/how_to_change_hdf4_cmake_build_options.html)
 * Reference Manual
+* User Guide
 
 ## HDFView 
 
