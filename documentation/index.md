@@ -13,7 +13,8 @@ Here are some of our most popular help topics.
 ### h4h5Tools
 * [Mapping HDF4 Objects to HDF5 Objects](https://docs.hdfgroup.org/archive/support/HDF5/doc/ADGuide/H4toH5Mapping.pdf) 
 * [User's Guide](/documentation/h4h5tools-docs/h4toh5lib_UG.pdf)
-* Reference Manual
+* [Reference Manual](/documentation/h4h5tools-docs/h4toh5_Conversion_Library_API_Reference_Manual.pdf)
+* [h4toh5 Conversion Library Programmer’s Notes](https://docs.hdfgroup.org/archive/support/ftp/HDF5/tools/h4toh5/src/unpacked/doc/H4H5ProgrammersNotes.pdf)
   
 ## HDF4 
 * User Guide
