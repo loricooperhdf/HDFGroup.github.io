@@ -29,8 +29,9 @@ Several options are included in the `HDF4options.cmake` file, such as the option
 There are numerous CMake options available to users, many of which correspond directly to configure options. Below are a few important options and how to change them in the configuration file. The corresponding configure option is also shown:
 
 | Option | Configure | Cmake | 
+| --- | --- | --- | 
 | Build shared libraries | --enable-shared | `set(ADD_BUILD_OPTIONS "${ADD_BUILD_OPTIONS} -DBUILD_SHARED_LIBS:BOOL=ON")` |
 | Build HDF4 Fortran library | --enable-fortran | `set(ADD_BUILD_OPTIONS "${ADD_BUILD_OPTIONS} -DHDF4_BUILD_FORTRAN:BOOL=ON") |
-| Disable ZLIB filter	| --with-zlib	| `set(ADD_BUILD_OPTIONS "${ADD_BUILD_OPTIONS} -DHDF4_ENABLE_Z_LIB_SUPPORT:BOOL=OFF")` | 
-| Disable SZIP filter	| --with-szlib | `set(ADD_BUILD_OPTIONS "${ADD_BUILD_OPTIONS} -DHDF4_ENABLE_SZIP_SUPPORT:BOOL=OFF")` <br> `set(ADD_BUILD_OPTIONS "${ADD_BUILD_OPTIONS} -DHDF4_ENABLE_SZIP_ENCODING:BOOL=OFF")` |
-| Build HDF4 Java library	| --enable-java	| `set(ADD_BUILD_OPTIONS "${ADD_BUILD_OPTIONS} -DHDF4_BUILD_JAVA:BOOL=ON")` <br> Also specify the location of Java in the JAVA_HOME environment variable. |
+| Disable ZLIB filter | --with-zlib	| `set(ADD_BUILD_OPTIONS "${ADD_BUILD_OPTIONS} -DHDF4_ENABLE_Z_LIB_SUPPORT:BOOL=OFF")` | 
+| Disable SZIP filter | --with-szlib | `set(ADD_BUILD_OPTIONS "${ADD_BUILD_OPTIONS} -DHDF4_ENABLE_SZIP_SUPPORT:BOOL=OFF")` <br> `set(ADD_BUILD_OPTIONS "${ADD_BUILD_OPTIONS} -DHDF4_ENABLE_SZIP_ENCODING:BOOL=OFF")` |
+| Build HDF4 Java library | --enable-java | `set(ADD_BUILD_OPTIONS "${ADD_BUILD_OPTIONS} -DHDF4_BUILD_JAVA:BOOL=ON")` <br> Also specify the location of Java in the JAVA_HOME environment variable. |
