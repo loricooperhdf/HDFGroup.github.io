@@ -1,4 +1,4 @@
-# Overview
+# Building HDF4 with CMake
 
 A CTest script and platform configuration file can be used to simplify building with CMake. The script below will build HDF4 with SZIP, ZLIB, and the JPEG external libraries.
 

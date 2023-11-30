@@ -1,3 +1,5 @@
+# How to Change HDF4 CMake Build Options
+
 If using the CTest script and configuration method to build HDF4, you can easily change the build options by either specifying the options on the command line or adding them to the options file, HDF4options.cmake.
 
 ## Change options from the command line
