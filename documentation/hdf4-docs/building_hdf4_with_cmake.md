@@ -51,10 +51,10 @@ Example build files are shown below:
 
 Where the ctest command is using these options:
 
-   a. The `-S` option uses the script version of ctest.
-   b. The `-C` option specifies the build configuration which matches `CTEST_BUILD_CONFIGURATION` in the configuration file.
-   c. The `-V` option indicates verbose. `-VV` option indicates more verbose.
-   d. The `-O` option saves the output to a log file, `hdf4.log`.
+   a) The `-S` option uses the script version of ctest.
+   b) The `-C` option specifies the build configuration which matches `CTEST_BUILD_CONFIGURATION` in the configuration file.
+   c) The `-V` option indicates verbose. `-VV` option indicates more verbose.
+   d) The `-O` option saves the output to a log file, `hdf4.log`.
 
 6. Locate the built binary.
 
