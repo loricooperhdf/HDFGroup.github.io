@@ -93,15 +93,12 @@ Where the ctest command is using these options:
 ### What if the binary does not get packaged properly?
 
    If the binary did not get packaged properly, look at the cpack.log file in the build directory under `CMake-hdf-4.N`. For example, on Unix look here:
-
-    `CMake-hdf-4.N/build/cpack.log`
+   `CMake-hdf-4.N/build/cpack.log`
    
 ### What do I do if I need to rebuild the software?
 
    If you have to rebuild HDF4, remove the build directory first.
 
- 
+### The library was built but there are no binaries. What do I do?
 
-The library was built but there are no binaries. What do I do?
-
-To install or package the binaries, run either make install or cpack in the build/ directory.
+    To install or package the binaries, run either make install or cpack in the build/ directory.
