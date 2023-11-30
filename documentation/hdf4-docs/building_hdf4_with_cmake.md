@@ -20,6 +20,7 @@ A CTest script and platform configuration file can be used to simplify building 
 1. Create a working directory.
 2. Uncompress the HDF4 CMake source code file into the working directory. It will contain a `CMake-hdf-N` directory (where N is the release version).
 3. From the command line, go into the `CMake-hdf-N` directory, which contains:
+
    | build*.sh (.bat) | Build Script(s) |
    | CTestScript.cmake | ctest Command |
    | hdf-N/ | HDF4 Source Code | 
