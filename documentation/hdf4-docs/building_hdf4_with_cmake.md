@@ -4,8 +4,8 @@ A CTest script and platform configuration file can be used to simplify building 
 
 ## Preconditions:
 
-* [CMake](https://www.cmake.org) MUST be installed. The minimum required version is CMake 3.10 and the recommended version is 3.15. CMake 3.15 is *required* for VS 2019.
-* Blank spaces MUST NOT be used in directory path names as this will cause the build to fail.
+* [CMake](https://www.cmake.org) **MUST** be installed. The minimum required version is CMake 3.10 and the recommended version is 3.15. CMake 3.15 is *required* for VS 2019.
+* Blank spaces **MUST NOT** be used in directory path names as this will cause the build to fail.
 * (Windows) [NSIS](http://nsis.sourceforge.net/Main_Page) or [WiX](http://www.wixtoolset.org/) should be installed in order to create an install image with CPack. NSIS will create a .exe installer. WiX will create a .msi installer.
 
    Visual Studio Express users will not be able to package HDF into an install image executable. Turn off packaging by doing the following:
