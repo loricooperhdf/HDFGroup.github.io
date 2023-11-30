@@ -53,56 +53,52 @@ Where the ctest command is using these options:
 
    a) The `-S` option uses the script version of ctest.
    b) The `-C` option specifies the build configuration which matches `CTEST_BUILD_CONFIGURATION` in the configuration file.
-   c) The `-V` option indicates verbose. `-VV` option indicates more verbose.
+   c) The `-V` option indicates verbose. **`-VV` option indicates more verbose**.
    d) The `-O` option saves the output to a log file, `hdf4.log`.
 
 6. Locate the built binary.
 
-The built binary will be placed in the build directory and will have the format:
-`hdf-4.2.N-<platform.<zip or tar.gz>`
-On Windows, a .msi or .exe file will also be created, depending on the installer. On Unix, an additional .sh file will be created.
+   The built binary will be placed in the build directory and will have the format:
+   `hdf-4.2.N-<platform.<zip or tar.gz>`
+   On Windows, a .msi or .exe file will also be created, depending on the installer. On Unix, an additional .sh file will be created.
 
-If the built binary is not there, then see Troubleshooting for help.
+   If the built binary is not there, then see Troubleshooting for help.
  
 7. Check what is included with your built binaries 
  
-You will find the `libhdf4.settings` file in the build directory. It contains information on how the binaries were built.
+   You will find the `libhdf4.settings` file in the build directory. It contains information on how the binaries were built.
  
 ## Troubleshooting
  
-My platform/compiler is not included. Can I still use the configuration files?
+### My platform/compiler is not included. Can I still use the configuration files?
 
-Yes, you can but you will have to edit the HDF4config.cmake file and update the variable:
+   Yes, you can but you will have to edit the `HDF4config.cmake` file and update the variable:
 
-   CTEST_CMAKE_GENERATOR
+   `CTEST_CMAKE_GENERATOR`
   
-Other variables may be updated for informational purposes but are not required (for example, SITE_OS_BITS).
+   Other variables may be updated for informational purposes but are not required (for example, `SITE_OS_BITS`).
 
-The generators for your platform can be seen by typing:
+   The generators for your platform can be seen by typing:
 
-   cmake --help
+   `cmake --help`
   
- 
+### What do I do if the build fails?
 
-What do I do if the build fails?
+   If the build works properly, then you will find the built and compressed binary in your `CMake-hdf-4.N directory`. If you do not find it then check the log files. You will find those in the build directory under `CMake-hdf-4.N`. For example, on Unix the log files will be in:
 
-If the build works properly, then you will find the built and compressed binary in your CMake-hdf-4.N directory. If you do not find it then check the log files. You will find those in the build directory under CMake-hdf-4.N. For example, on Unix the log files will be in:
-
-   CMake-hdf-4.N/build/Testing/Temporary/
+   `CMake-hdf-4.N/build/Testing/Temporary/`
   
-There are log files for the configure, test, and build.
+   There are log files for the configure, test, and build.
 
- 
+### What if the binary does not get packaged properly?
 
-What if the binary does not get packaged properly?
+   If the binary did not get packaged properly, look at the cpack.log file in the build directory under `CMake-hdf-4.N`. For example, on Unix look here:
 
-If the binary did not get packaged properly, look at the cpack.log file in the build directory under CMake-hdf-4.N. For example, on Unix look here:
-
-    CMake-hdf-4.N/build/cpack.log
+    `CMake-hdf-4.N/build/cpack.log`
    
-What do I do if I need to rebuild the software?
+### What do I do if I need to rebuild the software?
 
-If you have to rebuild HDF4, remove the build directory first.
+   If you have to rebuild HDF4, remove the build directory first.
 
  
 
