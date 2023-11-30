@@ -101,4 +101,4 @@ Where the ctest command is using these options:
 
 ### The library was built but there are no binaries. What do I do?
 
-    To install or package the binaries, run either make install or cpack in the build/ directory.
+   To install or package the binaries, run either make install or cpack in the build/ directory.
