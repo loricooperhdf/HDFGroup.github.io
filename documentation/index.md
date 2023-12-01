@@ -11,8 +11,8 @@ Here are some of our most popular help topics.
 * [Migrating from HD5 1.12 to HDF5 1.14](/documentation/hdf5-docs/Migrating+from+HDF5+1.12+to+HDF5+1.14.html)
 
 ## HDF4 
-* [Building HDF4 with CMake](/documentation/hdf4-docs/building_hdf4_with_cmake.html)
-* [How to Change HDF4 CMake Build Options](/documentation/hdf4-docs/how_to_change_hdf4_cmake_build_options.html)
+* [Build and Install HDF4 Applications with CMake](https://raw.githubusercontent.com/HDFGroup/hdf4/master/release_notes/USING_HDF4_CMake.txt)
+* [Build and Install HDF4 C, C++, Fortran Libraries and tools with CMake](https://raw.githubusercontent.com/HDFGroup/hdf4/master/release_notes/INSTALL_CMake.txt)
 * Reference Manual
 * User Guide
 
