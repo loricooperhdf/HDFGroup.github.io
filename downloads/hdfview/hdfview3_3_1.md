@@ -1,3 +1,5 @@
+<img alt="HDFView Logo" align=right width=300 src="/assets/img/hdfview.png">
+
 # HDFView 3.3.1
 
 ## Release Information
