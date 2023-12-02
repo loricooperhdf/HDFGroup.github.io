@@ -7,8 +7,14 @@ description: Ensuring long-term access and usability of HDF data and supporting 
 logo: /assets/img/logo.png
 show_downloads: false
 site.github.is_user_page: false
-google_analytics: G-XQWF3YLCRQ
+# google_analytics: G-XQWF3YLCRQ # This is the most recommended way to use GA, but it's not working
 # theme: jekyll-theme-minimal # uses remote theme above
+
+# This may get GA4 working? #
+analytics:
+  provider: "google-gtag"
+  google:
+    tracking_id: "G-XQWF3YLCRQ"
 
 defaults:
   - scope:
