@@ -55,7 +55,7 @@ Please contact the maintainer of a filter for help with the filter/compression s
 
 Please be aware that compression filters require that the library not use `H5_MEMORY_ALLOC_SANITY_CHECK`. Building in debug mode automatically enables this feature in earlier releases, which causes memory allocation and free problems in filter applications. Future versions of HDF5 will not enable this feature.
 
-The `bz_example.tar.gz` file contains an example of implementing the BZIP2 filter to enable BZIP2 compression in HDF5. (This example is based on PyTables code that uses BZIP2 compression.). Download and uncompress this file as follows:
+The `[bz_example.tar.gz](/documentation/hdf5-docs/bz_example.tar.gz)` file contains an example of implementing the BZIP2 filter to enable BZIP2 compression in HDF5. (This example is based on PyTables code that uses BZIP2 compression.). Download and uncompress this file as follows:
 
       gzip -cd bz_example.tar.gz | tar xvf -
    
