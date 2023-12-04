@@ -8,6 +8,9 @@ Look for more content here soon.
 * [Documentation - 1.12.x](https://docs.hdfgroup.org/hdf5/v1_12/index.html)
 * [Documentation - 1.10.x](https://docs.hdfgroup.org/hdf5/v1_10/index.html)
 * [Documentation - 1.8.x](https://docs.hdfgroup.org/hdf5/v1_8/index.html)
+* [Registered Filter Plugins](/documentation/hdf5-docs/registered_filter_plugins.html)
+* [Registered Virtual File Drivers (VFDs)](/documentation/hdf5-docs/registered_virtual_file_drivers_vfds.html)
+* [Registered VOL Connectors](/documentation/hdf5-docs/registered_vol_connectors.html)
 
 ## HDF4 
 * [Build and Install HDF4 Applications with CMake](https://raw.githubusercontent.com/HDFGroup/hdf4/master/release_notes/USING_HDF4_CMake.txt)
