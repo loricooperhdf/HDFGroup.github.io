@@ -55,7 +55,7 @@ Please contact the maintainer of a filter for help with the filter/compression s
 
 Please be aware that compression filters require that the library not use `H5_MEMORY_ALLOC_SANITY_CHECK`. Building in debug mode automatically enables this feature in earlier releases, which causes memory allocation and free problems in filter applications. Future versions of HDF5 will not enable this feature.
 
-The `[bz_example.tar.gz](/documentation/hdf5-docs/bz_example.tar.gz)` file contains an example of implementing the BZIP2 filter to enable BZIP2 compression in HDF5. (This example is based on PyTables code that uses BZIP2 compression.). Download and uncompress this file as follows:
+The [`bz_example.tar.gz`](/documentation/hdf5-docs/bz_example.tar.gz) file contains an example of implementing the BZIP2 filter to enable BZIP2 compression in HDF5. (This example is based on PyTables code that uses BZIP2 compression.). Download and uncompress this file as follows:
 
       gzip -cd bz_example.tar.gz | tar xvf -
    
@@ -65,7 +65,7 @@ For information on h5cc, see [Compiling Your HDF5 Application](https://docs.hdfg
 
 Please note that tools like h5dump that display information in an HDF5 file will not be able to display data that is compressed with BZIP2 compression, since BZIP2 is not implemented in HDF5.
 
-However, as of HDF5-1.8.11, a new HDF5 feature will enable the h5dump tool to determine that the data is compressed with an external compression filter such as BZIP2, and will automatically load the appropriate library and display the uncompressed data.
+However, as of HDF5-1.8.11, a new HDF5 feature will enable the `h5dump` tool to determine that the data is compressed with an external compression filter such as BZIP2, and will automatically load the appropriate library and display the uncompressed data.
 
 The bz_example example code can be used for modifying the HDF5 source to "include" BZIP2 as one of the "internal" filters. For information on how to do this, see how ZLIB (the deflate filter) is implemented in the HDF5 source code. Specifically look at these files:
 
