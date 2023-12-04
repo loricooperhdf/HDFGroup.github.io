@@ -17,9 +17,9 @@ See the `USING_HDF5_VS.txt` file in the HDF5 source code for building an applica
 ### Unix
 When the library is built with configure (autotools), the following compile scripts are included:
 
-   *h5cc:*   compile script for HDF5 C programs
-   *h5fc:*   compile script for HDF5 F90 programs
-   *h5c++:*   compile script for HDF5 C++ programs
+| *h5cc:* |   compile script for HDF5 C programs| 
+| *h5fc:*   | compile script for HDF5 F90 programs| 
+|    *h5c++:*  |  compile script for HDF5 C++ programs| 
 
 These scripts are included for CMake on Linux, but they are very simple. However, they can be used to compile single file applications, such as those included in the tutorial. See [Building HDF5 with CMake](https://raw.githubusercontent.com/HDFGroup/hdf5/hdf5_1_14_3/release_docs/INSTALL_CMake.txt) for information on compiling an application with CMake.
 
@@ -34,10 +34,8 @@ Following are examples of compiling and running an application with the Unix com
    ./myprog
 ```
 
-To see the libraries linked in with a compile script use the -show option. For example, if using h5cc type:
-```
-   h5cc -show myprog.c
-```
+To see the libraries linked in with a compile script use the -show option. For example, if using `h5cc` type:
+   `h5cc -show myprog.c`
 
 ##### NOTES:
 
