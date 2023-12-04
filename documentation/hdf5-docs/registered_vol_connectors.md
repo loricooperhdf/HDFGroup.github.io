@@ -24,7 +24,7 @@ Please contact the maintainer of a VOL connector for help implementing the plugi
 | REST	| 520| 	REST| 	Designed to utilize web-based storage systems by use of the HDF5 REST APIs	| https://github.com/HDFGroup/vol-rest	| Matthew Larson (mlarson at hdfgroup dot org)| 
 | LowFive| 	521	| LowFive	| A new data transport layer based on the HDF5 data model, for in situ workflows. Executables using LowFive can communicate in situ (using in-memory data and MPI message passing), reading and writing traditional HDF5 files to physical storage, and combining the two modes.| 	https://github.com/diatomic/LowFive	| Tom Peterka (tpeterka at mcs dot anl dot gov) <br> Dmitriy Morozov (dmorozov at lbl dot gov) | 
 
-* The Search Name provides a mechanism for searching for a VOL.
+*The Search Name provides a mechanism for searching for a VOL.
 
 ## List of Prototype VOL Connectors
  
@@ -32,4 +32,4 @@ Please contact the maintainer of a VOL connector for help implementing the plugi
 | --- | --- | --- | --- | --- | --- |  
 | rados| 	unassigned	| rados| 	Prototype VOL connector to access data in RADOS	| https://github.com/HDFGroup/vol-rados	| help at hdfgroup dot org| 
 
-* The Search Name provides a mechanism for searching for a VOL.
+*The Search Name provides a mechanism for searching for a VOL.
