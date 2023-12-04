@@ -12,6 +12,7 @@ Please contact the maintainer of a VOL connector for help implementing the plugi
 
 ## List of VOL Connectors Registered with The HDF Group
 | Connector	| Connector Identifier	| Search Name*	| Short Description	| URL	| Contacts
+| --- | --- | --- | --- | --- | ---| 
 | Asynchronous I/O	| 512	| async	| Provides support for asynchronous operations to HDF5| https://github.com/hpc-io/vol-async	| 
  Suren Byna (sbyna at lbl dot gov)| 
 | Cache	| 513	| cache	| Provides support for multi-level, multi-location data caching to dataset I/O operations	| https://github.com/hpc-io/vol-cache	| Suren Byna (sbyna at lbl dot gov) | 
@@ -29,8 +30,8 @@ Please contact the maintainer of a VOL connector for help implementing the plugi
 
 ## List of Prototype VOL Connectors
  
-| Connector	| Connector Identifier	| Search Name*	| Short Description| URL	| 
-Contacts
+| Connector	| Connector Identifier	| Search Name*	| Short Description| URL	|  Contacts | 
+| --- | --- | --- | --- | --- | --- |  
 | rados| 	unassigned	| rados| 	Prototype VOL connector to access data in RADOS	| https://github.com/HDFGroup/vol-rados	| help at hdfgroup dot org| 
 
 * The Search Name provides a mechanism for searching for a VOL.
