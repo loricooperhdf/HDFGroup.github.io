@@ -57,7 +57,7 @@ Please be aware that compression filters require that the library not use `H5_ME
 
 The `bz_example.tar.gz` file contains an example of implementing the BZIP2 filter to enable BZIP2 compression in HDF5. (This example is based on PyTables code that uses BZIP2 compression.). Download and uncompress this file as follows:
 
-      `gzip -cd bz_example.tar.gz | tar xvf -`
+      gzip -cd bz_example.tar.gz | tar xvf -
    
 To compile the example, you will need to install the HDF5 library and use the h5cc compile script found in the bin/ directory of the HDF5 installation.
 
