@@ -59,7 +59,7 @@ The `bz_example.tar.gz` file contains an example of implementing the BZIP2 filte
 
       `gzip -cd bz_example.tar.gz | tar xvf -`
    
-To compile the example, you will need to install the HDF5 library and use the h5cc compile script found in the bin/ directory of the HDF5 installation. For information on obtaining HDF5, see: Obtain the Latest HDF5 Software
+To compile the example, you will need to install the HDF5 library and use the h5cc compile script found in the bin/ directory of the HDF5 installation.
 
 For information on h5cc, see: Compiling Your HDF5 Application
 
