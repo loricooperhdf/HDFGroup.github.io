@@ -13,8 +13,7 @@ Please contact the maintainer of a VOL connector for help implementing the plugi
 ## List of VOL Connectors Registered with The HDF Group
 | Connector	| Connector Identifier	| Search Name*	| Short Description	| URL	| Contacts
 | --- | --- | --- | --- | --- | ---| 
-| Asynchronous I/O	| 512	| async	| Provides support for asynchronous operations to HDF5| https://github.com/hpc-io/vol-async	| 
- Suren Byna (sbyna at lbl dot gov)| 
+| Asynchronous I/O	| 512	| async	| Provides support for asynchronous operations to HDF5| https://github.com/hpc-io/vol-async	|  Suren Byna (sbyna at lbl dot gov)| 
 | Cache	| 513	| cache	| Provides support for multi-level, multi-location data caching to dataset I/O operations	| https://github.com/hpc-io/vol-cache	| Suren Byna (sbyna at lbl dot gov) | 
 | Log-based	| 514| 	LOG	| The log-based VOL plugin stores HDF5 datasets in a log-based storage layout.<br>In this layout, data of multiple write requests made by an MPI process are appended one after another in the file. Such I/O strategy can avoid the expensive inter-process communication and I/O serialization due to file lock contentions when storing data in the canonical order. Through the log-based VOL, existing HDF5 programs can achieve a better parallel write performance with minimal changes to their codes. | https://github.com/DataLib-ECP/vol-log-based/blob/master/README.md	| Kai Yuan Hou <br> (khl7265 at ece dot northwestern dot edu) | 
 | DAOS	| 4004	| daos	| Designed to utilize the DAOS object storage system by use of the DAOS API| 
