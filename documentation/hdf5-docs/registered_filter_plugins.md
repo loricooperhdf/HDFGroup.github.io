@@ -61,7 +61,7 @@ The `[bz_example.tar.gz](/documentation/hdf5-docs/bz_example.tar.gz)` file conta
    
 To compile the example, you will need to install the HDF5 library and use the h5cc compile script found in the bin/ directory of the HDF5 installation.
 
-For information on h5cc, see: Compiling Your HDF5 Application
+For information on h5cc, see [Compiling Your HDF5 Application](https://docs.hdfgroup.org/hdf5/develop/_l_b_compiling.html).
 
 Please note that tools like h5dump that display information in an HDF5 file will not be able to display data that is compressed with BZIP2 compression, since BZIP2 is not implemented in HDF5.
 
