@@ -1,3 +1,7 @@
+---
+title: Registered Filter Plugins
+---
+
 # Registered Filter Plugins
 
 Please be sure to see HDF5 Filter Plugins, a convenience software that packages together many of the commonly used filters that users have created and registered.
