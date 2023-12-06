@@ -1,3 +1,7 @@
+---
+title: Documentation
+---
+
 # Documentation
 
 Look for more content here soon.
