@@ -1,3 +1,7 @@
+---
+title: Registered VOL Connectors
+---
+
 # Registered VOL Connectors
 
 Members of the HDF5 users community can register VOL connectors for use with HDF5. To register a VOL connector please contact [The HDF Helpdesk](https://help.hdfgroup.org) with the following information: 
