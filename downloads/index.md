@@ -1,8 +1,8 @@
 ---
-title: Documentation
+title: Downloads
 ---
 
-# Documentation 
+# Downloads 
 
 This page is a temporary replacement for our download archive. We will be working to organize and extend this archive as quickly as possible. 
 
