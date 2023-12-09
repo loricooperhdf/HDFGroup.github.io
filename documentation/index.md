@@ -31,6 +31,7 @@ Look for more content here soon.
 ## HDFView 
 
 ## HSDS 
+* [Overview of HSDS](https://www.hdfgroup.org/solutions/highly-scalable-data-service-hsds/) 
 * [Authorization and Authentication](https://raw.githubusercontent.com/HDFGroup/hsds/master/docs/authorization.md)
 * [Azure Active Directory](https://raw.githubusercontent.com/HDFGroup/hsds/master/docs/azure_ad_setup.md)
 * [Docker setup instructions](https://raw.githubusercontent.com/HDFGroup/hsds/master/docs/setup_docker.md)
