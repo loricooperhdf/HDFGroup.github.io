@@ -16,6 +16,8 @@ Look for more content here soon.
 * [Registered Virtual File Drivers (VFDs)](/documentation/hdf5-docs/registered_virtual_file_drivers_vfds.html)
 * [Registered VOL Connectors](/documentation/hdf5-docs/registered_vol_connectors.html)
 
+Can't find what you're looking for? Visit [docs.hdfgroup.org](https://docs.hdfgroup.org/hdf5/v1_14/index.html) for many other documents that previously resided on the portal.
+
 ## HDF4 
 * [Build and Install HDF4 Applications with CMake](https://raw.githubusercontent.com/HDFGroup/hdf4/master/release_notes/USING_HDF4_CMake.txt)
 * [Build and Install HDF4 C, C++, Fortran Libraries and tools with CMake](https://raw.githubusercontent.com/HDFGroup/hdf4/master/release_notes/INSTALL_CMake.txt)
