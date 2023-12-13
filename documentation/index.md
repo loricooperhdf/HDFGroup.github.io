@@ -1,5 +1,7 @@
 ---
 title: Documentation
+redirect_from: 
+  - /display/HDF5/Migrating+from+HDF5+1.12+to+HDF5+1.14
 ---
 
 # Documentation
