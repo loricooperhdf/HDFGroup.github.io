@@ -1,5 +1,7 @@
 ---
 title: Documentation
+redirect_from: 
+  - /Documentation
 ---
 
 # Documentation
