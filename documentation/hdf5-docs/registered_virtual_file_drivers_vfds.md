@@ -14,7 +14,7 @@ Here is the current policy regarding VFD identifier assignment: Valid VFD identi
 
 Please contact the maintainer of a VFD for help implementing the plugin.
 
-## List of VFDs Registered with The HDF Groupv 
+## List of VFDs Registered with The HDF Group
 
 | Driver	| Driver Identifier| Search Name*	| Short Description	| URL	| Contacts| 
 | --- | --- | --- | --- | --- | --- | 
