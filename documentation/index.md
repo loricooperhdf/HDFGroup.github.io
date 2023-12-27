@@ -23,8 +23,8 @@ Can't find what you're looking for? Visit [docs.hdfgroup.org](https://docs.hdfgr
 ## HDF4 
 * [Build and Install HDF4 Applications with CMake](https://raw.githubusercontent.com/HDFGroup/hdf4/master/release_notes/USING_HDF4_CMake.txt)
 * [Build and Install HDF4 C, C++, Fortran Libraries and tools with CMake](https://raw.githubusercontent.com/HDFGroup/hdf4/master/release_notes/INSTALL_CMake.txt)
-* Reference Manual
-* User Guide
+* [Reference Manual](/docuumentation/HDF4_Reference_Manual.pdf)
+* [User Guide](/documentation/HDF4_Users_Guide.pdf) 
 
 ### h4h5Tools
 * [Mapping HDF4 Objects to HDF5 Objects](https://docs.hdfgroup.org/archive/support/HDF5/doc/ADGuide/H4toH5Mapping.pdf) 
