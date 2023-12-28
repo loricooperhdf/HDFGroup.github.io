@@ -21,10 +21,10 @@ Look for more content here soon.
 Can't find what you're looking for? Visit [docs.hdfgroup.org](https://docs.hdfgroup.org/hdf5/v1_14/index.html) for many other documents that previously resided on the portal.
 
 ## HDF4 
+* [Reference Manual](/docuumentation/hdf4-docs/HDF4_Reference_Manual.pdf)
+* [User Guide](/documentation/hdf4-docs/HDF4_Users_Guide.pdf)
 * [Build and Install HDF4 Applications with CMake](https://raw.githubusercontent.com/HDFGroup/hdf4/master/release_notes/USING_HDF4_CMake.txt)
 * [Build and Install HDF4 C, C++, Fortran Libraries and tools with CMake](https://raw.githubusercontent.com/HDFGroup/hdf4/master/release_notes/INSTALL_CMake.txt)
-* Reference Manual
-* User Guide
 
 ### h4h5Tools
 * [Mapping HDF4 Objects to HDF5 Objects](https://docs.hdfgroup.org/archive/support/HDF5/doc/ADGuide/H4toH5Mapping.pdf) 
