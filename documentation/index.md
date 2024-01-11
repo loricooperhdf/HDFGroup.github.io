@@ -23,6 +23,7 @@ Can't find what you're looking for? Visit [docs.hdfgroup.org](https://docs.hdfgr
 ## HDF4 
 * [Reference Manual](/documentation/hdf4-docs/HDF4_Reference_Manual.pdf)
 * [User Guide](/documentation/hdf4-docs/HDF4_Users_Guide.pdf)
+* [HDF4 Specification and Developers Guide](https://github.com/HDFGroup/hdf4doc/blob/master/DSpec/html_FM/DS.pdf) 
 * [Build and Install HDF4 Applications with CMake](https://raw.githubusercontent.com/HDFGroup/hdf4/master/release_notes/USING_HDF4_CMake.txt)
 * [Build and Install HDF4 C, C++, Fortran Libraries and tools with CMake](https://raw.githubusercontent.com/HDFGroup/hdf4/master/release_notes/INSTALL_CMake.txt)
 
