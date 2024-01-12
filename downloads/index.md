@@ -2,6 +2,7 @@
 title: Downloads
 redirect_from: 
   - /display/support/Downloads
+  - /Downloads
 ---
 
 # Downloads 
