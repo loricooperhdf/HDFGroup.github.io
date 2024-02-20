@@ -2,7 +2,8 @@
 title: HDF4
 redirect_from: 
   - /display/HDF4/HDF4
-  - /Downloads
+  - /display/HDF4/
+  - /HDF4/
 ---
 
 # HDF4 
