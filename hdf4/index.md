@@ -14,8 +14,9 @@ Although The HDF Group maintains HDF4 by fixing defects and porting it to new op
 
 ## Documentation 
 
+Current documentation can be found at [https://portal.hdfgroup.org/documentation/index.html#hdf4](https://portal.hdfgroup.org/documentation/index.html#hdf4). More information coming soon.
 
-## Other Information
+## Other Information - In Progress
 * What is HDF4?
 * HDF4 Examples
 * HDF4 Tools
