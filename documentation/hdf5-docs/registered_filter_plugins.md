@@ -39,7 +39,7 @@ Please contact the maintainer of a filter for help with the filter/compression s
 | 32010	| LPC-Rice	| LPC-Rice multi-threaded lossless compression
 | 32011	| CCSDS-123	| ESA CCSDS-123 multi-threaded compression filter
 | 32012	| JPEG-LS	| CharLS JPEG-LS multi-threaded compression filter
-| [32013](https://h5z-zfp.readthedocs.io/en/latest/)	| [zfp](https://zfp.readthedocs.io/en/develop/)	| Lossy & lossless compression of floating point and integer datasets to meet rate, accuracy, and/or precision targets. 
+| [32013](https://h5z-zfp.readthedocs.io/en/latest/)	| [zfp](https://zfp.readthedocs.io/en/latest/)	| Lossy & lossless compression of floating point and integer datasets to meet rate, accuracy, and/or precision targets. 
 | 32014	| fpzip	| Fast and Efficient Lossy or Lossless Compressor for Floating-Point Data
 | 32015	| Zstandard	| Real-time compression algorithm with wide range of compression / speed trade-off and fast decoder
 | 32016	| B³D	| GPU based image compression method developed for light-microscopy applications
