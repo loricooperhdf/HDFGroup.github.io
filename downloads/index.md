@@ -26,8 +26,8 @@ This page is a temporary replacement for our download archive. We will be workin
 
 | Version | Usage | 
 | ---- | ----| 
-| [HDF4 3.0](hdf4/hdf4_3_0.md) | New 4.3.x series with significant changes in public/private components | 
-| [HDF4 2.16-2](hdf4/hdf4_2_16-2.md) (Patch Release) | Last release of the 4.2.x series | 
+| [HDF 4.3.0](hdf4/hdf4_3_0.md) | New 4.3.x series with significant changes in public/private components | 
+| [HDF 4.2.16-2](hdf4/hdf4_2_16-2.md) (Patch Release) | Last release of the 4.2.x series | 
 
 ## h4h5tools
 
