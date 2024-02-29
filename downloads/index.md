@@ -26,6 +26,7 @@ This page is a temporary replacement for our download archive. We will be workin
 
 | Version | Usage | 
 | ---- | ----| 
+| [HDF4 3.0](hdf4/hdf4_3_0.md) || 
 | [HDF4 2.16-2](hdf4/hdf4_2_16-2.md) (Patch Release) || 
 
 ## h4h5tools
