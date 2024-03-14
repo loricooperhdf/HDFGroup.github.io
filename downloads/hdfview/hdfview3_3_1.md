@@ -9,9 +9,9 @@ title: HDFView 3.3.1
 ## Release Information
 
 | Version | HDFView 3.3.1 |
-| Release Date | 07/07/2023 |
-| Additional Release Information | [Release Notes](https://github.com/HDFGroup/hdf5/blob/hdf5_1_14_3/release_docs/RELEASE.txt) |
-| | [Release Announcement](https://www.hdfgroup.org/2023/04/release-of-hdfview-3-3-0-newsletter-193/) | 
+| Release Date | 08/25/2023 |
+| Additional Release Information | [Release Notes](https://github.com/HDFGroup/hdfview/blob/v3.3.1/docs/RELEASE.txt) |
+| | [Release Announcement](https://www.hdfgroup.org/2023/08/release-of-hdfview-3-3-1-newsletter-197/) | 
 | | Documentation | 
 | | [Known Problems](#known-problems-in-this-release) |
 
@@ -26,7 +26,7 @@ title: HDFView 3.3.1
 | [UsersGuide.zip](https://hdf-wordpress-1.s3.amazonaws.com/wp-content/uploads/manual/HDFView/3.3.1/docs/UsersGuide.zip) <br> [(sha256)](https://hdf-wordpress-1.s3.amazonaws.com/wp-content/uploads/manual/HDFView/3.3.1/docs/UsersGuide.zip.sha256) | Documentation (HTML, Windows) | | |
 | [Pre-built binaries](https://support.hdfgroup.org/ftp/HDF5/releases/HDF-JAVA/hdfview-3.3.1/bin/) | Unix and Windows | All pre-built HDFView binary distributions provided
 
-HDFView 3.3.1 was built and tested with HDF5-1.14.0, HDF 4.2.16-2, and openjdk 19. 
+HDFView 3.3.1 was built and tested with HDF5-1.14.2, HDF 4.2.16-2, and openjdk 19. 
 
 This release provides two ways to install the HDFView pre-built binary distribution for a platform:
 * Using an application image. This method simply requires running the provided executable to obtain the software.
