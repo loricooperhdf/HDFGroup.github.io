@@ -41,4 +41,4 @@ See Known Problems if you encounter any issues.
 * Workaround for issue with launching HDFView: A path issue which causes HDFView to fail to launch can be resolved by using the included batch script in the binary under the app folder.
 * If installing HDFView with the installer method, please be aware that the installer does NOT overwrite "hardcoded" associations.  If there is a pre-existing user-defined file association, you must manually associate the extension with the HDFView application.
 
-Please see the [Release Notes](https://github.com/HDFGroup/hdf5/blob/hdf5_1_14_3/release_docs/RELEASE.txt) for more information on known problems.
+Please see the [Release Notes](https://github.com/HDFGroup/hdfview/blob/v3.3.1/docs/RELEASE.txt) for more information on known problems.
