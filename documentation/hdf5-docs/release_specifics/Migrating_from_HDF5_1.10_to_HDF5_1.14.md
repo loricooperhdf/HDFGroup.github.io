@@ -53,7 +53,10 @@ Default API mapping: v110 (under Features:)
 Functions were modified in HDF5 version 1.12 to support a token type used in the Virtual Object Layer (VOL) and to enable 64-bit selection encodings. These changes are described below.
 
 ~~~
-The updated versions of the functions have a number (for eg '2' or '3') at the end of the original function name. The original versions of these functions were retained and renamed to have an earlier number (for eg '1') at the end of the original function name. A macro was created with the name of the original function. Please read [API Compatibility Macros in HDF5](/documentation/hdf5-docs/release_specifics/api_comp_macros.md) for more details on how the function names changed in version 1.12.
+The updated versions of the functions have a number (for eg '2' or '3') at the end of the original function name.   
+The original versions of these functions were retained and renamed to have an earlier number (for eg '1') at the end of the original function name.  
+A macro was created with the name of the original function.   
+Please read [API Compatibility Macros in HDF5](/documentation/hdf5-docs/release_specifics/api_comp_macros.md) for more details on how the function names changed in version 1.12.
 ~~~
 
 ### Token Type
