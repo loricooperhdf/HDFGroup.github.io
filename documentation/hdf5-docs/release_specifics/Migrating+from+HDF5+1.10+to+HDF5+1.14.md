@@ -6,11 +6,11 @@ redirect_from:
 
 # Migrating from HDF5 1.10 to HDF5 1.12
 
-Also see the video presentation: Moving Applications from 1.10 to 1.12
+Also see the video presentation: [Moving Applications from 1.10 to 1.12](https://www.hdfgroup.org/2020/03/moving-applications-from-1-10-to-hdf5-1-12-video-materials)
 
-There were many existing functions that were modified in 1.12. Applications created with 1.10 or earlier that use these functions will encounter errors when compiled with 1.12. This page describes how to compile 1.10 and earlier applications with 1.12 without modifying an application, and provides details on the functions that changed for users who wish to update their applications:
+There were many existing functions that were modified in 1.12. Applications created with 1.10 or earlier that use these functions will encounter errors when compiled with 1.12. This page describes how to compile 1.10 and earlier applications with 1.12 without modifying an application, and provides details on the functions that changed for users who wish to update their applications.
 
-Compiling 1.10 and earlier applications with 1.12
+* [Compiling 1.10 and earlier applications with 1.12
 Functions that changed
 For further information, see:
 

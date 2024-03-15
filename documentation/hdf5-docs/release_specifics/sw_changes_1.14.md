@@ -1,7 +1,7 @@
 ---
-title: Software Changes from Release to Release for HDF5 1.12
+title: Software Changes from Release to Release for HDF5 1.14
 redirect_from: 
-  - /display/HDF5/Software+Changes+from+Release+to+Release+for+HDF5+1.12
+  - /display/HDF5/Software+Changes+from+Release+to+Release+for+HDF5+1.14
 ---
 
 For a description of the major new features that were introduced, please see New Features in HDF5 Release 1.12.
