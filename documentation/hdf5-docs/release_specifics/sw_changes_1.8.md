@@ -1,7 +1,7 @@
 ---
-title: HDF5 1.8
+title: Software+Changes+from+Release+to+Release+for+HDF5+1.8
 redirect_from: 
-  - display/HDF5/HDF5+1.8+Release
+  - display/HDF5/Software+Changes+from+Release+to+Release+for+HDF5+1.8
 ---
 
 This document is designed to help developers maintain HDF5-based applications as they are used with successive releases of HDF5. To that end, this document lists the changes at each release that a maintenance developer needs to be aware of:

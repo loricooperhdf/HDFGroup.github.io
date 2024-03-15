@@ -1,7 +1,7 @@
 ---
-title: HDF5 1.10
+title: Software+Changes+from+Release+to+Release+for+HDF5+1.10
 redirect_from: 
-  - display/HDF5/HDF5+1.10+Release
+  - display/HDF5/Software+Changes+from+Release+to+Release+for+HDF5+1.10
 ---
 
 For a description of the major new features that were introduced, please see New Features in HDF5 Release 1.10.)
@@ -15,31 +15,35 @@ Note that bug fixes and performance enhancements in the C library are automatica
 
 The following information is included below.
 
-Compatiblity and Performance Issues
-Release 1.10.9 versus 1.10.8
-Release 1.10.8 versus 1.10.7
-Release 1.10.7 versus 1.10.6
-Release 1.10.6 versus 1.10.5
-Release 1.10.5 versus 1.10.4, 1.10.3, and 1.10.2
+[Compatiblity and Performance Issues](#Compatiblity-and-Performance-Issues)
+[Release 1.10.9 versus 1.10.8](#Release-1.10.9-versus-1.10.8)
+[Release 1.10.8 versus 1.10.7](#Release-1.10.8-versus-1.10.7)
+[Release 1.10.7 versus 1.10.6](#Release-1.10.7-versus-1.10.6)
+[Release 1.10.6 versus 1.10.5](#Release-1.10.6-versus-1.10.5)
+[Release 1.10.5 versus 1.10.4, 1.10.3, and 1.10.2](#Release-1.10.5-versus-1.10.4)
 
-Release 1.10.4 versus Release 1.10.3
-Release 1.10.3 versus Release 1.10.2
-Release 1.10.2 versus Release 1.10.1
+[Release 1.10.4 versus Release 1.10.3](#Release-1.10.4-versus-1.10.3)
+[Release 1.10.3 versus Release 1.10.2](#Release-1.10.3-versus-1.10.2)
+[Release 1.10.2 versus Release 1.10.1](#Release-1.10.2-versus-1.10.1)
 
-Release 1.10.1 versus Release 1.10.0 (and 1.10.0-patch1)
+[Release 1.10.1 versus Release 1.10.0 (and 1.10.0-patch1)](#Release-1.10.1-versus-1.10.0)
 
-Release 1.10.0 of March 2016 versus Release 1.8.16
+[Release 1.10.0 of March 2016 versus Release 1.8.16](#Release-1.10.0-versus-1.8.16)
+
 
 Compatibility and Performance Issues
 Not all HDF5-1.10 releases are compatible. Users should NOT be using 1.10 releases prior to HDF5-1.10.3. See the compatibility matrix below for details on compatibility between 1.10 releases:
 
-1.10.5+	 	Yes	Yes	No	No	No	No
-1.10.4	Yes	 	Yes	No	No	No	No
-1.10.3	Yes	Yes	 	No	No	No	No
-1.10.2	No	No	No	 	No	No	No
+| Release  | 1.10.5+ | 1.10.4 | 1.10.3 | 1.10.2 | 1.10.1 | 1.10.0-patch1 | 1.10.0 |
+| -------- | ------- | ------ | ------ | ------ | ------ | ------------- | ------ |
+| 1.10.5+ |         | Yes     | Yes     | No      | No      | No      | No
+| 1.10.4  | Yes     |         | Yes     | No      | No      | No      | No
+| 1.10.3  | Yes     | Yes     |         | No      | No      | No      | No
+| 1.10.2  | No      | No      | No      |         | No      | No      | No
+
 The following images show how performance has changed from release to release.
 
-
+[cgns, HDF5 versions](/documentation/hdf5-docs/release_specifics/images/cgns.png)
 
 
 
