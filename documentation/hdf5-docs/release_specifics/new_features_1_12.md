@@ -1,19 +1,22 @@
 ---
 title: New Features in HDF5 1.12
-redirect_from: 
+redirect from: 
   - display/HDF5/New+Features+in+HDF5+Release+1.12
 ---
 
-This release includes changes in the HDF5 storage format. PLEASE NOTE that HDF5-1.10 and earlier releases cannot read files created with the new features described below that are marked with a *.
+This release includes changes in the HDF5 storage format. PLEASE NOTE that HDF5-1.10 and earlier releases cannot read files created with the new features described below that are marked with a \*.
 
 HDF5 1.12 introduces several new features in the HDF5 library:
 
-Virtual Object Layer (VOL) * 
-Hyperslab Performance Improvement
-Update to References  *
-Update to Selections
-Virtual Object Layer (VOL)  (RFC) *
-See the Virtual Object Layer page for more information.
+* [H5Sencode / H5Sdecode Format Change - RFC](https://docs.hdfgroup.org/hdf5/rfc/H5Sencode_format.docx.pdf)
+* [Update to References](https://docs.hdfgroup.org/hdf5/rfc/RFC_Update_to_HDF5_References.pdf)
+* [Update to Selections](https://docs.hdfgroup.org/hdf5/rfc/selection_io_RFC_210610.pdf)
+* [Virtual Object Layer](https://docs.hdfgroup.org/hdf5/develop/_v_o_l__connector.html)
+* [Hyperslab Performance Improvement](#Hyperslab-Performance-Improvements)
+
+### Virtual Object Layer (VOL)  (RFC)
+
+See the [Virtual Object Layer](https://docs.hdfgroup.org/hdf5/develop/_h5_v_l__u_g.html#sec_vol) page for more information.
 
 The Virtual Object Layer (VOL) is an abstraction layer within the HDF5 library that enables different methods for accessing data and objects that conform to the HDF5 data model. The VOL intercepts all HDF5 API calls that potentially modify data on disk and forwards those calls to a plugin "object driver". The data on disk can be a different format than the HDF5 format.
 
@@ -29,7 +32,7 @@ See the Update to References page for details on the changes in HDF5-1.12.
 
 HDF5 references were extended to support attributes, as well as object and dataset selections that reside in another HDF5 file. In order to support these features several functions were introduced:
 
-Create (H5R_CREATE*) functions were added for each reference type: object, dataset region and attribute.
+Create (H5R\_CREATE*) functions were added for each reference type: object, dataset region and attribute.
 A function was added to release a reference (H5R_DESTROY). This is required because a region reference no longer modifies the original file.
 Functions were added to query references (H5R_GET*).
 Other functions were added to simplify or clarify the API.
