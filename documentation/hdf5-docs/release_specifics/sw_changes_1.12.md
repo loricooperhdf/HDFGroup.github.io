@@ -4,55 +4,38 @@ redirect_from:
   - /display/HDF5/Software+Changes+from+Release+to+Release+for+HDF5+1.12
 ---
 
-For a description of the major new features that were introduced, please see New Features in HDF5 Release 1.12.
+For a description of the major new features that were introduced, please see [New Features in HDF5 Release 1.12](/documentation/hdf5-docs/release_specifics/sw_changes_1.12.md).
 
 This page provides information on the changes that a maintenance developer needs to be aware of between successive releases of HDF5, such as:
 
-New or changed features or tools
-Syntax and behavioral changes in the existing application programming interface (the API)
-Certain types of changes in configuration or build processes
+* New or changed features or tools
+* Syntax and behavioral changes in the existing application programming interface (the API)
+* Certain types of changes in configuration or build processes
+
 Note that bug fixes and performance enhancements in the C library are automatically picked up by the C++, Fortran, and Java libraries.
 
 The following information is included below.
 
-Release 1.12.2 versus Release 1.12.1
-Release 1.12.1 versus Release 1.12.0
-Release 1.12.0 versus Release 1.10.6
+* [Release 1.12.2 versus Release 1.12.1](#Release-1.12.2-versus-Release-1.12.1)
+* [Release 1.12.1 versus Release 1.12.0](#Release-1.12.1-versus-Release-1.12.0)
+* [Release 1.12.0 versus Release 1.10.6](#Release-1.12.0-versus-Release-1.10.6)
+
 The release notes also list changes made to the library, but these notes tend to be more at a more detail-oriented level. The release notes may include new features, bugs fixed, supported configuration features, platforms on which the library has been tested, and known problems. The release note files are listed below and can be found at the top level of the HDF5 source code tree in the release_docs directory.
 
-Release Notes
+|                          |                                                              |
+| ------------------------ | ------------------------------------------------------------ |
+| Release Notes            | Technical notes regarding the current release of the HDF5 library (RELEASE.txt in the source code) |
+| HISTORY-1_12.txt | Release information for HDF5-1.12.0 through 1.12.1 |
+| HISTORY-1_10_0-1_12_0.txt | Development history between the HDF5-1.10.0 and HDF5-1.12.0 releases |
+| HISTORY-1_10.txt | Release information for all HDF5-1.10 releases |
+| HISTORY-1_8_0-1_10_0.txt | Development history between the HDF5-1.8.0 and HDF5-1.10.0 releases |
+| HISTORY-1_8.txt | Release information for HDF5-1.8.0 through 1.8.21 |
+| HISTORY-1_0-1_8_0_rc3.txt | Technical notes starting with HDF5-1.0.0 and ending with HDF5-1.8.0-rc3 (the state of the code prior to the HDF5-1.8.0 release) |
 
-Technical notes regarding the current release of the HDF5 library (RELEASE.txt in the source code)
-
-HISTORY-1_12.txt
-
-Release information for HDF5-1.12.0 through 1.12.1
-
-HISTORY-1_10_0-1_12_0.txt
-
-Development history between the HDF5-1.10.0 and HDF5-1.12.0 releases
-
-HISTORY-1_10.txt
-
-Release information for all HDF5-1.10 releases
-
-HISTORY-1_8_0-1_10_0.txt
-
-Development history between the HDF5-1.8.0 and HDF5-1.10.0 releases
-
-HISTORY-1_8.txt
-
-Release information for HDF5-1.8.0 through 1.8.21
-
-HISTORY-1_0-1_8_0_rc3.txt
-
-Technical notes starting with HDF5-1.0.0 and ending with HDF5-1.8.0-rc3 (the state of the code prior to the HDF5-1.8.0 release)
-
-Release 1.12.2 versus Release 1.12.1
+### Release 1.12.2 versus Release 1.12.1
 This section lists interface-level changes and other user-visible changes in behavior in the transition from HDF5 Release 1.12.1 to Release 1.12.2.
 
-New and Changed Functions, Classes, Subroutines, Wrappers, and Macros
-In the C Interface (main library) and the High-level Interface
+#### New and Changed Functions, Classes, Subroutines, Wrappers, and Macros
 
 The following are new C functions in this release:
 
@@ -62,11 +45,8 @@ H5LTset_attribute_ullong	Create an unsigned long long attribute
 H5VLobject_is_native	Determines whether an object ID represents a native VOL connector object
 See API Compatibility Reports for 1.12.2 for complete details.
 
-Release 1.12.1 versus Release 1.12.0
+### Release 1.12.1 versus Release 1.12.0
 This section lists interface-level changes and other user-visible changes in behavior in the transition from HDF5 Release 1.12.0 to Release 1.12.1.
-
-New and Changed Functions, Classes, Subroutines, Wrappers, and Macros
-In the C Interface (main library)
 
 The following are new C functions in this release:
 
@@ -100,14 +80,15 @@ See the API Compatibility report for complete details.
 Compatibility Notes and Report
 See API Compatibility Reports for 1.12 for information regarding compatibility with previous releases.
 
-Release 1.12.0 versus Release 1.10.6
+### Release 1.12.0 versus Release 1.10.6
 This section lists interface-level changes and other user-visible changes in behavior in the transition from HDF5 Release 1.10.6 to Release 1.12.0.
 
-New Features
+#### New Features
 For a description of the major new features that were introduced, please see New Features in HDF5 Release 1.12.
 
-New and Changed Functions, Classes, Subroutines, Wrappers, and Macros
-In the C/Fortran Interface (main library)
+#### New and Changed Functions, Classes, Subroutines, Wrappers, and Macros
+
+#### In the C/Fortran Interface (main library)
 
 Folllowing are the new or changed APIs introduced in HDF5-1.12.0. Those introduced with a new feature list the specific new feature that they were added for.
 
@@ -222,9 +203,9 @@ See H5O_GET_INFO
 H5Object::visit	See H5O_VISIT
 
 
-API Compatibility
+### API Compatibility
 See API Compatibility Macros in HDF5 for details on using HDF5 version 1.12 with previous releases.
 
-Compatibility report for Release 1.12.0 versus Release 1.10.6
+[Compatibility report for Release 1.12.0 versus Release 1.10.6](Compatibility report for Release 1.12.0 versus Release 1.10.6)
 
  
