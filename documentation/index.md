@@ -16,7 +16,7 @@ Look for more content here soon.
 * [Documentation - 1.8.x](https://docs.hdfgroup.org/hdf5/v1_8/index.html)
 * [Registered Filter Plugins](/documentation/hdf5-docs/registered_filter_plugins.html)
 * [Registered Virtual File Drivers (VFDs)](/documentation/hdf5-docs/registered_virtual_file_drivers_vfds.html)
-* [Registered VOL Connectors](/documentation/hdf5-docs/registered_vol_connectors.html)
+* [Registered VOL Connectors](/documentation/hdf5-docs/release_specifics/release_specific_info.md)
 * [Release Specific Information](/documentation/hdf5-docs/release_specifics/release_specific_info.md) - \*\*\* UNDER CONSTRUCTION \*\*\*
 
 Can't find what you're looking for? Visit [docs.hdfgroup.org](https://docs.hdfgroup.org/hdf5/v1_14/index.html) for many other documents that previously resided on the portal.
