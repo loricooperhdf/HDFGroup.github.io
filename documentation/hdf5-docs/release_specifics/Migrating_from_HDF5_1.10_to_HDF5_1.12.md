@@ -15,9 +15,9 @@ There were many existing functions that were modified in 1.12. Applications crea
 
 For further information, see:
 
-* [New Features in 1.12](/documentation/hdf5-docs/release_specifics/new_features_1_12.md)
-* [Software Changes from release to release](/documentation/hdf5-docs/release_specifics/sw_changes_1.12.md)
-* [API Compatibility Macros in HDF5](/documentation/hdf5-docs/release_specifics/api_comp_macros.md)
+* [New Features in 1.12](new_features_1_12.md)
+* [Software Changes from release to release](sw_changes_1.12.md)
+* [API Compatibility Macros in HDF5](api_comp_macros.md)
 
 ### Compiling 1.10 and earlier applications with 1.12
 
@@ -56,7 +56,7 @@ Functions were modified in HDF5 version 1.12 to support a token type used in the
 The updated versions of the functions have a number (for eg '2' or '3') at the end of the original function name.   
 The original versions of these functions were retained and renamed to have an earlier number (for eg '1') at the end of the original function name.  
 A macro was created with the name of the original function.   
-Please read [API Compatibility Macros in HDF5](/documentation/hdf5-docs/release_specifics/api_comp_macros.md) for more details on how the function names changed in version 1.12.
+Please read [API Compatibility Macros in HDF5](api_comp_macros.md) for more details on how the function names changed in version 1.12.
 ~~~
 
 ### Token Type
