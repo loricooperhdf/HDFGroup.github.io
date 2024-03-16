@@ -22,19 +22,20 @@ The Virtual Object Layer (VOL) is an abstraction layer within the HDF5 library t
 
 
 
-The plugins can actually store the objects in variety of ways. A plugin could, for example, have objects be distributed remotely over different platforms, provide a raw mapping of the model to the file system, or even store the data in other file formats (like native netCDF or HDF4 format). The user still gets the same data model where access is done to a single HDF5 “container”; however the plugin object driver translates from what the user sees to how the data is actually stored. Having this abstraction layer maintains the object model of HDF5 and allows better usage of new object storage file systems that are targeted for Exascale systems.
+The plugins can actually store the objects in variety of ways. A plugin could, for example, have objects be distributed remotely over different platforms, provide a raw mapping of the model to the file system, or even store the data in other file formats (like native netCDF or HDF4 format). The user still gets the same data model where access is done to a single HDF5 \"container\"; however the plugin object driver translates from what the user sees to how the data is actually stored. Having this abstraction layer maintains the object model of HDF5 and allows better usage of new object storage file systems that are targeted for Exascale systems.
 
-Hyperslab Performance Improvements
+### Hyperslab Performance Improvements
 In 1.12.0 the hyperslab selection code was optimized to achieve better performance. In general, performance improved by an order of a magnitude. In the case of reading a regular selection from a 20 GB dataset into a one dimensional array, performance improved by a factor of 6000. If you are interested in the benchmark we ran, please see issue HDFFV-10930 by logging into jira.hdfgroup.org with your hdfgroup.org login.
 
-Update to References (RFC) *
+### Update to References (RFC) *
 See the Update to References page for details on the changes in HDF5-1.12.
 
 HDF5 references were extended to support attributes, as well as object and dataset selections that reside in another HDF5 file. In order to support these features several functions were introduced:
 
-Create (H5R\_CREATE*) functions were added for each reference type: object, dataset region and attribute.
-A function was added to release a reference (H5R_DESTROY). This is required because a region reference no longer modifies the original file.
-Functions were added to query references (H5R_GET*).
-Other functions were added to simplify or clarify the API.
-Update to Selections
+* Create (H5R_CREATE\*) functions were added for each reference type: object, dataset region and attribute.
+* A function was added to release a reference (H5R_DESTROY). This is required because a region reference no longer modifies the original file.
+* Functions were added to query references (H5R_GET\*).
+* Other functions were added to simplify or clarify the API.
+
+### Update to Selections
 Several new H5S APIs were introduced to allow a user to more flexibly operate on two hyperslab selections. See Update to Selections for more details.
