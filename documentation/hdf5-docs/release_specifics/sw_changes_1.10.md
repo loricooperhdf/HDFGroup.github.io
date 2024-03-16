@@ -15,20 +15,17 @@ Note that bug fixes and performance enhancements in the C library are automatica
 
 The following information is included below.
 
-[Compatiblity and Performance Issues](#Compatiblity-and-Performance-Issues)
-[Release 1.10.9 versus 1.10.8](#Release-1.10.9-versus-1.10.8)
-[Release 1.10.8 versus 1.10.7](#Release-1.10.8-versus-1.10.7)
-[Release 1.10.7 versus 1.10.6](#Release-1.10.7-versus-1.10.6)
-[Release 1.10.6 versus 1.10.5](#Release-1.10.6-versus-1.10.5)
-[Release 1.10.5 versus 1.10.4, 1.10.3, and 1.10.2](#Release-1.10.5-versus-1.10.4)
-
-[Release 1.10.4 versus Release 1.10.3](#Release-1.10.4-versus-1.10.3)
-[Release 1.10.3 versus Release 1.10.2](#Release-1.10.3-versus-1.10.2)
-[Release 1.10.2 versus Release 1.10.1](#Release-1.10.2-versus-1.10.1)
-
-[Release 1.10.1 versus Release 1.10.0 (and 1.10.0-patch1)](#Release-1.10.1-versus-1.10.0)
-
-[Release 1.10.0 of March 2016 versus Release 1.8.16](#Release-1.10.0-versus-1.8.16)
+* [Compatiblity and Performance Issues](#compatiblity-and-performance-issues)
+* [Release 1.10.9 versus 1.10.8](#release-1.10.9-versus-1.10.8)
+* [Release 1.10.8 versus 1.10.7](#release-1.10.8-versus-1.10.7)
+* [Release 1.10.7 versus 1.10.6](#release-1.10.7-versus-1.10.6)
+* [Release 1.10.6 versus 1.10.5](#release-1.10.6-versus-1.10.5)
+* [Release 1.10.5 versus 1.10.4, 1.10.3, and 1.10.2](#release-1.10.5-versus-1.10.4)
+* [Release 1.10.4 versus Release 1.10.3](#release-1.10.4-versus-1.10.3)
+* [Release 1.10.3 versus Release 1.10.2](#release-1.10.3-versus-1.10.2)
+* [Release 1.10.2 versus Release 1.10.1](#release-1.10.2-versus-1.10.1)
+* [Release 1.10.1 versus Release 1.10.0 (and 1.10.0-patch1)](#release-1.10.1-versus-1.10.0)
+* [Release 1.10.0 of March 2016 versus Release 1.8.16](#release-1.10.0-versus-1.8.16)
 
 
 ### Compatibility and Performance Issues
@@ -43,7 +40,7 @@ Not all HDF5-1.10 releases are compatible. Users should NOT be using 1.10 releas
 
 The following images show how performance has changed from release to release.
 
-[cgns, HDF5 versions](/documentation/hdf5-docs/release_specifics/images/cgns.png)
+[cgns, HDF5 versions](images/cgns.png)
 
 
 The release notes also list changes made to the library, but these notes tend to be more at a more detail-oriented level. The release notes may include new features, bugs fixed, supported configuration features, platforms on which the library has been tested, and known problems. The release note files are listed below and can be found at the top level of the HDF5 source code tree in the release_docs directory.
