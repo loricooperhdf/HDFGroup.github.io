@@ -21,7 +21,7 @@ redirect_from:
 * [Migrating from HDF5 1.8 to HDF5 1.10](documentation/hdf5-docs/release_specifics/)
 
 ### [HDF5 1.8](/documentation/hdf5-docs/release_specifics/hdf5_1_8.md)
-* [New Features](documentation/hdf5-docs/release_specifics/new_features_1_18.md)
+* New Features
 * [Software Changes from Release to Release](documentation/hdf5-docs/release_specifics/sw_changes_1.8)
 
 ### [API compatibility Macros in HDF5](documentation/hdf5-docs/release_specifics/api_comp_macros.md)
