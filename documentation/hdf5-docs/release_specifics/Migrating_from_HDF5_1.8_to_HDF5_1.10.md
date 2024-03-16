@@ -48,7 +48,7 @@ The HDF5 1.10.* binaries are not ABI compatible with the HDF5 1.8.* binaries due
 
 ### Can I migrate my application if I still use the HDF5 1.6 APIs?
 
-Yes, use the -DH5_USE_16_API compiler flag. For more information see the [API compatibility Macros in HDF5](documentation/hdf5-docs/release_specifics/api_comp_macros.md) document.
+Yes, use the -DH5_USE_16_API compiler flag. For more information see the [API compatibility Macros in HDF5](api_comp_macros.md) document.
 
 ### Will my old software read files created by an application rebuilt with HDF5 1.10?
 

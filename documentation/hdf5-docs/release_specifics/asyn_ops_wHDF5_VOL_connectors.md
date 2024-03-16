@@ -1,5 +1,5 @@
 HDF5 provides asynchronous APIs for the HDF5 VOL connectors that
-support asynchronous HDF5 operations using the [HDF5 Event Set](/documentation/hdf5-docs/release_specifics/event_set.md) (H5ES)
+support asynchronous HDF5 operations using the [HDF5 Event Set](event_set.md) (H5ES)
 API. This allows I/O to proceed in the background while the application
 is performing other tasks.
 
@@ -35,4 +35,4 @@ herr_t H5Dclose_async(hid_t dset_id, hid_t es_id);
 
 An event set is an in-memory object that is created by an application and used to track many asynchronous operations with a single object. They function like a ``bag'' -- holding request tokens from one or more asynchronous operations and provide a simple interface for inspecting the status of the entire set of operations.
 
-See the [H5ES](/documentation/hdf5-docs/release_specifics/event_set.md) APIs that were added to the HDF5 library to manage event sets.
+See the [H5ES](event_set.md) APIs that were added to the HDF5 library to manage event sets.

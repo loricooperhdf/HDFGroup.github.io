@@ -6,13 +6,13 @@ redirect_from:
 
 HDF5 1.10 introduces several new features in the HDF5 library. These new features were added in the first three releases of HDF5-1.10. For a brief description of each new feature see:
 
-* [New Features Introduced in HDF5 1.10.8](#New-Features-Introduced-in-HDF5-1.10.8)
-* [New Features Introduced in HDF5 1.10.7](#New-Features-Introduced-in-HDF5-1.10.7)
-* [New Features introduced in HDF5 1.10.6](#New-Features-Introduced-in-HDF5-1.10.6)
-* [New Features introduced in HDF5 1.10.5](#New-Features-Introduced-in-HDF5-1.10.5)
-* [New Features Introduced in HDF5 1.10.2](#New-Features-Introduced-in-HDF5-1.10.2)
-* [New Features Introduced in HDF5 1.10.1](#New-Features-Introduced-in-HDF5-1.10.1)
-* [New Features Introduced in HDF5 1.10.0](#New-Features-Introduced-in-HDF5-1.10.0)
+* [New Features Introduced in HDF5 1.10.8](#new-features-introduced-in-hdf5-1.10.8)
+* [New Features Introduced in HDF5 1.10.7](#new-features-introduced-in-hdf5-1.10.7)
+* [New Features introduced in HDF5 1.10.6](#new-features-introduced-in-hdf5-1.10.6)
+* [New Features introduced in HDF5 1.10.5](#new-features-introduced-in-hdf5-1.10.5)
+* [New Features Introduced in HDF5 1.10.2](#new-features-introduced-in-hdf5-1.10.2)
+* [New Features Introduced in HDF5 1.10.1](#new-features-introduced-in-hdf5-1.10.1)
+* [New Features Introduced in HDF5 1.10.0](#new-features-introduced-in-hdf5-1.10.0)
 
 ~~~
 This release includes changes in the HDF5 storage format. For detailed information on the changes, see: Changes to the File Format Specification
