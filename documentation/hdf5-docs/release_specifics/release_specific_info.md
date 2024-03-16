@@ -18,7 +18,7 @@ redirect_from:
 * [New Features](documentation/hdf5-docs/release_specifics/new_features_1_10.md)
 * [Why should I care about the HDF5-1.10.2 release? (blog)]()
 * [Software Changes from Release to Release](/documentation/hdf5-docs/release_specifics/sw_changes_1.10.md)
-* [Migrating from HDF5 1.8 to HDF5 1.10](/documentation/hdf5-docs/release_specifics/)
+* [Migrating from HDF5 1.8 to HDF5 1.10](/documentation/hdf5-docs/release_specifics/Migrating_from_HDF5_1.8_to_HDF5_1.10.md)
 
 ### [HDF5 1.8](/documentation/hdf5-docs/release_specifics/hdf5_1_8.md)
 * New Features
