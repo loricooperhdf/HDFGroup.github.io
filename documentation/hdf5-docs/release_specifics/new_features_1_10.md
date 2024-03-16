@@ -1,6 +1,6 @@
 ---
 title: New Features in HDF5 1.10
-redirect_from: 
+redirect_from:
   - display/HDF5/New+Features+in+HDF5+Release+1.10
 ---
 
@@ -17,7 +17,7 @@ HDF5 1.10 introduces several new features in the HDF5 library. These new feature
 ~~~
 This release includes changes in the HDF5 storage format. For detailed information on the changes, see: Changes to the File Format Specification
 
-PLEASE NOTE that HDF5-1.8 cannot read files created with the new features described below that are marked with \*.   
+PLEASE NOTE that HDF5-1.8 cannot read files created with the new features described below that are marked with \*.
 
 These changes come into play when one or more of the new features is used or when an application calls for use of the latest storage format (H5P_SET_LIBVER_BOUNDS). See the RFC for more details.
 
@@ -38,15 +38,14 @@ HDF5 now supports building with the AEC library as a replacement library for SZi
 Addition of the Splitter and Mirror VFDs
 Two VFDs were added in this release:
 
-The Splitter VFD maintains separate R/W and W/O channels for ”concurrent” file writes to two files using a single HDF5 file handle.
+The Splitter VFD maintains separate R/W and W/O channels for "concurrent" file writes to two files using a single HDF5 file handle.
 The Mirror VFD uses TCP/IP sockets to perform write-only (W/O) file I/O on a remote machine.
 Improvements to Performance
 Performance has continued to improve in this release. Please see the images under Compatibility and Performance Issues on the Software Changes from Release to Release page.
 
 Addition of Hyperslab Selection Functions
 Several hyperslab selection routines introduced in HDF5-1.12 were ported to 1.10. See the Software Changes from Release to Release page for details.
-
-### New Features Introduced in HDF5 1.10.6 
+                                                                                                ### New Features Introduced in HDF5 1.10.6
 The following important new features and changes were introduced in HDF5-1.10.6. For complete details see the Release Notes and the Software Changes from Release to Release page:
 
 #### Improvements to the CMake Support
@@ -54,7 +53,7 @@ Several improvements were added to the CMake support, including:
 
 Support was added for VS 2019 on Windows (with CMake 3.15).
 Support was added for MinGW using a toolchain file on Linux (C only).
-#### Virtual File Drivers - S3 and HDFS  
+#### Virtual File Drivers - S3 and HDFS
 Two Virtual File Drivers (VFDs) have been introduced in 1.10.6:
 
 * The S3 VFD enables access to an HDF5 file via the Amazon Simple Storage Service (Amazon S3).
@@ -76,8 +75,7 @@ The following APIs were introduced to support this feature:
 H5F_GET_DSET_NO_ATTRS_HINT
 
 Retrieves the setting for determining whether the specified file does or does not create minimized dataset object headers
-
-H5F_SET_DSET_NO_ATTRS_HINT
+                                                                                                H5F_SET_DSET_NO_ATTRS_HINT
 
 Sets the flag to create minimized dataset object headers
 
@@ -109,7 +107,7 @@ Series 4 is unmodified CGNS develop
 Compact is using compact storage
 Compact 192 is also using compact storage
 Compact 384 is also using compact storage
-The last 3 “compact” curves are just three different batch jobs on 192, 384, and 552 nodes (with 36 core/node). The Series 2 and 3 curves are not related to the CGNS benchmark, but give a qualitative indication on the scaling behavior of MPI_Bcast. Both read-proc0-and-bcast and compact storage follow MPI_Bcast’s trend, which makes sense since both methods rely on MPI_Bcast. (See the RFC for better resolution.)
+The last 3 "compact" curves are just three different batch jobs on 192, 384, and 552 nodes (with 36 core/node). The Series 2 and 3 curves are not related to the CGNS benchmark, but give a qualitative indication on the scaling behavior of MPI_Bcast. Both read-proc0-and-bcast and compact storage follow MPI_Bcast's trend, which makes sense since both methods rely on MPI_Bcast. (See the RFC for better resolution.)
 
 #### OpenMPI Support
 Support for OpenMPI was added. For known problems and issues please see OpenMPI Build Issues. To better support OpenMPI, all MPI-1 API calls were replaced by MPI-2 equivalents.
@@ -117,10 +115,10 @@ Support for OpenMPI was added. For known problems and issues please see OpenMPI 
 #### Chunk Query Functions (RFC)
 New functions were added to find locations, sizes and filters applied to chunks of a dataset. This functionality is useful for applications that need to read chunks directly from the file, bypassing the HDF5 library.
 
-H5D_GET_CHUNK_INFO	Retrieves information about a chunk specified by the chunk index
-H5D_GET_CHUNK_INFO_BY_COORD	Retrieves information about a chunk specified by its coordinates
-H5D_GET_NUM_CHUNKS	Retrieves number of chunks that have nonempty intersection with a specified selection
- 
+H5D_GET_CHUNK_INFO  Retrieves information about a chunk specified by the chunk index
+H5D_GET_CHUNK_INFO_BY_COORD Retrieves information about a chunk specified by its coordinates
+H5D_GET_NUM_CHUNKS  Retrieves number of chunks that have nonempty intersection with a specified selection
+
 ### New Features Introduced in HDF5 1.10.2
 Several important features and changes were added to HDF5 1.10.2. See the release announcement and blog for complete details. Following are the major new features:
 
@@ -130,25 +128,27 @@ In HDF5 1.8.0, the H5P_SET_LIBVER_BOUNDS function was introduced for specifying 
 #### Performance Optimizations for HDF5 Parallel Applications
 Optimizations were introduced to parallel HDF5 for improving the performance of open, close and flush operations at scale.
 
+
 #### Using Compression with HDF5 Parallel Applications
 HDF5 parallel applications can now write data using compression (and other filters such as the Fletcher32 checksum filter).
 
 
 ### New Features Introduced in HDF5 1.10.1
 
-#### Metadata Cache Image ( RFC ) » Fine-tuning the Metadata Cache *
+#### Metadata Cache Image ( RFC ) -> Fine-tuning the Metadata Cache *
 HDF5 metadata is typically small, and scattered throughout the HDF5 file. This can affect performance, particularly on large HPC systems. The Metadata Cache Image feature can improve performance by writing the metadata cache in a single block on file close, and then populating the cache with the contents of this block on file open, thus avoiding the many small I/O operations that would otherwise be required on file open and close.
 
-#### Metadata Cache Evict on Close » Fine-tuning the Metadata Cache
+#### Metadata Cache Evict on Close -> Fine-tuning the Metadata Cache
 The HDF5 library's metadata cache is fairly conservative about holding on to HDF5 object metadata (object headers, chunk index structures, etc.), which can cause the cache size to grow, resulting in memory pressure on an application or system. The "evict on close" property will cause all metadata for an object to be evicted from the cache as long as metadata is not referenced from any other open object.
 
-#### Paged Aggregation ( RFC ) » File Space Management *
+#### Paged Aggregation ( RFC ) -> File Space Management *
 The current HDF5 file space allocation accumulates small pieces of metadata and raw data in aggregator blocks which are not page aligned and vary widely in sizes. The paged aggregation feature was implemented to provide efficient paged access of these small pieces of metadata and raw data.
 
 #### Page Buffering ( RFC )
 Small and random I/O accesses on parallel file systems result in poor performance for applications. Page buffering in conjunction with paged aggregation can improve performance by giving an application control of minimizing HDF5 I/O requests to a specific granularity and alignment.
 
- 
+
+
 
 ### New Features Introduced in HDF5 1.10.0
 
@@ -188,4 +188,4 @@ See the HDF5 File Format Specification for complete details on the changes. This
 * The Data Layout Message was changed: the name was changed, and version 4 of the data layout message was added for the virtual type.
 * Additional types of indexes were added for dataset chunks.
 
-HDF5-1.8 cannot read files created with the new features described on this page that are marked with *. 
+HDF5-1.8 cannot read files created with the new features described on this page that are marked with *.

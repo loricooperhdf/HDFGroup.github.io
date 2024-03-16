@@ -329,9 +329,9 @@ In the C Interface (main library)
 The following are new C functions in this release:
 
 H5D_GET_CHUNK_STORAGE_SIZE	Returns storage amount allocated within a file for a raw data chunk in a dataset
-H5F_GET_EOA	Retrieves the file’s EOA
+H5F_GET_EOA	Retrieves the file's EOA
 H5F_INCREMENT_FILESIZE	
-Sets the file’s EOA to the maximum of (EOA, EOF) + increment
+Sets the file's EOA to the maximum of (EOA, EOF) + increment
 
 H5F_SET_LIBVER_BOUNDS	Enables the switch of version bounds setting for a file
 H5FDdriver_query	Queries a VFL driver for its feature flags when a file is not available (not documented in Reference Manual)
@@ -423,9 +423,9 @@ See the Release.txt file for details.
 Tools
 New options were added to the h5clear utility:
 
---filesize	Print the file’s EOA and EOF
+--filesize	Print the file's EOA and EOF
 --increment=C	
-Set the file’s EOA to the maximum of (EOA, EOF) + C for the file
+Set the file's EOA to the maximum of (EOA, EOF) + C for the file
 
 C is >= 0; C is optional and will default to 1M when not set
 
@@ -579,7 +579,7 @@ hid_t
 
 Changed from a 32-bit to a 64-bit value.
 
-hid_t is the type is used for all HDF5 identifiers. This change, which is necessary to accomodate the capacities of modern computing systems, therefore affects all HDF5 applications. If an application has been using HDF5’s hid_t the type, recompilation will normally be sufficient to take advantage of HDF5 Release 1.10.0. If an application uses an integer type instead of HDF5’s hid_t type, those identifiers must be changed to a 64-bit type when the application is ported to the 1.10.x series.
+hid_t is the type is used for all HDF5 identifiers. This change, which is necessary to accomodate the capacities of modern computing systems, therefore affects all HDF5 applications. If an application has been using HDF5's hid_t the type, recompilation will normally be sufficient to take advantage of HDF5 Release 1.10.0. If an application uses an integer type instead of HDF5's hid_t type, those identifiers must be changed to a 64-bit type when the application is ported to the 1.10.x series.
 
 New Features and Feature Sets
 Several new features are introduced in HDF5 Release 1.10.0.
@@ -627,7 +627,7 @@ Retrieves the values of the append property that is set up in the dataset access
 
 H5Pset_append_flush
 
-Sets two actions to perform when the size of a dataset’s dimension being appended reaches a specified boundary.
+Sets two actions to perform when the size of a dataset's dimension being appended reaches a specified boundary.
 
 H5Pget_object_flush_cb   
 
@@ -657,19 +657,19 @@ Globally prevents dirty metadata entries from being flushed from the metadata ca
 
 H5Fenable_mdc_flushes
 
-Returns a file’s metadata cache to the standard eviction and flushing algorithm.
+Returns a file's metadata cache to the standard eviction and flushing algorithm.
 
 H5Fare_mdc_flushes_disabled
 
  
 
-Determines if flushes have been globally disabled for a file’s metadata cache.
+Determines if flushes have been globally disabled for a file's metadata cache.
 
 H5Fget_mdc_flush_disabled_obj_ids
 
  
 
-Returns a list of all object identifiers for which flushes have been disabled in a file’s metadata cache.
+Returns a list of all object identifiers for which flushes have been disabled in a file's metadata cache.
 
  
 Command-line Tools:
@@ -1100,13 +1100,13 @@ A new version of the function, H5Rdereference2, is introduced.
 The compatiblity macro H5Rdereference is introduced.
 
 Autotools Configuration and Large File Support
-Autotools configuration has been extensively reworked and autotool’s handling of large file support has been overhauled in this release.
+Autotools configuration has been extensively reworked and autotool's handling of large file support has been overhauled in this release.
 
 See the following sections in RELEASE.txt:
 
-“Autotools Configuration Has Been Extensively Reworked”
-“LFS Changes”
-RELEASE.txt is found in the release_docs/ subdirectory at the root level of the HDF5 code distribution.
+[Autotools Configuration Has Been Extensively Reworked](Autotools Configuration Has Been Extensively Reworked)
+[LFS Changes](LFS Changes)
+RELEASE.txt can be found in the release_docs/ subdirectory at the root level of the HDF5 code distribution.
 
 Compatibility Report and Comments
 Compatibility report for Release 1.10.0 versus Release 1.8.16
@@ -1115,9 +1115,9 @@ Compatibility report for Release 1.10.0 versus Release 1.8.16
 
 Comments regarding the report
 
-In the C interface, the hid_t change from 32-bit to 64-bit was made in order to address a performance problem that arose when the library “ran out” of valid object identifiers to issue and thus needed to employ an expensive algorithm to find previously issued identifiers that could be re-issued. This problem is avoided by switching the size of the hid_t type to 64-bit integers instead of 32-bit integers in order to make the pool of available integers significantly larger. (H5E_major_t and H5E_minor_t are aliased to hid_t which is why they changed size as well). (An alternate solution to this problem was applied in release HDF5 1.8.5 but this is the cleaner/preferred solution and had to wait until 1.10.0 to be included).
+In the C interface, the hid_t change from 32-bit to 64-bit was made in order to address a performance problem that arose when the library "ran out" of valid object identifiers to issue and thus needed to employ an expensive algorithm to find previously issued identifiers that could be re-issued. This problem is avoided by switching the size of the hid_t type to 64-bit integers instead of 32-bit integers in order to make the pool of available integers significantly larger. (H5E_major_t and H5E_minor_t are aliased to hid_t which is why they changed size as well). (An alternate solution to this problem was applied in release HDF5 1.8.5 but this is the cleaner/preferred solution and had to wait until 1.10.0 to be included).
 
-hbool_t will now be defined as a _Bool type when configure determines that it’s available.
+hbool_t will now be defined as a _Bool type when configure determines that it's available.
 
 Public structs that have members of type hid_t or hbool_t are affected by the above changes accordingly.
 
