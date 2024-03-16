@@ -13,23 +13,16 @@ Bugfixes and performance enhancements in the C library are automatically picked 
 
 The release notes also list changes made to the library, but these notes tend to be more at a more detail oriented level. The release notes may include new features, bugs fixed, supported configuration features, platforms on which the library has been tested, and known problems. The release note files are listed below and can be found at the top level of the HDF5 source code tree in the release_docs directory of the distributed HDF5 source code.
 
-RELEASE.txt
+|                          |                                                              |
+| ------------------------ | ------------------------------------------------------------ |
+| RELEASE.txt | Technical notes regarding the current release of the HDF5 library |
+| HISTORY-1_8.txt | Technical notes for previous 1.8 releases of the HDF5 library by release |
+| HISTORY-1_0-1_8_0_rc3.txt | Technical notes for releases prior to the 1.8.0 release of the HDF5 library by release |
 
-Technical notes regarding the current release of the HDF5 library
+#### Are you porting an existing application from HDF5 Release 1.6.x to HDF5 Release 1.8.x?
+If you are porting an existing application from any HDF5 version in the Release 1.6.x series to any version in the Release 1.8.x series, refer to "What's New in HDF5 1.8.0".  This document, with the documents linked in its introduction, provides a guide to the changes introduced in the transition from the 1.6.x series to HDF5 Release 1.8.0 and discussions of various compatibility issues.
 
-HISTORY-1_8.txt
-
-Technical notes for previous 1.8 releases of the HDF5 library by release
-
-HISTORY-1_0-1_8_0_rc3.txt
-                         
-
-Technical notes for releases prior to the 1.8.0 release of the HDF5 library by release
-
-Are you porting an existing application from HDF5 Release 1.6.x to HDF5 Release 1.8.x?
-If you are porting an existing application from any HDF5 version in the Release 1.6.x series to any version in the Release 1.8.x series, refer to “What's New in HDF5 1.8.0”. This document, with the documents linked in its introduction, provides a guide to the changes introduced in the transition from the 1.6.x series to HDF5 Release 1.8.0 and discussions of various compatibility issues.
-
-Release 1.8.23 of February 2023 versus Release 1.8.22
+### Release 1.8.23 of February 2023 versus Release 1.8.22
 This section lists interface-level changes and other user-visible changes in behavior in the transition from HDF5 Release 1.8.22 to Release 1.8.23.
 
 New and Changed Functions, Classes, Subroutines, Wrappers, and Macros
@@ -48,7 +41,7 @@ None.
 Compatibility Notes and Report and Comments
 The interface compatibility report provides a full list of the changed symbols.
 
-Release 1.8.22 of February 2021 versus Release 1.8.21
+### Release 1.8.22 of February 2021 versus Release 1.8.21
 This section lists interface-level changes and other user-visible changes in behavior in the transition from HDF5 Release 1.8.21 to Release 1.8.22.
 
 New and Changed Functions, Classes, Subroutines, Wrappers, and Macros
@@ -56,10 +49,13 @@ In the C Interface (main library)
 
 The following are new C functions in this release:
 
-H5P_GET_FAPL_HDFS	Gets the information of the given Read-Only HDFS virtual file driver
-H5P_GET_FAPL_ROS3	Gets the information of the given Read-Only S3 virtual file driver
-H5P_SET_FAPL_HDFS	Sets up Read-Only HDFS virtual file driver
-H5P_SET_FAPL_ROS3	Sets up Read-Only S3 virtual file driver
+|                          |                                                              |
+| ----------------- | ------------------------------------------------------------ |
+| H5P_GET_FAPL_HDFS | Gets the information of the given Read-Only HDFS virtual file driver |
+| H5P_GET_FAPL_ROS3 | Gets the information of the given Read-Only S3 virtual file driver |
+| H5P_SET_FAPL_HDFS | Sets up Read-Only HDFS virtual file driver |
+| H5P_SET_FAPL_ROS3 | Sets up Read-Only S3 virtual file driver |
+
 In the C High Level Interface
 
 None.
@@ -71,7 +67,7 @@ None.
 Compatibility Notes and Report and Comments
 The interface compatibility report provides a full list of the changed symbols.
 
-Release 1.8.21 of May 2018 versus Release 1.8.20
+### Release 1.8.21 of May 2018 versus Release 1.8.20
 This section lists interface-level changes and other user-visible changes in behavior in the transition from HDF5 Release 1.8.20 to Release 1.8.21.
 
 New and Changed Functions, Classes, Subroutines, Wrappers, and Macros
@@ -168,93 +164,7 @@ In the C++ Interface (main library wrappers)
 
 The macro H5_NO_NAMESPACE was deprecated.
 
- 
-
-New member functions added to provide const versions:
-
-DSetCreatPropList::allFiltersAvail() const
-
-DSetCreatPropList::getAllocTime () const
-
-DSetCreatPropList::getFillTime () const
-
-DSetCreatPropList::isFillValueDefined () const
-
-DSetCreatPropList::setAllocTime (H5D_alloc_time_t alloc_time) const
-
-DSetCreatPropList::setFillTime (H5D_fill_time_t fill_time) const
-
-DSetMemXferPropList::getEDCCheck () const
-
-DSetMemXferPropList::getHyperVectorSize () const
-
-DSetMemXferPropList::getSmallDataBlockSize () const
-
-DSetMemXferPropList::setEDCCheck (H5Z_EDC_t check) const
-
-DSetMemXferPropList::setHyperVectorSize (size_t vector_size) const
-
-DSetMemXferPropList::setSmallDataBlockSize (hsize_t size) const
-
-FileAccPropList::getFcloseDegree () const
-
-FileAccPropList::setFcloseDegree (H5F_close_degree_t degree) const
-
- 
-
-The following member functions were removed:
-
-ArrayType::getArrayDims (hsize_t* dims)
-
-ArrayType::getArrayNDims ()
-
-DataType::commit (H5Location& loc, char const* name)
-
-DataType::commit (H5Location& loc, std::string const& name)
-
-DSetCreatPropList::allFiltersAvail ()
-
-DSetCreatPropList::getAllocTime ()
-
-DSetCreatPropList::getFillTime ()
-
-DSetCreatPropList::isFillValueDefined ()
-
-DSetCreatPropList::setAllocTime (H5D_alloc_time_t alloc_time)
-
-DSetCreatPropList::setFillTime (H5D_fill_time_t fill_time)
-
-DSetMemXferPropList::getEDCCheck ()
-
-DSetMemXferPropList::getHyperVectorSize ()
-
-DSetMemXferPropList::getSmallDataBlockSize ()
-
-DSetMemXferPropList::setEDCCheck (H5Z_EDC_t check)
-
-DSetMemXferPropList::setHyperVectorSize (size_t vector_size)
-
-DSetMemXferPropList::setSmallDataBlockSize (hsize_t size)
-
-FileAccPropList::getFcloseDegree ()
-
-FileAccPropList::setFcloseDegree (H5F_close_degree_t degree)
-
-H5Location::H5Location [in-charge] (hid_t const loc_id)
-
-H5Location::H5Location [not-in-charge] (hid_t const loc_id)
-
-H5Object::H5Object [in-charge] (hid_t const object_id)
-
-H5Object::H5Object [not-in-charge] (hid_t const object_id)
-
-CommonFG::mount (char const* name, H5File& child, PropList& plist) const
-
-DataSet::getVlenBufSize (DataType& type, DataSpace& space) const
-
-DataType::commit (H5Location& loc, char const* name)
-
-DataType::commit (H5Location& loc, std::string const& name)
+A number of new member functions were added or removed.  See RELEASE.txt for detail. 
 
 Compatibility Notes and Report and Comments
 Compatibility report for Release 1.8.18 versus Release 1.8.17
@@ -262,11 +172,10 @@ Compatibility report for Release 1.8.18 versus Release 1.8.17
 The following interface compatibility report provides a full list of the changed symbols:
 
 API compatibility report for the HDF5 Library between 1.8.17 and 1.8.18 versions on x86_64
-
-
  
 
-Release 1.8.17 of May 2016 versus Release 1.8.16
+### Release 1.8.17 of May 2016 versus Release 1.8.16
+
 This section lists interface-level changes and other user-visible changes in behavior in the transition from HDF5 Release 1.8.16 to Release 1.8.17.
 
 New and Changed Functions, Classes, Subroutines, Wrappers, and Macros
@@ -419,30 +328,33 @@ API compatibility report for the HDF5 Library between 1.8.16 and 1.8.17 versions
 Release 1.8.16 of November 2015 versus Release 1.8.15
 This section lists interface-level changes and other user-visible changes in behavior in the transition from HDF5 Release 1.8.15 to Release 1.8.16.
 
-New and Changed Functions, Classes, Subroutines, Wrappers, and Macros
-In the C Interface (main library)
+### New and Changed Functions, Classes, Subroutines, Wrappers, and Macros
+
+#### In the C Interface (main library)
 
 New HDF5 Plugin Interface (H5PL)
 
 A new HDF5 Plugin Interface (H5PL), enabling programmatic control of dynamically loaded plugins, was introduced at HDF5 Release 1.8.15. This interface was only partially documented at that time, but more complete documentation is now available:
 
-“Dynamic Plugins in HDF5” in Advanced Topics in HDF5
-“H5PL: Plugin Interface” in the HDF5 Reference Manual
-H5PLset_loading_state
-H5PLget_loading_state
+* Dynamic Plugins in HDF5 in Advanced Topics in HDF5
+* H5PL: Plugin Interface in the HDF5 Reference Manual
+  * H5PLset_loading_state
+  * H5PLget_loading_state
+
 The following new C function has been added:
 
 This function reports whether the linked version of the HDF5 Library was built with the thread-safety feature enabled.
 
-H5is_library_threadsafe
+* H5is_library_threadsafe
 The following flag has been removed:
 
 H5F_ACC_DEBUG flag for H5Fopen/create
  
 The flag H5F_ACC_DEBUG was used to provide extra debugging information for HDF Library developers. This flag and the underlying functionality have been removed from the library due to disuse. The symbol remains defined since it was visible in H5Fpublic.h, but it has been set to zero (0) and has no effect anywhere in the library.
 
-H5Fopen
-In the C++ Interface
+* H5Fopen
+
+#### In the C++ Interface
 
 The following features have been added:
 
@@ -452,29 +364,16 @@ The new class H5::ObjCreatPropList is derived from H5::PropList and is a basecla
 New wrappers for the C functions H5P[s/g]et_attr_phase_change and H5P[s/g]et_attr_creation_order
 The following wrappers were added to the class H5::ObjCreatPropList for the respective C functions:
 
-C Function
+| C Function                 | C++ Wrapper                                             |
+| -------------------------- | ------------------------------------------------------- |
+| H5Pset_attr_phase_change   | H5::ObjCreatPropList::setAttrPhaseChange                |
+| H5Pget_attr_phase_change   | H5::ObjCreatPropList::getAttrPhaseChange                |
+| H5Pset_attr_creation_order | H5::ObjCreatPropList::setAttrCrtOrder                   |
+| H5Pget_attr_creation_order | H5::ObjCreatPropList::getAttrCrtOrder                   |
 
-C++ Wrapper
+### Library Configuration
 
-H5Pset_attr_phase_change
-
-H5::ObjCreatPropList::setAttrPhaseChange
-
-H5Pget_attr_phase_change
-
-H5::ObjCreatPropList::getAttrPhaseChange
-
-H5Pset_attr_creation_order
-
-H5::ObjCreatPropList::setAttrCrtOrder
-
-H5Pget_attr_creation_order  
-
-H5::ObjCreatPropList::getAttrCrtOrder
-
-Library Configuration
 Use of thread-safety with the HDF5 High-level Library has been declared unsupported in the build tools: Autotools and CMake.
- 
 
 The global lock used by the thread-safety mechanism is not raised to the high-level library level, making it possible that the library state could change if a context switch were to occur in a high-level library call. Because of this, the combination of thread-safety and the high-level library is officially unsupported by The HDF Group.
 
@@ -484,72 +383,41 @@ The new unsupported declaration will cause an Autotools configure step to fail i
 
 To use Autotools to build an application with --enable-threadsafe, use one of the following approaches:
 
-Use --disable-hl to disable the high-level library. (Recommended)
-Use --enable-unsupported to build the high-level library with the thread-safety feature.
+* Use --disable-hl to disable the high-level library. (Recommended)
+* Use --enable-unsupported to build the high-level library with the thread-safety feature.
+
 To use CMake to build an application with HDF5_ENABLE_THREADSAFE=ON, use one of the following approaches:
 
-Use HDF5_BUILD_HL_LIB=OFF to disable the high-level library. (Recommended)
-Use HDF5_ALLOW_UNSUPPORTED=ON to build the high-level library with the thread-safety feature.
+* Use HDF5_BUILD_HL_LIB=OFF to disable the high-level library. (Recommended)
+* Use HDF5_ALLOW_UNSUPPORTED=ON to build the high-level library with the thread-safety feature.
+
 Since this combination is unsupported, applications using it must be carefully tested for potential thread-safety failures.
 
-Compatibility Notes and Report
-Decoupled shared object version numbers (soname)
+### Compatibility Notes and Report
 
-Shared object version numbers, soname, for HDF5 wrapper libraries, such as the C++ and Fortran libraries, have been decoupled from the shared object version number for the HDF5 library. In this and future releases, each library’s soname will be maintained on an individual basis according to the interface changes specific to each wrapper library.
+#### Decoupled shared object version numbers (soname)
 
-Changed shared library interface version numbers (soname)
+Shared object version numbers, soname, for HDF5 wrapper libraries, such as the C++ and Fortran libraries, have been decoupled from the shared object version number for the HDF5 library. In this and future releases, each library's soname will be maintained on an individual basis according to the interface changes specific to each wrapper library.
+
+#### Changed shared library interface version numbers (soname)
 
 For HDF5 Release 1.8.16, the shared object version numbers have changed as follows.
 
-Library
+| Library                   | Release 1.8.15  | Release 1.8.16  | Reason for Change |
+| ------------------------- | --------------- | --------------- | ----------------- |
+| HDF5 Library  | 10.0.1 | 10.1.0 | Added APIs
+| C++ Library | 10.0.1 | 11.0.0 | Changes in existing APIs
+| High-level C++ Library | 10.0.1 | 11.0.0 | Changes in existing APIs
+| All others | 10.0.1 | 10.0.2 | Code changes that did not result in interface changes
 
-Release 1.8.15  
-
-Release 1.8.16  
-
-Reason for Change
-
-HDF5 Library  
-
-10.0.1
-
-10.1.0
-
-Added APIs
-
-C++ Library
-
-10.0.1
-
-11.0.0
-
-Changes in existing APIs
-
-High&dash;level C++ Library
-
-10.0.1
-
-11.0.0
-
-Changes in existing APIs
-
-All others
-
-10.0.1
-
-10.0.2
-
-Code changes that did not result in interface changes
-
-Compatibility report for Release 1.8.16 versus Release 1.8.15
+### Compatibility report for Release 1.8.16 versus Release 1.8.15
 
 The following interface compatibility report provides a full list of the changed symbols:
 
 API compatibility report for the HDF5 Library between 1.8.15 and 1.8.16 versions on x86
 
- 
+### Release 1.8.15 of May 2015 versus Release 1.8.14
 
-Release 1.8.15 of May 2015 versus Release 1.8.14
 This section lists interface-level changes and other user-visible changes in behavior in the transition from HDF5 Release 1.8.14 to Release 1.8.15.
 
 New and Changed Functions, Classes, Subroutines, Wrappers, and Macros
@@ -557,7 +425,7 @@ In the C Interface (main library)
 
 The following new C functions have been added:
 
-Memory allocation functions that use the library’s allocator.
+Memory allocation functions that use the library's allocator.
 
 H5allocate_memory
 H5resize_memory
@@ -565,7 +433,7 @@ The following functions enable programmatic control of the loading of dynamic pl
 
 H5PLset_loading_state
 H5PLget_loading_state
-For preliminary documentation, see “New HDF5 APIs Provide Programmatic Control of Dynamic Plugins.”
+For preliminary documentation, see New HDF5 APIs Provide Programmatic Control of Dynamic Plugins.
 Final documentation is anticipated in July 2015.
 In the C++ Interface
 
@@ -580,7 +448,7 @@ The following wrappers have been added to class H5::FileAccPropList. The first s
     void getLibverBounds(H5F_libver_t& libver_low, H5F_libver_t& libver_high) const;
                     
 New wrappers to retrieve the version of an object header
-The following wrappers have been added to class H5::CommonFG to retrieve the object header version of an object in a file or group, given the object’s name.
+The following wrappers have been added to class H5::CommonFG to retrieve the object header version of an object in a file or group, given the object's name.
 
  
     unsigned childObjVersion(const char* objname) const;
@@ -652,7 +520,7 @@ In the C++ interface, two overloaded methods have been combined into a single me
 
 Due to these changes, the shared library interface version number (soname) has been increased. For a full list of the changed symbols, see the interface compatibility report linked immediately above.
 
-Release 1.8.14 of November 2014 versus Release 1.8.13
+### Release 1.8.14 of November 2014 versus Release 1.8.13
 This section lists interface-level changes and other user-visible changes in behavior in the transition from HDF5 Release 1.8.13 to Release 1.8.14.
 
 New and Changed Functions, Classes, Subroutines, Wrappers, and Macros
@@ -722,7 +590,7 @@ Due to these changes, the shared library interface version number (soname) has b
 
  
 
-Release 1.8.13 of May 2014 versus Release 1.8.12
+### Release 1.8.13 of May 2014 versus Release 1.8.12
 This section lists interface-level changes and other user-visible changes in behavior in the transition from HDF5 Release 1.8.12 to Release 1.8.13.
 
 New and Changed Functions, Classes, Subroutines, Wrappers, and Macros
@@ -753,13 +621,13 @@ In the C++ Interface
 
 The following new features have been added:
 
-Wrappers to the class H5Object to get an object’s name:
+Wrappers to the class H5Object to get an object's name:
 
  
     ssize_t getObjName(char *obj_name, size_t buf_size = 0)
     ssize_t getObjName(H5std_string& obj_name, size_t len = 0)
     H5std_string getObjName()
-Wrappers to the class H5CommonFG to get a child object’s type from a group or file:
+Wrappers to the class H5CommonFG to get a child object's type from a group or file:
 
  
     H5O_type_t childObjType(const H5std_string& objname)
@@ -792,7 +660,7 @@ Additional overload to the class H5Location to get a comment as a char*:
 
  
     ssize_t getComment(const char* name, size_t buf_size, char* comment) 
-Additional overloads to the class Attribute to get an attribute’s name for convenience:
+Additional overloads to the class Attribute to get an attribute's name for convenience:
 
  
     ssize_t getName(char* attr_name, size_t buf_size=0)
@@ -825,26 +693,26 @@ The thread-safe HDF5 library no longer leaks thread-local storage resources on W
 
 This change affects only Windows environments.
 
-Also see “Build and Configuration” below.
+Also see [Build and Configuration](#Build-and-Configuration) below.
 
 Command-line Tools with Changed Behavior
 h5repack
 
 h5repack has been updated to correctly handle dynamically loaded filters.
 
-Build and Configuration
+#### Build and Configuration
 Thread safety
 
 When configuring a thread-safe HDF5 Library with --enable-threadsafe, it is no longer necessary to specify --with-pthreads if the Pthreads library is in a standard location.
 
-Removed Functions and Wrappers
+#### Removed Functions and Wrappers
 The MPI-POSIX driver has been removed. The following C functions and the corresponding Fortran subroutines and C++ wrappers therefore are no longer included in the HDF5 distribution:
 
 H5Pset_fapl_mpiposix
 H5Pget_fapl_mpiposix
 Applications performing parallel I/O should use the MPI-IO driver, H5Pset_fapl_mpio.
 
-Release 1.8.12 of November 2013 versus Release 1.8.11
+### Release 1.8.12 of November 2013 versus Release 1.8.11
 This section lists interface-level changes and other user-visible changes in behavior in the transition from HDF5 Release 1.8.11 to Release 1.8.12.
 
 New and Changed Functions, Classes, Subroutines, Wrappers, and Macros
@@ -1011,16 +879,16 @@ where it previously displayed UNKNOWN_FILTER.
 
 h5dump now correctly exports subsetted data to a file using the -o, --output option.
 
-Release 1.8.11 of May 2013 versus Release 1.8.10
+### Release 1.8.11 of May 2013 versus Release 1.8.10
 This section lists interface-level changes and other user-visible changes in behavior in the transition from HDF5 Release 1.8.10 to Release 1.8.11.
 
 New and Changed Functions and Subroutines
 The following new high-level C function has been added:
 
 H5DOwrite_chunk
-This function writes a data chunk directly into a file, bypassing hyperslab selection, data conversion, and the filter pipeline. The user must be careful with the function and clearly understand the I/O process of the library. See “Direct Chunk Write” for additional information.
+This function writes a data chunk directly into a file, bypassing hyperslab selection, data conversion, and the filter pipeline. The user must be careful with the function and clearly understand the I/O process of the library. See [Direct Chunk Write](Direct Chunk Write) for additional information.
 
-H5DOwrite_chunk is the first function in HDF5’s new high-level “HDF5 Optimized Functions” library.
+H5DOwrite_chunk is the first function in HDF5's new high-level [HDF5 Optimized Functions](HDF5 Optimized Functions) library.
 
 The following new C functions have been added:
 
@@ -1050,32 +918,34 @@ Fortran2003 subroutines:
 h5oget_info_f
 h5oget_info_by_idx_f
 h5ovisit_by_name_f
-New Feature: Dynamically Loaded Filters
+
+#### New Feature: Dynamically Loaded Filters
 HDF5 now detects and dynamically loads external filters, reducing the need for an application to register custom filters or for a developer building on HDF5 to compile a custom filter into a customized HDF5 distribution.
 
-See “HDF5 Dynamically Loaded Filters” (PDF only) for further information.
+See [HDF5 Dynamically Loaded Filters](HDF5 FDynamically Loaded Filter) (PDF only) for further information.
 
-New Command-line Tool Option
+#### New Command-line Tool Option
 h5dump and h5import
 
 h5dump has a new option to output the DDL structure of a file or object:
-   -O<file_name>
-   --ddl=<file_name>
-[‘-O’ above is ‘dash-uppercase-o’.]
+   -O\<filename\>
+   --ddl=\<file_name\>
+[-O above is dash-uppercase-o.]
 
 h5import can now take the output of
-   h5dump -O<ddl_file_name> -o<data_file_name>
+   h5dump -O\<ddl_filename\> -o\<data_filename\>
 directly as input files.
-See “Using h5dump to create input for h5import” in the h5import reference manual entry.
+See [Using h5dump to create input for h5import](Using h5dump to create input for h5import) in the h5import reference manual entry.
 
-New Configuration and Build Tool
+#### New Configuration and Build Tool
+
 cmakehdf5
 
 This new build command script is similar to buildhdf5 and is available in the bin/ directory of the distributed source code.
 
 For HDF5, the CMake minimum is now 2.8.10.
 
-Function, Subroutines, and Feature with Changed Syntax or Behavior
+#### Function, Subroutines, and Feature with Changed Syntax or Behavior
 The return value of the following high-level C function has changed:
 
 H5DSget_scale_name
@@ -1089,7 +959,8 @@ the type of the offset parameter has changed to INTEGER(KIND=OFF_T) to support 8
 
 The HDF5 Library now supports data conversion from enumeration to integer and floating-point numeric datatypes.
 
-Command-line Tools with Changed Behavior
+#### Command-line Tools with Changed Behavior
+
 h5diff
 
 When comparing two files or objects, h5diff now recognizes a unique extra attribute attached to an object as a difference and returns with an exit code of 1.
@@ -1106,7 +977,7 @@ h5dump has been updated to display the compression ratio for user-defined filter
 
 In h5dump output, UNKNOWN_FILTER has been changed to USER_DEFINED_FILTER.
 
-Removed Functions and Wrappers
+#### Removed Functions and Wrappers
 The following C functions and the corresponding C++ wrappers have been removed:
 
 H5Pset_dxpl_multi
@@ -1114,7 +985,8 @@ H5Pget_dxpl_multi
  
 H5::DSetMemXferPropList:setMulti
 H5::DSetMemXferPropList:getMulti
-Release 1.8.10 of November 2012 versus Release 1.8.9
+
+### Release 1.8.10 of November 2012 versus Release 1.8.9
 This section lists interface-level changes and other user-visible changes in behavior in the transition from HDF5 Release 1.8.9 to Release 1.8.10.
 
 New and Changed Functions and Subroutines
@@ -1127,13 +999,13 @@ h5pget_mpio_actual_io_mode_f
 The syntax of the following high-level C function has changed:
 
 H5TBAget_fill
-This function’s return type has been changed to h5tri_t. A return value of 1 indicates that a fill value is present, 0 indicates that no fill value is present, and a negative value indicates an error. (The former return type was herr_t.)
+This function's return type has been changed to h5tri_t. A return value of 1 indicates that a fill value is present, 0 indicates that no fill value is present, and a negative value indicates an error. (The former return type was herr_t.)
 Note that H5TBAget_fill and a companion function H5TBAget_title, both in the HDF5 Table (H5TB) high-level API, are undocumented. These functions will be added to the HDF5 Reference Manual shortly after HDF5 Release 1.8.10.
 
 Changed Command-line Tool
 h5import has been updated to accept an input file created by h5dump.
 
-Release 1.8.9 of May 2012 versus Release 1.8.8
+### Release 1.8.9 of May 2012 versus Release 1.8.8
 This section lists interface-level changes and other user-visible changes in behavior in the transition from HDF5 Release 1.8.8 to Release 1.8.9.
 
 New and Changed Functions
@@ -1159,7 +1031,7 @@ H5Pset_file_image_callbacks
 H5Pget_file_image_callbacks
 For the callbacks, struct, and ENUM, see H5Pset_file_image_callbacks.
 
-Use of this feature is described in “HDF5 File Image Operations” (PDF).
+Use of this feature is described in [HDF5 File Image Operations](PDF).
  
 
 The following functions were modified or added to the HDF5 Library to allow an application to control the operation of copying committed datatypes with H5Ocopy:
@@ -1173,7 +1045,7 @@ H5O_COPY_MERGE_COMMITTED_DTYPE_FLAG
 Function with changed behavior:
 
 H5Ocopy
-This function’s behavior is changed, but only with the use of the new flag, H5O_COPY_MERGE_COMMITTED_DTYPE_FLAG.
+This function's behavior is changed, but only with the use of the new flag, H5O_COPY_MERGE_COMMITTED_DTYPE_FLAG.
 New functions and callback function:
 
 H5Pset_mcdt_search_cb
@@ -1183,7 +1055,7 @@ H5O_mcdt_search_cb_t
 
 H5Padd_merge_committed_dtype_path
 H5Pfree_merge_committed_dtype_paths
-Use of this capability is described in “Copying Committed Datatypes with H5Ocopy” (PDF).
+Use of this capability is described in [Copying Committed Datatypes with H5Ocopy](PDF).
  
 
 The following C functions and Fortran subroutines were added to provide a mechanism to ensure sequential consistency in parallel environments using MPI I/O:
@@ -1194,7 +1066,7 @@ H5Fget_mpi_atomicity
 
 h5fset_mpi_atomicity_f
 h5fget_mpi_atomicity_f
-Use of this capability is described in “Enabling a Strict Consistency Semantics Model in Parallel HDF5” (PDF).
+Use of this capability is described in [Enabling a Strict Consistency Semantics Model in Parallel HDF5](PDF).
  
 
 The following function was added at Release 1.8.5 but was not documented at that time. It is mentioned here for those who may have missed its introduction:
@@ -1217,7 +1089,7 @@ If the returned buffer requires padding, h5ltget_attribute_string_f now employs 
 Command-line Utilities with New Options and/or Changed Behavior
 h5repack has one new option and improved performance under certain circumstances:
 
-&dash;Mn, &dash;&dash;metadata_block_size=n
+-Mn, --metadata_block_size=n
 Sets the metadata block size in the output file.
  
 Performance is improved when repacking large chunked datasets (for example, when dataset size exceeds 128 MB).
@@ -1225,13 +1097,13 @@ Performance is improved when repacking large chunked datasets (for example, when
 
 h5stat has one new option:
 
-&dash;S, &dash;&dash;summary
+-S, --summary
 Displays a summary of file space usage for a file.
  
 
 h5dump has one new option, a new capability, and updated output:
 
-&dash;&dash;no-compact-subset
+--no-compact-subset
 Disables compact subsetting to allow the left-hand square bracket character ( [ ) in a dataset name.
  
 The files parameter now accommodates wildcards. With this change, h5dump command-line options can be applied across multiple files without listing the files individually.
@@ -1240,7 +1112,7 @@ h5dump output has been updated for this release to improve compliance with the H
 Whitespace has been modified.
 Display errors, such as misplaced brackets, have been fixed.
 When printing superblock content, user block content is now properly displayed within the superblock.
-Release 1.8.8 of November 2011 versus Release 1.8.7
+### Release 1.8.8 of November 2011 versus Release 1.8.7
 This section lists interface-level changes and other user-visible changes in behavior in the transition from HDF5 Release 1.8.7 to Release 1.8.8.
 
 New C Functions
@@ -1251,7 +1123,7 @@ H5Pget_mpio_actual_io_mode
 Updated Fortran Interface, including Fortran 2003 Features
 The HDF5 Fortran interface has been extended and upgraded to Fortran 2003 for this release.
 
-See “Configure and Build Changes” below for the configure options to use when building HDF5 with Fortran 2003 enabled.
+See [Configure and Build Changes](#Configure-and-Build-Changes) below for the configure options to use when building HDF5 with Fortran 2003 enabled.
 
 Features enabled in this upgrade are described in New Features in the HDF5 Fortran Library: Adding Support for the Fortran 2003 Standard (PDF only). In general, the links below are to technical descriptions (reference manual entries, for example) of specific interfaces.
 
@@ -1337,7 +1209,7 @@ H5Tcreate now supports fixed-length and variable-length string types.
 Driver Changes on Windows Systems
 Changed behavior:
 
-HDF5’s Windows driver has been modified in this release to be a wrapper of the POSIX-compliant SEC2 driver. This change should be transparent to all user applications.
+HDF5's Windows driver has been modified in this release to be a wrapper of the POSIX-compliant SEC2 driver. This change should be transparent to all user applications.
 
 New default driver:
 
@@ -1367,13 +1239,10 @@ When building on Linux systems, the HDF5 Library now links with the bsd_compat l
 Parallel Library and Configuration Changes
 The parallel HDF5 library now always compiles code to take advantage of MPI functionalities that allow for the use of complex derived datatypes during IO and that allow for collective IO when one or more processes do not contribute to the operation.
 
-This was previously conditionally compiled into the library and controlled by configure via the hdf5_cv_mpi_special_collective_io_works and hdf5_cv_mpi_complex_derived_datatype_works cache values. These values were preset in the config/* files based on the compiler and/or system or could be set on the configure line. Support for these cache values has been removed and they no longer have an effect on the compilation of the use of these MPI functionalities.
+This was previously conditionally compiled into the library and controlled by configure via the hdf5_cv_mpi_special_collective_io_works and hdf5_cv_mpi_complex_derived_datatype_works cache values. These values were preset in the config/\* files based on the compiler and/or system or could be set on the configure line. Support for these cache values has been removed and they no longer have an effect on the compilation of the use of these MPI functionalities.
 
 
- 
- 
-
-Release 1.8.7 of May 2011 versus Release 1.8.6
+### Release 1.8.7 of May 2011 versus Release 1.8.6
 This section lists interface-level changes and other user-visible changes in behavior in the transition from HDF5 Release 1.8.6 to Release 1.8.7.
 
 New C Functions and Macros
@@ -1408,7 +1277,7 @@ H5Tcommit_anon
 HDF5 has long blocked creating a dataset or attribute with such a datatype.
 
 Fortran Subroutines with Changed Capability
-Several h5ltmake_dataset*_f and h5ltread_dataset*_f subroutines have been modified to allow them to create or read arrays of up to seven dimensions. They had previously been limited to three dimensions.
+Several h5ltmake_dataset\*\_f and h5ltread_dataset\*\_f subroutines have been modified to allow them to create or read arrays of up to seven dimensions. They had previously been limited to three dimensions.
 
     
 
@@ -1430,7 +1299,7 @@ h5diff has a new verbose with levels option to display additional attribute info
 
 -vn, --verbose=n
  
-h5dump has one new option to enable reporting of the HDF5 Library’s error stack:
+h5dump has one new option to enable reporting of the HDF5 Library's error stack:
 
 --enable-error-stack
 Command-line Utility with Changed Option Name
@@ -1473,7 +1342,7 @@ This option may result in a library that does not compile or does not run as exp
 Parallel HDF5
 mpicc and mpif90 are now the default C and Fortran compilers on Linux systems when --enable-parallel is specified but no $CC or $FC is defined.
 
-Release 1.8.6 versus Release 1.8.5, February 2011
+### Release 1.8.6 versus Release 1.8.5, February 2011
 This section lists interface-level changes and other user-visible changes in behavior in the transition from HDF5 Release 1.8.5 to Release 1.8.6.
 
 C Functions with Additional Capability
@@ -1529,7 +1398,7 @@ This release adds support for thread safety on Windows using the Windows threads
 Parallel HDF5
 The Parallel HDF5 build process has changed to use mpiexec instead of mpirun.
 
-Release 1.8.5 versus Release 1.8.4, June 2010
+### Release 1.8.5 versus Release 1.8.4, June 2010
 This section lists interface-level changes and other user-visible changes in behavior in the transition from HDF5 Release 1.8.4 to Release 1.8.5.
 
 New C Function
@@ -1565,7 +1434,7 @@ DataSet::getInMemDataSize
 
   
 
-To simplify getting a dataset’s data size in memory.
+To simplify getting a dataset's data size in memory.
 
  
 
@@ -1575,13 +1444,13 @@ CommonFG::getObjnameByIdx
 
   
 
-Overloaded to take char* for name.
+Overloaded to take char\* for name.
 
 CommonFG::getObjTypeByIdx
 
   
 
-Overloaded to return type name as a char*.
+Overloaded to return type name as a char\*.
 
 Command-line Utility with New Options
 h5diff has two new options:
@@ -1610,11 +1479,11 @@ While the initial development effort has been focussed on Microsoft Windows plat
 
 See the file CMake.txt in the distributed HDF5 source code (hdf5/release_docs/CMake.txt) for details.
 
-Release 1.8.4 versus Release 1.8.3, November 2009
+### Release 1.8.4 versus Release 1.8.3, November 2009
 This section lists interface-level changes and other user-visible changes in behavior in the transition from HDF5 Release 1.8.3 to Release 1.8.4.
 
 Embedded HDF5 Library Settings Information
-Library settings are now embedded in an HDF5 executable so that an “orphaned” executable can be queried (via the Unix strings command, for example) to display the library settings used to build it. The embedded settings information is the same as that normally found in the libhdf5.settings file.
+Library settings are now embedded in an HDF5 executable so that an "orphaned" executable can be queried (via the Unix strings command, for example) to display the library settings used to build it. The embedded settings information is the same as that normally found in the libhdf5.settings file.
 
 This capability may be disabled with the use of the --disable-embedded-libinfo flag during configure.
 
@@ -1628,7 +1497,7 @@ The following Fortran constant, corresponding to the C constant H5T_ORDER_NONE, 
 H5T_ORDER_NONE_F
 
 New C++ Member Functions
-New C++ member functions are provided to determine a dataset’s or attribute’s data size in memory:
+New C++ member functions are provided to determine a dataset's or attribute's data size in memory:
 
 size_t DataSet::getInMemDataSize() const
 size_t Attribute::getInMemDataSize() const
@@ -1661,7 +1530,7 @@ h5diff has one new option:
 
 With this option, h5diff returns a difference if and only if the difference between two data values exceeds the system value for epsilon (that is, if |a-b| > epsilon).
 
-The tool’s default behavior has also changed; without this option, the tool now checks for strict equality. Prior default behavior was to use an epsilon internally defined in HDF5.
+The tool's default behavior has also changed; without this option, the tool now checks for strict equality. Prior default behavior was to use an epsilon internally defined in HDF5.
 
 This option has no short form.
 
@@ -1680,7 +1549,7 @@ The following configuration flag is new with this release:
 
 This flag disables the embedding of HDF5 Library settings in an HDF5 executable.
 
-Release 1.8.3 versus Release 1.8.2, May 2009
+### Release 1.8.3 versus Release 1.8.2, May 2009
 This section lists API-level changes and changes in behavior in the transition from HDF5 Release 1.8.2 to Release 1.8.3.
 
 New Functions
@@ -1694,7 +1563,7 @@ H5Pset_elink_cb
 
     
 
-herr_t H5Pset_elink_cb( hid_t lapl_id, H5L_elink_traverse_t func, void *op_data )
+herr_t H5Pset_elink_cb( hid_t lapl_id, H5L_elink_traverse_t func, void \*op_data )
 See entry.
 
     
@@ -1703,7 +1572,7 @@ H5Pget_elink_cb
 
     
 
-herr_t H5Pget_elink_cb( hid_t lapl_id, H5L_elink_traverse_t *func, void **op_data )
+herr_t H5Pget_elink_cb( hid_t lapl_id, H5L_elink_traverse_t \*func, void \*\*op_data )
 See entry.
 
     
@@ -1721,7 +1590,7 @@ H5Pget_elink_acc_flags
 
     
 
-herr_t H5Pget_elink_acc_flags( hid_t lapl_id, unsigned *flags )
+herr_t H5Pget_elink_acc_flags( hid_t lapl_id, unsigned \*flags )
 See entry.
 
     
@@ -1739,7 +1608,7 @@ H5Pget_chunk_cache
 
     
 
-herr_t H5Pget_chunk_cache( hid_t dapl_id, size_t *rdcc_nslots, size_t *rdcc_nbytes, double *rdcc_w0 )
+herr_t H5Pget_chunk_cache( hid_t dapl_id, size_t \*rdcc_nslots, size_t \*rdcc_nbytes, double \*rdcc_w0 )
 See entry.
 
     
@@ -1799,11 +1668,12 @@ h5repack
 
 When a user does not specify a chunk size, h5repack now defines the default chunk size to be the same same as the size of the hyperslab used to read the chunks.
 
-Release 1.8.2 versus Release 1.8.1, November 2008
+### Release 1.8.2 versus Release 1.8.1, November 2008
 This section lists API-level changes and changes in behavior in the transition from HDF5 Release 1.8.1 to Release 1.8.2.
 
-New Functions
-C functions:
+#### New Functions
+
+##### C functions:
 
 The following C functions are new for this release and are documented in the HDF5 Reference Manual.
 
@@ -1825,39 +1695,19 @@ H5Pget_elink_fapl
 hid_t H5Pget_elink_fapl( hid_t lapl_id )
 See entry.
 
-Fortran Subroutine:
+##### Fortran Subroutine:
 
 The following subroutine is new in this release:
      H5Tget_native_type_f
 
-New C++ Wrappers
-The following functions were added as wrappers for the C function H5Rdereference to replace the incorrect IdComponent::dereference():
+##### New C++ Wrappers
 
- 
-        void H5Object::dereference(H5Object& obj, void* ref, 
-                                   H5R_type_t ref_type=H5R_OBJECT)
-        void H5Object::dereference(H5File& h5file, void* ref, 
-                                   H5R_type_t ref_type=H5R_OBJECT)
-        void H5Object::dereference(Attribute& obj, void* ref, 
-                                   H5R_type_t ref_type=H5R_OBJECT)
+A number of C++ wrappers were added/removed.  See RELEASE.txt for details.
                 
-The following constructors were added to create the associated objects by way of dereference:
-
- 
-        DataSet(H5Object& obj, void* ref, H5R_type_t ref_type=H5R_OBJECT)
-        DataSet(H5File& file, void* ref, H5R_type_t ref_type=H5R_OBJECT)
-        DataSet(Attribute& attr, void* ref, H5R_type_t ref_type=H5R_OBJECT)
-        Group(H5Object& obj, void* ref, H5R_type_t ref_type=H5R_OBJECT)
-        Group(H5File& obj, void* ref, H5R_type_t ref_type=H5R_OBJECT)
-        Group(Attribute& attr, void* ref, H5R_type_t ref_type=H5R_OBJECT)
-        DataType(H5Object& obj, void* ref, H5R_type_t ref_type=H5R_OBJECT)
-        DataType(H5File& file, void* ref, H5R_type_t ref_type=H5R_OBJECT)
-        DataType(Attribute& attr, void* ref, H5R_type_t ref_type=H5R_OBJECT)
-                
-Functions with Changed Syntax
+#### Functions with Changed Syntax
 The following function syntaxes have changed; the affected return values and parameter are noted as underscored red text.
 
-C functions:
+##### C functions:
 
 H5Fget_obj_count
 
@@ -1868,7 +1718,7 @@ H5Fget_obj_ids
 ssize_t H5Fget_obj_ids( hid_t file_id, unsigned int types,
         size_t max_objs, hid_t *obj_id_list )
 
-Changed Fortran Subroutines
+##### Changed Fortran Subroutines
 The optional parameter mounted has been added to the following subroutines:
 
  
@@ -1880,12 +1730,12 @@ H5G_info_t
 
 A mounted filed has been added to the H5G_info_t struct.
 
-Tools with Changed Interface or Behavior
+#### Tools with Changed Interface or Behavior
 h5diff
 
 h5diff now returns 1 if the files differ in structure, i.e., if the file graphs differ by any object.
 
-The tool’s error return code has been changed to 2.
+The tool's error return code has been changed to 2.
 
 h5repack and h5diff
 
@@ -1917,7 +1767,7 @@ Specifies the name of the file containing the user block data to be added.
 
 Specifies the size of the block to be added.
 
-The following new options set parameters governing the tool’s use of H5Pset_alignment:
+The following new options set parameters governing the tool's use of H5Pset_alignment:
 
 -t T
 --threshold=T
@@ -1957,34 +1807,34 @@ The new '-m T' or '--format T' option enables a user-defined formatting string f
 
 With no change in the command-line syntax, h5dump now prints a compression ratio when compression filters are in use.
 
-Deprecated Functions
+#### Deprecated Functions
 The following functions are deprecated as of this release:
 
         H5Pset_preserve
         H5Pget_preserve 
 The original role of these functions is now part of the core HDF5 Library functionality.
 
-Changed File Installation
+#### Changed File Installation
 The file libhdf5_fortran.settings is no longer installed with the HDF5 Library; the original content of that file is now included in libhdf5.settings.
 
-Changed Library Configuration
+#### Changed Library Configuration
 It is no longer necessary to manually set an SZIP library path in LD_LIBRARY_PATH when building HDF5 with shared SZIP libraries; configure will determine the correct path from the --with-szlib flag, prepending it to and exporting LD_LIBRARY_PATH.
 
 Note that if an SZIP library path is set in a user-supplied LD_LIBRARY_PATH, in an existing script, for example, that does not necessarily need to be changed; configure will prepend the SZIP library path extracted from --with-szlib to the user-supplied LD_LIBRARY_PATH.
 
  
 
-Release 1.8.1 versus Release 1.8.0
+### Release 1.8.1 versus Release 1.8.0
 HDF5 Release 1.8.1 is a minor release with several bugfixes and optimizations and limited new features.
 
 The most significant new feature is an expanded set of Fortran90 APIs, enabling essentially all new C library features of Release 1.8.0.
 
-New Functions and Tools
-C functions:
+#### New Functions and Tools
+#####C functions:
 
 There are no new C functions for Release 1.8.1.
 
-Fortran subroutines:
+#####Fortran subroutines:
 
 The following Fortran subroutines are new for Release 1.8.1 and are documented in the HDF5 Reference Manual.
 
@@ -2146,11 +1996,11 @@ h5tencode_f
 h5tget_create_plist_f
 h5topen_f
                   
-C++ wrappers:
+##### C++ wrappers:
 
 There are no new C++ wrappers for Release 1.8.1.
 
-Functions and Tools with Changed Syntax
+#### Functions and Tools with Changed Syntax
 C functions with changed syntax:
 
 There are no C functions with changed syntax in Release 1.8.1.
@@ -2193,7 +2043,7 @@ Tools with new options:
 h5dump
 -m T  or  --format T   Sets format of floating point output
 
-Changed Behavior or Output
+#### Changed Behavior or Output
 Changed library behavior:
 
 A 4GB limit on the size of dataset chunks is now properly enforced when a dataset is created.
@@ -2210,22 +2060,23 @@ The h5dump -p option now prints the compression ratio if a compression filter is
 
 h5dump now supports external links, displaying the target objects (datasets, groups, and named datatypes).
 
-Tools with changed output:
+#### Tools with changed output:
 
-Changed Library Configuration
+##### Changed Library Configuration
 The following configuration flag is new with this release:
 
 --disable-sharedlib-rpath
 
-Removed Patch Requirement
+##### Removed Patch Requirement
 The patch that was required for Cygwin with HDF5 Release 1.8.0 has been rolled into this release and no longer needs to be applied by the user.
 
  
 
-Release 1.8.0 versus Release 1.6.x
+### Release 1.8.0 versus Release 1.6.x
+
 HDF5 Release 1.8.0 is a major release with several new features and a variety of bugfixes, optimizations, and portability enhancements.
 
-See the document “What’s New in HDF5 1.8.0” for a high-level overview of the new functionality in this release. The following pages assume a familiarity with that overview.
+See the document [Whats New in HDF5 1.8.0](Whats New in HDF5 1.8.0) for a high-level overview of the new functionality in this release. The following pages assume a familiarity with that overview.
 
 This section provides details of the API-level changes that have been made in the transition to HDF5 Release 1.8.0 from the Release 1.6.x series.
 
@@ -2436,7 +2287,7 @@ H5Ovisit_by_name
 herr_t H5Ovisit_by_name( hid_t loc_id, const char *object_name, H5_index_t index_type, H5_iter_order_t order, H5O_iterate_t op, void *op_data, hid_t lapl_id )
 See entry.
 
-“Format bounds” property
+"Format bounds" property
 Release-to-release format compatibility
 
  
@@ -2940,7 +2791,7 @@ herr_t H5Ovisit_by_name( hid_t loc_id, const char *object_name, H5_index_t index
 See entry.
 
 Object creation or copying with
-“create intermediate groups” property
+"create intermediate groups" property
 
  
 
@@ -3683,7 +3534,7 @@ H5Pget_fapl_srb
       
 
 HDF5 no longer provides SRB support.
-SRB functionality is now supported through the mechanism described in SRB — The DICE Storage Resource Broker.
+SRB functionality is now supported through the mechanism described in SRB - The DICE Storage Resource Broker.
 
 H5Pset_fapl_stream
 H5Pget_fapl_stream
@@ -3918,9 +3769,9 @@ The struct is now defined as follows:
 Changed ENUMs
 The following enumerated datatypes used by the library are discontinued in this release:
 
-H5E_major_t — Major error numbers
+H5E_major_t - Major error numbers
 
-H5E_minor_t — Minor error numbers
+H5E_minor_t - Minor error numbers
 
 HDF5 error codes have changed from the ENUM format used in earlier releases to an identifier format. As ENUMs, error codes were constants defined at compile time; as identifiers, error codes are defined at runtime, in the same manner as HDF5 object identifiers (file, dataset, group, etc.).
 
@@ -3928,7 +3779,7 @@ Under normal circumstances, this change should be transparent to user applicatio
 
 The following enumerated datatypes used by the library have changed in the C and Fortran APIs as follows:
 
-H5G_obj_t — Object types
+H5G_obj_t - Object types
 
 This ENUM has reordered as follows:
     H5G_GROUP
@@ -3937,7 +3788,7 @@ This ENUM has reordered as follows:
     H5G_LINK
  
 
-H5I_type_t — Identifier types
+H5I_type_t - Identifier types
 
 The following symbols have been added to this ENUM:
     H5I_UNINT
@@ -3954,19 +3805,19 @@ replaces the old symbol
 While visible in the public API, H5I_NTYPES functions as a limit value for the HDF5 Library and is not generally used at the application level. The same was true of H5I_NGROUPS.
  
 
-H5S_class_t — Dataspace type identifiers
+H5S_class_t - Dataspace type identifiers
 
 The following symbol has been added:
     H5S_NULL
  
 
-H5T_cset_t — Character set encoding identifiers
+H5T_cset_t - Character set encoding identifiers
 
 The following symbol has been added:
     H5T_CSET_UTF8
  
 
-H5Z_filter_t — Filters identifiers
+H5Z_filter_t - Filters identifiers
 
 The following symbols have been added:
     H5Z_FILTER_NBIT
@@ -4043,7 +3894,7 @@ Removed in this release:
     --with-srb=DIR
 The environment variables FC and FCFLAGS replace F9X and F9XFLAGS, respectively, which are deprecated in this release.
 
-Additional new “influential environment variables” in this release include the following:
+Additional new "influential environment variables" in this release include the following:
     CXX
     CXXFLAGS
     CXXCPP

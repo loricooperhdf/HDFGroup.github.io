@@ -14,7 +14,7 @@ is performing other tasks.
 
 * [Subfiling VFD](http://docs.hdfgroup.org/hdf5/rfc/RFC_VFD_subfiling_200424.pdf)
 The basic idea behind sub-filing is to find the middle ground between
-single shared file and one file per process ¿ thereby avoiding some
+single shared file and one file per process - thereby avoiding some
 of the complexity of one file per process, and minimizing the locking
 issues of a single shared file on a parallel file system.
 
