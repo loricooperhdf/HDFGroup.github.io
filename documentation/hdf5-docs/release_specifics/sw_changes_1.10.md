@@ -30,7 +30,7 @@ The following information is included below.
 * [Release 1.10.0 of March 2016 versus Release 1.8.16](#release-1.10.0-versus-1.8.16)
 
 
-### Compatibility and Performance Issues
+## Compatibility and Performance Issues
 Not all HDF5-1.10 releases are compatible. Users should NOT be using 1.10 releases prior to HDF5-1.10.3. See the compatibility matrix below for details on compatibility between 1.10 releases:
 
 | Release  | 1.10.5+ | 1.10.4 | 1.10.3 | 1.10.2 | 1.10.1 | 1.10.0-patch1 | 1.10.0 |
@@ -56,18 +56,18 @@ The release notes also list changes made to the library, but these notes tend to
 | HISTORY-1_0-1_8_0_rc3.txt | Technical notes starting with HDF5-1.0.0 and ending with HDF5-1.8.0-rc3 (the state of the code prior to the HDF5-1.8.0 release) |
 
 
-### Release 1.10.9 versus 1.10.8
-#### New and Changed Functions, Classes, Subroutines, Wrappers, and Macros
+## Release 1.10.9 versus 1.10.8
+### New and Changed Functions, Classes, Subroutines, Wrappers, and Macros
 In the Java Wrapper
 
 One Java wrapper was added:
 
 H5.H5export_dataset
 
-#### Compatibility Notes and Reports
+### Compatibility Notes and Reports
 See the API compatibility report for the HDF5 library between 1.10.8 and 1.10.9 for information regarding compatibility with the previous release. The API Compatibility Report page includes all 1.10 compatibility reports.
 
-### Release 1.10.8 versus 1.10.7
+## Release 1.10.8 versus 1.10.7
 New and Changed Functions, Classes, Subroutines, Wrappers, and Macros
 In the C++ Wrapper
 
@@ -77,7 +77,7 @@ DataSet::operator=
 Compatibility Notes and Reports
 See the API compatibility report for the HDF5 library between 1.10.7 and 1.10.8 for information regarding compatibility with the previous release. The API Compatibility Report page includes all 1.10 compatibility reports.
 
-### Release 1.10.7 versus 1.10.6
+## Release 1.10.7 versus 1.10.6
 New and Changed Functions, Classes, Subroutines, Wrappers, and Macros
 In the C Interface (main library)
 
@@ -112,7 +112,7 @@ FileAccPropList::setFileLocking	See H5P_SET_FILE_LOCKING for details
 Compatibility Notes and Reports
 See the API compatibility report for the HDF5 library between 1.10.6 and 1.10.7 for information regarding compatibility with the previous release. The API Compatibility Report page includes all 1.10 compatibility reports.
 
-### Release 1.10.6 versus 1.10.5
+## Release 1.10.6 versus 1.10.5
 New and Changed Functions, Classes, Subroutines, Wrappers, and Macros
 In the C Interface (main library)
 
@@ -135,7 +135,7 @@ See H5P_SET_CREATE_INTERMEDIATE_GROUP
 Compatibility Notes and Reports
 See the  API Compatibility Report for information regarding compatibility with previous releases.
 
-### Release 1.10.5 versus 1.10.4, 1.10.3, and 1.10.2
+## Release 1.10.5 versus 1.10.4, 1.10.3, and 1.10.2
 New and Changed Functions, Classes, Subroutines, Wrappers, and Macros
 In the C Interface (main library)
 
@@ -239,12 +239,12 @@ See these API Compatibility Reports for 1.10 for information regarding compatibi
 
  
 
-### Release 1.10.4 versus Release 1.10.3
+## Release 1.10.4 versus Release 1.10.3
 See the API compatibility Report for information regarding compatibility with previous releases
 
  
 
-### Release 1.10.3 versus Release 1.10.2
+## Release 1.10.3 versus Release 1.10.2
 New and Changed Functions, Classes, Subroutines, Wrappers, and Macros
 In the C Interface (main library)
 
@@ -304,7 +304,7 @@ Several C++ wrappers were added or modified to provide additional support. See t
 Compatibility Notes and Report
 See the API Compatibility Report for information regarding compatibility with previous releases.
 
-### Release 1.10.2 versus Release 1.10.1
+## Release 1.10.2 versus Release 1.10.1
 This section lists interface-level changes and other user-visible changes in behavior in the transition from HDF5 Release 1.10.1 to Release 1.10.2.
 
 New and Changed Functions, Classes, Subroutines, Wrappers, and Macros
@@ -421,7 +421,7 @@ A new option was added to h5diff:
 Compatibility Notes and Report
 See API Compatibility Reports for 1.10 for information regarding compatibility with previous releases.
 
-### Release 1.10.1 versus Release 1.10.0 (and 1.10.0-patch1)
+## Release 1.10.1 versus Release 1.10.0 (and 1.10.0-patch1)
 This section lists interface-level changes and other user-visible changes in behavior in the transition from HDF5 Release 1.10.0 (and HDF5-1.10.0-patch1) to Release 1.10.1.
 
 New Features
@@ -555,7 +555,7 @@ Compatibility report for Release 1.10.1 versus Release 1.10.0-patch1
 
 See API Compatibility Reports for 1.10 for information regarding compatibility with previous releases.
 
-### Release 1.10.0 of March 2016 versus Release 1.8.16
+## Release 1.10.0 of March 2016 versus Release 1.8.16
 
 This section lists interface-level changes and other user-visible changes in behavior in the transition from HDF5 Release 1.8.16 to Release 1.10.0.
 

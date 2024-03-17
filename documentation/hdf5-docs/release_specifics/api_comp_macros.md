@@ -6,15 +6,15 @@ redirect_from:
 
 # API Compatibility Macros
 
-### Audience
+## Audience
 The target audience for this document has existing applications that use the HDF5 library, and is considering moving to the latest HDF5 release to take advantage of the latest library features and enhancements.
 
-### Compatibility Issues
+## Compatibility Issues
 With each major release of HDF5, such as 1.12 or 1.10, certain compatibility issues must be considered when migrating applications from an earlier major release.
 
 This document describes the approach taken by The HDF Group to help existing users of HDF5 address compatibility issues in the HDF5 API.
 
-### Summary and Motivation
+## Summary and Motivation
 In response to new and evolving requirements for the library and data format, several basic functions have changed since HDF5 was first released. To allow existing applications to continue to compile and run properly, all versions of these functions have been retained in the later releases of the HDF5 library.
 
 Given the scope of changes available with each major release of HDF5, and recognizing the potentially time-consuming task of editing all the affected calls in user applications, The HDF Group has created a set of macros that can be used to flexibly and easily map existing API calls to previous release functions. We refer to these as the API compatibility macros.
@@ -26,7 +26,7 @@ Source code is available, but there are no resources to update it.
 Source code is available, as are resources to update it, but the old version works quite well so updates are not a priority. At the same time, it is desirable to take advantage of certain efficiencies in the newer HDF5 release that do not require code changes.
 Source code is available, as are resources to update it, but the applications are large or complex, and must continue to run while the code updates are carried out.
 
-### Understanding and Using the Macros
+## Understanding and Using the Macros
 As part of latest HDF5 release, several functions that existed in previous versions of the library were updated with new calling parameters and given new names. The updated versions of the functions have a number (for eg '2') at the end of the original function name. The original versions of these functions were retained and renamed to have an earlier number (for eg '1') at the end of the original function name.
 
 For example, consider the function H5Lvisit in HDF5 release 1.10 as compared with 1.12:
@@ -38,7 +38,7 @@ For example, consider the function H5Lvisit in HDF5 release 1.10 as compared wit
 | Original function and signature, renamed in release 1.12.0   | herr_t H5Lvisit1 ( hid_t group_id, H5_index_t idx_type, H5_iter_order_t order, H5L_iterate1_t op, void \*op_data ) |
 | API compatibility macro, introduced in release 1.12.0 | H5Lvisit <br>The macro, H5Lvisit, will be mapped to either H5Lvisit1 or H5Lvisit2. The mapping is determined by a combination of the configuration options use to build the HDF5 library and compile-time options used to build the application. The calling parameters used with the H5Lvisit compatibility macro should match the number and type of the function the macros will be mapped to (H5Lvisit1 or H5Lvisit2). <br>The function names ending in <91>1<92> or <91>2<92> are referred to as versioned names, and the corresponding functions are referred to as versioned functions. For new code development, The HDF Group recommends use of the compatibility macro mapped to the latest version of the function. The original version of the function should be considered deprecated and, in general, should not be used when developing new code. |
 
-### Compatibility Macro Mapping Options                                                         To determine the mapping for a given API compatibility macro in a given application, a combination of user-controlled selections, collectively referred to as the compatibility macro mapping options, is considered in the following sequence:
+## Compatibility Macro Mapping Options                                                         To determine the mapping for a given API compatibility macro in a given application, a combination of user-controlled selections, collectively referred to as the compatibility macro mapping options, is considered in the following sequence:
 
 What compatibility macro configuration option was used to build the HDF5 library? We refer to this selection as the library mapping.
 
@@ -49,7 +49,7 @@ Notes: An application mapping can map APIs to the same version or to a version o
 When it is necessary to <93>upgrade<94> the macro mappings from those set in the library mapping, it must be done at the per-function level, using the function-level mappings. As long as one does not try to map a function to a version that was compiled out in the library mapping, individual functions can be upgraded or downgraded freely.
 
 
-### Library Mapping Options
+## Library Mapping Options
 
 When the HDF5 library is built, configure flags can be used to control the API compatibility macro mapping behavior exhibited by the library. This behavior can be overridden by application and function mappings. One configure flag excludes deprecated functions from the HDF5 library, making them unavailable to applications linked with the library.
 
@@ -72,7 +72,7 @@ Refer to the file libhdf5.settings in the directory where the HDF5 library is in
 
   With deprecated public symbols: yes
 
-### Application Mapping Options
+## Application Mapping Options
 
 When an application using HDF5 APIs is built and linked with the HDF5 library, compile-time options to h5cc can be used to control the API compatibility macro mapping behavior exhibited by the application. The application mapping overrides the behavior specified by the library mapping, and can be overridden on a function-by-function basis by the function mappings.
 
@@ -90,7 +90,7 @@ If the HDF5 library was configured with the --disable-deprecated-symbols flag, t
 | -DH5_NO_DEPRECATED_SYMBOLS                                                | 1.10.x    (H5Lvisit1) |  no |
 
 
-### Function Mapping Options
+## Function Mapping Options
 
 Function mappings are specified when the application is built. These mappings can be used to control the mapping of the API compatibility macros to underlying functions on a function-by-function basis. The function mappings override the library and application mappings discussed earlier.
 
@@ -360,12 +360,12 @@ The function mappings do not negate any available functions. If H5Rdereference1 
 
 This can be especially useful in any case where the programmer does not have direct control over global macro definitions, such as when writing code meant to be copied to multiple applications or when writing code in a header file.
 
-### Compatibility Macros in HDF5 1.6.8 and Later
+## Compatibility Macros in HDF5 1.6.8 and Later
 A series of similar compatibility macros were introduced into the release 1.6 series of the library, starting with release 1.6.8. These macros simply alias the <91>1<92> version functions, callbacks, and typedefs listed above to their original non-numbered names.
 
 These macros were strictly a forward-looking feature at that time; they were not necessary for compatibility in 1.6.x. These macros were created at that time to enable writing code that could be used with any version of the library after 1.6.8 and any library compilation options except H5_NO_DEPRECATED_SYMBOLS, by always using the <91>1<92> version of versioned functions and types. For example, H5Dopen1 will always be interpreted in exactly the same manner by any version of the library since 1.6.8.
 
-### Common Use Case
+## Common Use Case
 A common scenario where the API compatibility macros may be helpful is the migration of an existing application to a new HDF5 release An incremental migration plan is outlined here:
 
 Build the HDF5 library without specifying any library mapping configure flag. In this default mode, the 1.6.x, 1.8.x, and 1.10.x versions of the underlying functions are available, and the API compatibility macros will be mapped to the current HDF5 versioned functions.
