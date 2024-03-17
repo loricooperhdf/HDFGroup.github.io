@@ -4,6 +4,8 @@ redirect_from:
   - display/HDF5/Additional+New+APIs
 ---
 
+# Additional New APIs
+
 This page describes various new functions, a new struct, and new macros that are either unrelated to new features described elsewhere or have aspects that are unrelated to the feature where they are otherwise described. The page includes the following sections:
 
 Versioned Functions and Struct with Associated Macros

@@ -4,6 +4,8 @@ redirect from:
   - display/HDF5/New+Features+in+HDF5+Release+1.12
 ---
 
+# New Features in HDF5 1.12
+
 This release includes changes in the HDF5 storage format. PLEASE NOTE that HDF5-1.10 and earlier releases cannot read files created with the new features described below that are marked with a \*.
 
 HDF5 1.12 introduces several new features in the HDF5 library:
@@ -12,7 +14,7 @@ HDF5 1.12 introduces several new features in the HDF5 library:
 * [Update to References](https://docs.hdfgroup.org/hdf5/rfc/RFC_Update_to_HDF5_References.pdf)
 * [Update to Selections](https://docs.hdfgroup.org/hdf5/rfc/selection_io_RFC_210610.pdf)
 * [Virtual Object Layer](https://docs.hdfgroup.org/hdf5/develop/_v_o_l__connector.html)
-* [Hyperslab Performance Improvement](need link #Hyperslab-Performance-Improvements)
+* [Hyperslab Performance Improvement](#Hyperslab-Performance-Improvements)
 
 ### Virtual Object Layer (VOL)  (RFC)
 

@@ -4,7 +4,7 @@ redirect_from:
   - display/HDF5/Event+Set
 ---
 
-Managing Event Sets (H5ES)
+# Managing Event Sets (H5ES)
 
 |         |         |         |
 | ------- | ------- | ------- | 

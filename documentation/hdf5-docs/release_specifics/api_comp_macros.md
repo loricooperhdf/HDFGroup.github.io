@@ -4,6 +4,8 @@ redirect_from:
   - display/HDF5/API+Compatibility+Macros
 ---
 
+# API Compatibility Macros
+
 ### Audience
 The target audience for this document has existing applications that use the HDF5 library, and is considering moving to the latest HDF5 release to take advantage of the latest library features and enhancements.
 
