@@ -19,7 +19,7 @@ For further information, see:
 * [Software Changes from release to release](sw_changes_1.12.md)
 * [API Compatibility Macros in HDF5](api_comp_macros.md)
 
-### Compiling 1.10 and earlier applications with 1.12
+## Compiling 1.10 and earlier applications with 1.12
 
 Applications that were created with earlier HDF5 releases may not compile with 1.12 by default. The API Compatibility Macros in HDF5 allow users to work around this issue. Users can specify a compatibility macro mapping for the version of HDF5 that an application was built with. For example, a 1.10 application can be built with 1.12 using either an application or library mapping as follows:
 
@@ -49,7 +49,7 @@ Default API mapping: v110 (under Features:)
 
 #### However, users will not be able to take advantage of some of the new features in 1.12 if using these compatibility mappings.
 
-### Functions that changed
+## Functions that changed
 Functions were modified in HDF5 version 1.12 to support a token type used in the Virtual Object Layer (VOL) and to enable 64-bit selection encodings. These changes are described below.
 
 ~~~
@@ -59,7 +59,7 @@ A macro was created with the name of the original function.
 Please read [API Compatibility Macros in HDF5](api_comp_macros.md) for more details on how the function names changed in version 1.12.
 ~~~
 
-### Token Type
+## Token Type
 In HDF5 1.12, a token type, H5O_token_t, replaced the address type, haddr_t, for representing locations in an HDF5 file. This change better supports the Virtual Object Layer (VOL), as the concept of an "address" does not make sense for many connectors. A token type is a more generic type that can function as both a connector and address location.
 
 This change affected the following functions:
@@ -80,7 +80,7 @@ This change affected the following functions:
 | H5O_VISIT_BY_NAME                               | H5O_VISIT_BY_NAME1                   | H5O_VISIT_BY_NAME3              |
 |                                                 |                                      |                                 |
 
-### Encoding Properties
+## Encoding Properties
 These functions were introduced in HDF5 version 1.12 as part of the H5Sencode format change to enable 64-bit selection encodings and a dataspace selection that is tied to a file. See the [H5Sencode / H5Sdecode Format Change - RFC](https://docs.hdfgroup.org/hdf5/rfc/H5Sencode_format.docx.pdf) format change RFC for details.
 
 | Original Function in 1.10/Maroc in 1.12 (H5xxx) | Deprecated Function in 1.12 (H5xxx1) | New Function (using token type) |
