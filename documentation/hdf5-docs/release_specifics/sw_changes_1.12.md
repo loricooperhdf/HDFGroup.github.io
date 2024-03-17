@@ -34,10 +34,10 @@ The release notes also list changes made to the library, but these notes tend to
 | HISTORY-1_8.txt | Release information for HDF5-1.8.0 through 1.8.21 |
 | HISTORY-1_0-1_8_0_rc3.txt | Technical notes starting with HDF5-1.0.0 and ending with HDF5-1.8.0-rc3 (the state of the code prior to the HDF5-1.8.0 release) |
 
-### Release 1.12.2 versus Release 1.12.1
+## Release 1.12.2 versus Release 1.12.1
 This section lists interface-level changes and other user-visible changes in behavior in the transition from HDF5 Release 1.12.1 to Release 1.12.2.
 
-#### New and Changed Functions, Classes, Subroutines, Wrappers, and Macros
+### New and Changed Functions, Classes, Subroutines, Wrappers, and Macros
 
 The following are new C functions in this release:
 
@@ -47,7 +47,7 @@ H5LTset_attribute_ullong	Create an unsigned long long attribute
 H5VLobject_is_native	Determines whether an object ID represents a native VOL connector object
 See API Compatibility Reports for 1.12.2 for complete details.
 
-### Release 1.12.1 versus Release 1.12.0
+## Release 1.12.1 versus Release 1.12.0
 This section lists interface-level changes and other user-visible changes in behavior in the transition from HDF5 Release 1.12.0 to Release 1.12.1.
 
 The following are new C functions in this release:
@@ -82,15 +82,15 @@ See the API Compatibility report for complete details.
 Compatibility Notes and Report
 See API Compatibility Reports for 1.12 for information regarding compatibility with previous releases.
 
-### Release 1.12.0 versus Release 1.10.6
+## Release 1.12.0 versus Release 1.10.6
 This section lists interface-level changes and other user-visible changes in behavior in the transition from HDF5 Release 1.10.6 to Release 1.12.0.
 
-#### New Features
+### New Features
 For a description of the major new features that were introduced, please see New Features in HDF5 Release 1.12.
 
-#### New and Changed Functions, Classes, Subroutines, Wrappers, and Macros
+### New and Changed Functions, Classes, Subroutines, Wrappers, and Macros
 
-#### In the C/Fortran Interface (main library)
+### In the C/Fortran Interface (main library)
 
 Folllowing are the new or changed APIs introduced in HDF5-1.12.0. Those introduced with a new feature list the specific new feature that they were added for.
 
@@ -205,7 +205,7 @@ See H5O_GET_INFO
 H5Object::visit	See H5O_VISIT
 
 
-### API Compatibility
+## API Compatibility
 See API Compatibility Macros in HDF5 for details on using HDF5 version 1.12 with previous releases.
 
 [Compatibility report for Release 1.12.0 versus Release 1.10.6](Compatibility report for Release 1.12.0 versus Release 1.10.6)
