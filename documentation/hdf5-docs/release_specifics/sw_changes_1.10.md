@@ -4,6 +4,8 @@ redirect_from:
   - display/HDF5/Software+Changes+from+Release+to+Release+for+HDF5+1.10
 ---
 
+# Software Changes from Release to Release in HDF5 1.10
+
 For a description of the major new features that were introduced, please see New Features in HDF5 Release 1.10.)
 
 This page provides information on the changes that a maintenance developer needs to be aware of between successive releases of HDF5, such as:

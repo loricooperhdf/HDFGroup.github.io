@@ -6,7 +6,7 @@ redirect_from:
 
 # Migrating from HDF5 1.8 to HDF5 1.10
 
-The HDF Group will drop support for HDF5 1.8.* releases in the summer of 2020. We strongly recommend that our users start migrating their applications as soon as possible and we ask that any problems that are encountered be reported to The HDF Group. Problems can be reported by sending email to help@hdfgroup.org, submitting a request to the [Service Desk Portal](https://jira.hdfgroup.org/servicedesk/customer/portal/2), or posting to the [HDF-FORUM](https://forum.hdfgroup.org/).
+The HDF Group will drop support for HDF5 1.8.\* releases in the summer of 2020. We strongly recommend that our users start migrating their applications as soon as possible and we ask that any problems that are encountered be reported to The HDF Group. Problems can be reported by sending email to help@hdfgroup.org, submitting a request to the [Service Desk Portal](https://jira.hdfgroup.org/servicedesk/customer/portal/2), or posting to the [HDF-FORUM](https://forum.hdfgroup.org/).
 
 Please follow these steps for moving your HDF5 application to HDF5 1.10:
 

@@ -4,6 +4,8 @@ redirect_from:
   - display/HDF5/New+Features+in+HDF5+Release+1.10
 ---
 
+# New Features in HDF5 1.10
+
 HDF5 1.10 introduces several new features in the HDF5 library. These new features were added in the first three releases of HDF5-1.10. For a brief description of each new feature see:
 
 * [New Features Introduced in HDF5 1.10.8](#new-features-introduced-in-hdf5-1.10.8)
