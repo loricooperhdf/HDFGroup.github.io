@@ -17,8 +17,8 @@ Note that bug fixes and performance enhancements in the C library are automatica
 
 The following information is included below.
 
-* [Compatiblity and Performance Issues](#compatiblityandperformanceissues)
-* [Release 1.10.9 versus 1.10.8](#release1.10.9versus1.10.8)
+* <a href="#compatiblityandperformanceissues">Compatiblity and Performance Issues</a>
+
 * [Compatiblity and Performance Issues](#compatiblity-and-performance-issues)
 * [Release 1.10.9 versus 1.10.8](#release-1.10.9-versus-1.10.8)
 * [Release 1.10.8 versus 1.10.7](#release-1.10.8-versus-1.10.7)
@@ -32,8 +32,8 @@ The following information is included below.
 * [Release 1.10.0 of March 2016 versus Release 1.8.16](#release-1.10.0-versus-1.8.16)
 
 
+<h3 id="Compatibility and Performance Issues">Compatiblity and Performance Issues</h3>
 ## Compatibility and Performance Issues
-## CompatibilityandPerformanceIssues
 Not all HDF5-1.10 releases are compatible. Users should NOT be using 1.10 releases prior to HDF5-1.10.3. See the compatibility matrix below for details on compatibility between 1.10 releases:
 
 | Release  | 1.10.5+ | 1.10.4 | 1.10.3 | 1.10.2 | 1.10.1 | 1.10.0-patch1 | 1.10.0 |
