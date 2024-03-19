@@ -48,8 +48,7 @@ Was a compatibility macro global compile-time option specified when the applicat
 
 Were any compatibility macro function-level compile-time options specified when the application was built? We refer to these (optional) selections as function mappings. If function mappings exist, they override library and application mappings for the relevant API compatibility macros. (See adjacent notes.)
 
-#### *Notes*
-An application mapping can map APIs to the same version or to a version older than the configured library mapping. When the application attempts to map APIs to a newer version of the API than the library was configured with, it will fail to "upgrade" the mapping (and may fail silently).
+Notes: An application mapping can map APIs to the same version or to a version older than the configured library mapping. When the application attempts to map APIs to a newer version of the API than the library was configured with, it will fail to "upgrade" the mapping (and may fail silently).
 When it is necessary to "upgrade" the macro mappings from those set in the library mapping, it must be done at the per-function level, using the function-level mappings. As long as one does not try to map a function to a version that was compiled out in the library mapping, individual functions can be upgraded or downgraded freely.
 
 
@@ -121,7 +120,8 @@ For example, in version 1.10 the H5Rreference macro can be mapped to either H5Rr
 * When H5Rreference\_vers is not set, the macro H5Rreference will be mapped to either H5Rreference1 or H5Rreference2, based on the application mapping, if one was specified, or on the library mapping.
      h5cc ...
 
-#### *Notes*
+##### *Note:*
+
 Please be aware that some function mappings use mapped structures, as well.  If compiling an application with a function mapping that uses a mapped structure, you must include each function and mapped structure plus EVERY function that uses the mapped structure, whether or not that function is used in the application. In 1.12, mappings of structures are used by the H5L and H5O function mappings.
 
 For example, the application h5ex\_g\_iterate.c (found on the Examples by API page under "Groups") only calls H5Lvisit , H5Ovisit , and H5Oget\_info\_by\_name. <br>To compile this application with 1.10 APIs in 1.12 with the function specific mappings, then not only must H5Lvisit\_vers, H5Ovisit\_vers, and H5Oget\_info\_by\_name\_vers be specified on the command line, but the mapped structures and every function that uses the mapped structures must be included, as well. <br> The full compile line is shown below:
