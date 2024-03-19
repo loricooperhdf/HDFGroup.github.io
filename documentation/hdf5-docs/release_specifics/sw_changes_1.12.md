@@ -18,9 +18,9 @@ Note that bug fixes and performance enhancements in the C library are automatica
 
 The following information is included below.
 
-* [Release 1.12.2 versus Release 1.12.1](#release-1.12.2-versus-release-1.12.1)
-* [Release 1.12.1 versus Release 1.12.0](#release-1.12.1-versus-release-1.12.0)
-* [Release 1.12.0 versus Release 1.10.6](#release-1.12.0-versus-release-1.10.6)
+* <a href="#Release-1.12.2-versus-Release-1.12.1">Release 1.12.2 versus Release 1.12.1</a>
+* [Release 1.12.1 versus Release 1.12.0](#Release-1.12.1-versus-Release-1.12.0)
+* [Release 1.12.0 versus Release 1.10.6](#Release-1.12.0-versus-Release-1.10.6)
 
 The release notes also list changes made to the library, but these notes tend to be more at a more detail-oriented level. The release notes may include new features, bugs fixed, supported configuration features, platforms on which the library has been tested, and known problems. The release note files are listed below and can be found at the top level of the HDF5 source code tree in the release_docs directory.
 
