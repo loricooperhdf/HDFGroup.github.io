@@ -120,13 +120,13 @@ For example, in version 1.10 the H5Rreference macro can be mapped to either H5Rr
 * When H5Rreference\_vers is not set, the macro H5Rreference will be mapped to either H5Rreference1 or H5Rreference2, based on the application mapping, if one was specified, or on the library mapping.
      h5cc ...
 
-~~~
+##### *Note:*
+
 Please be aware that some function mappings use mapped structures, as well.  If compiling an application with a function mapping that uses a mapped structure, you must include each function and mapped structure plus EVERY function that uses the mapped structure, whether or not that function is used in the application. In 1.12, mappings of structures are used by the H5L and H5O function mappings.
 
-For example, the application h5ex_g_iterate.c (found on the Examples by API page under "Groups") only calls H5Lvisit , H5Ovisit , and H5Oget_info_by_name. <br>To compile this application with 1.10 APIs in 1.12 with the function specific mappings, then not only must H5Lvisit_vers, H5Ovisit_vers, and H5Oget_info_by_name_vers be specified on the command line, but the mapped structures and every function that uses the mapped structures must be included, as well. <br> The full compile line is shown below:
+For example, the application h5ex\_g\_iterate.c (found on the Examples by API page under "Groups") only calls H5Lvisit , H5Ovisit , and H5Oget\_info\_by\_name. <br>To compile this application with 1.10 APIs in 1.12 with the function specific mappings, then not only must H5Lvisit\_vers, H5Ovisit\_vers, and H5Oget\_info\_by\_name\_vers be specified on the command line, but the mapped structures and every function that uses the mapped structures must be included, as well. <br> The full compile line is shown below:
                                                                                                 
-h5cc -DH5Lvisit_vers=1 -DH5Ovisit_vers=1 -DH5Oget_info_by_name_vers=1 -DH5Lvisit_by_name_vers=1 -DH5Literate_vers=1 -DH5Literate_by_name_vers=1 -DH5O_info_t_vers=1 -DH5L_info_t_vers=1 -DH5L_iterate_t_vers=1 -DH5Lget_info_by_idx_vers=1 -DH5Lget_info_vers=1 h5ex_g_visit.c
-~~~
+h5cc -DH5Lvisit\_vers=1 -DH5Ovisit\_vers=1 -DH5Oget\_info\_by\_name\_vers=1 -DH5Lvisit\_by\_name\_vers=1 -DH5Literate\_vers=1 -DH5Literate\_by\_name\_vers=1 -DH5O\_info\_t\_vers=1 -DH5L\_info\_t\_vers=1 -DH5L\_iterate\_t\_vers=1 -DH5Lget\_info\_by\_idx\_vers=1 -DH5Lget\_info\_vers=1 h5ex\_g\_visit.c
 
 #### Function Mapping Options in Releases 1.12.x
 
