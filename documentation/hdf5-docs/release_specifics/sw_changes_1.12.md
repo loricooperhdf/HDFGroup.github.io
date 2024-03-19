@@ -34,7 +34,7 @@ The release notes also list changes made to the library, but these notes tend to
 | HISTORY-1_8.txt | Release information for HDF5-1.8.0 through 1.8.21 |
 | HISTORY-1_0-1_8_0_rc3.txt | Technical notes starting with HDF5-1.0.0 and ending with HDF5-1.8.0-rc3 (the state of the code prior to the HDF5-1.8.0 release) |
 
-## Release 1.12.2 versus Release 1.12.1
+## <a id="Release-1.12.2-versus-Release-1.12.1"></a>Release 1.12.2 versus Release 1.12.1
 This section lists interface-level changes and other user-visible changes in behavior in the transition from HDF5 Release 1.12.1 to Release 1.12.2.
 
 ### New and Changed Functions, Classes, Subroutines, Wrappers, and Macros
