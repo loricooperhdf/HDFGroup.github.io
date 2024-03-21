@@ -26,4 +26,4 @@ redirect_from:
 * New Features
 * [Software Changes from Release to Release](release_specifics/sw_changes_1.8.md)
 
-### [API compatibility Macros in HDF5](release_specifics/api_comp_macros.md)
+### [API Compatibility Macros in HDF5](release_specifics/api_comp_macros.md)
