@@ -162,7 +162,7 @@ For example, the algorithm prior to 1.10 simply incremented the index by one alo
 
 As of HDF5 1.10, the library uses a more complicated way to determine the chunk index. Each dimension gets a fixed number of bits for the number of chunks in that dimension. When creating the dataset, the library first determines the number of bits needed to encode the number of chunks in each dimension individually by using the log2 function. It then partitions the chunk index into bitfields, one for each dimension, where the size of each bitfield is as computed above. The fastest changing dimension is the least significant bit. To compute the chunk index for an individual chunk, for each dimension, the coordinates of that chunk in an array of chunks is placed into the corresponding bitfield. The 5 x 3 chunk example above needs 5 bits for its indices (as shown below, the 3 bits in blue are for the row, and the 2 bits in green are for the column):
 
-![5 bits](chunking8.PNG)
+![5 bits](images/chunking8.PNG)
 
 Therefore, the indices for the 5 x 3 chunks become like this:
 
