@@ -1,10 +1,11 @@
 ---
-title: Introduction to Single-Writer\_Multiple-Reader (SWMR)
-redirect_from:
+title: Introduction to Single-Writer\\_Multiple-Reader (SWMR)
+redirect\_from:
 
 ---
+##\*\*\* UNDER CONSTRUCTION \*\*\*
 
-# Introduction to Single-Writer\_Multiple-Reader (SWMR)
+# Introduction to Single-Writer\\_Multiple-Reader (SWMR)
 
 Introduction to SWMR
 The Single-Writer / Multiple-Reader (SWMR) feature enables multiple processes to read an HDF5 file while it is being written to (by a single process) without using locks or requiring communication between processes.
@@ -33,31 +34,31 @@ SWMR User's Guide
 
 HDF5 Library APIs
 Page:
-H5F_START_SWMR_WRITE — Enables SWMR writing mode for a file
+H5F\_START\_SWMR\_WRITE — Enables SWMR writing mode for a file
 Page:
-H5DO_APPEND — Appends data to a dataset along a specified dimension
+H5DO\_APPEND — Appends data to a dataset along a specified dimension
 Page:
-H5P_SET_OBJECT_FLUSH_CB — Sets a callback function to invoke when an object flush occurs in the file
+H5P\_SET\_OBJECT\_FLUSH\_CB — Sets a callback function to invoke when an object flush occurs in the file
 Page:
-H5P_GET_OBJECT_FLUSH_CB — Retrieves the object flush property values from the file access property list
+H5P\_GET\_OBJECT\_FLUSH\_CB — Retrieves the object flush property values from the file access property list
 Page:
-H5O_DISABLE_MDC_FLUSHES — Prevents metadata entries for an HDF5 object from being flushed from the metadata cache to storage
+H5O\_DISABLE\_MDC\_FLUSHES — Prevents metadata entries for an HDF5 object from being flushed from the metadata cache to storage
 Page:
-H5O_ENABLE_MDC_FLUSHES — Enables flushing of dirty metadata entries from a file’s metadata cache
+H5O\_ENABLE\_MDC\_FLUSHES — Enables flushing of dirty metadata entries from a file’s metadata cache
 Page:
-H5O_ARE_MDC_FLUSHES_DISABLED — Determines if an HDF5 object has had flushes of metadata entries disabled
+H5O\_ARE\_MDC\_FLUSHES\_DISABLED — Determines if an HDF5 object has had flushes of metadata entries disabled
 Tools
 Page:
 h5watch — Outputs new records appended to a dataset as the dataset grows
 Page:
-h5format_convert — Converts the layout format version and chunked indexing types of datasets created with HDF5-1.10 so that applications built with HDF5-1.8 can access them
+h5format\_convert — Converts the layout format version and chunked indexing types of datasets created with HDF5-1.10 so that applications built with HDF5-1.8 can access them
 Page:
-h5clear — Clears superblock status_flags field, removes metadata cache image, prints EOA and EOF, or sets EOA of a file
+h5clear — Clears superblock status\_flags field, removes metadata cache image, prints EOA and EOF, or sets EOA of a file
 Design Documents
 Error while fetching page properties report data:
 
 Programming Model
-Please be aware that the SWMR feature requires that an HDF5 file be created with the latest file format. See H5P_SET_LIBVER_BOUNDS for more information.
+Please be aware that the SWMR feature requires that an HDF5 file be created with the latest file format. See H5P\_SET\_LIBVER\_BOUNDS for more information.
 
 To use SWMR follow the the general programming model for creating and accessing HDF5 files and objects along with the steps described below.
 
@@ -66,52 +67,52 @@ The SWMR writer either opens an existing file and objects or creates them as fol
 
 Open an existing file:
 
-Call H5Fopen using the H5F_ACC_SWMR_WRITE flag.
+Call H5Fopen using the H5F\_ACC\_SWMR\_WRITE flag.
 Begin writing datasets.
 Periodically flush data.
 Create a new file:
 
 Call H5Fcreate using the latest file format.
 Create groups, datasets and attributes, and then close the attributes.
-Call H5F_START_SWMR_WRITE to start SWMR access to the file.
+Call H5F\_START\_SWMR\_WRITE to start SWMR access to the file.
 Periodically flush data.
 Example Code:
 
 Create the file using the latest file format property:
 
-   fapl = H5Pcreate (H5P_FILE_ACCESS); 
-   status = H5Pset_libver_bounds (fapl, H5F_LIBVER_LATEST, H5F_LIBVER_LATEST); 
-   fid = H5Fcreate (filename, H5F_ACC_TRUNC, H5P_DEFAULT, fapl); 
+   fapl = H5Pcreate (H5P\_FILE\_ACCESS); 
+   status = H5Pset\_libver\_bounds (fapl, H5F\_LIBVER\_LATEST, H5F\_LIBVER\_LATEST); 
+   fid = H5Fcreate (filename, H5F\_ACC\_TRUNC, H5P\_DEFAULT, fapl); 
 [Create objects (files, datasets, ...). Close any attributes and named datatype objects. Groups and datasets may remain open before starting SWMR access to them.]
 
 Start SWMR access to the file:
 
-   status = H5Fstart_swmr_write (fid);  
+   status = H5Fstart\_swmr\_write (fid);  
 Reopen the datasets and start writing, periodically flushing data:
 
-   status = H5Dwrite (dset_id, ...);
-   status = H5Dflush (dset_id); 
+   status = H5Dwrite (dset\_id, ...);
+   status = H5Dflush (dset\_id); 
 SWMR Reader:
 The SWMR reader must continually poll for new data:
 
  
 
-Call H5Fopen using the H5F_ACC_SWMR_READ flag.
+Call H5Fopen using the H5F\_ACC\_SWMR\_READ flag.
 Poll, checking the size of the dataset to see if there is new data available for reading.
 Read new data, if any.
 Example Code:
 
 Open the file using the SWMR read flag:
 
-   fid = H5Fopen (filename, H5F_ACC_RDONLY | H5F_ACC_SWMR_READ, H5P_DEFAULT);
+   fid = H5Fopen (filename, H5F\_ACC\_RDONLY | H5F\_ACC\_SWMR\_READ, H5P\_DEFAULT);
 Open the dataset and then repeatedly poll the dataset, by getting the dimensions, reading new data, and refreshing:
 
-   dset_id = H5Dopen (...);
-   space_id = H5Dget_space (...);
+   dset\_id = H5Dopen (...);
+   space\_id = H5Dget\_space (...);
    while (...) { 
-      status = H5Dread (dset_id, ...);
-      status = H5Drefresh (dset_id);
-      space_id = H5Dget_space (...);
+      status = H5Dread (dset\_id, ...);
+      status = H5Drefresh (dset\_id);
+      space\_id = H5Dget\_space (...);
    }
 
 Limitations and Scope
@@ -142,12 +143,12 @@ Download the HDF5-1.10 source code to a local directory on a filesystem (that co
 
 Invoke two command terminal windows. In one window go into the bin/ directory of the built binaries. In the other window go into the test/ directory of the HDF5-1.10 source code that was just built.
 
-In the window in the test/ directory compile and run use_append_chunk.c. The example writes a three dimensional dataset by planes (with chunks of size 1 x 256 x 256).
+In the window in the test/ directory compile and run use\_append\_chunk.c. The example writes a three dimensional dataset by planes (with chunks of size 1 x 256 x 256).
 
-In the other window (in the bin/ directory) run h5watch on the file created by use_append_chunk.c (use_append_chunk.h5). It should be run while use_append_chunk is executing and you will see valid data displayed with h5watch.
+In the other window (in the bin/ directory) run h5watch on the file created by use\_append\_chunk.c (use\_append\_chunk.h5). It should be run while use\_append\_chunk is executing and you will see valid data displayed with h5watch.
 
-Interrupt use_append_chunk while it is running, and stop h5watch.
+Interrupt use\_append\_chunk while it is running, and stop h5watch.
 
-Use h5clear to clear the status flags in the superbock of the HDF5 file (use_append_chunk.h5).
+Use h5clear to clear the status flags in the superbock of the HDF5 file (use\_append\_chunk.h5).
 
 View the file with h5dump. You will see that it is a valid file even though the application did not close properly. It will contain data up to the point that it was interrupted.

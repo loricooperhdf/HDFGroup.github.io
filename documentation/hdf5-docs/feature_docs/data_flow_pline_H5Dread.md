@@ -1,8 +1,9 @@
 ---
 title: HDF5 Data Flow Pipeline for H5Dread
-redirect_from:
+redirect\_from:
 
 ---
+##\*\*\* UNDER CONSTRUCTION \*\*\*
 
 # HDF5 Data Flow Pipeline for H5Dread
 
@@ -78,12 +79,12 @@ Hyperslab selection for source
 A hyperslab selection is used to specify the region from dataset D that will be transferred with the H5Dread call. A 4 x 4 array of elements, positioned at <1,1> will be read. The C code to do the selection of the hyperslab in the file dataspace is shown here:
 
 /* get the file dataspace */
-space_src = H5Dget_space(dataset);
+space\_src = H5Dget\_space(dataset);
 
 /* define hyperslab in the dataset */
-start_src[0] = 1; start_src[1] = 1;
-count_src[0] = 4; count_src[1] = 4;
-status = H5Sselect_hyperslab(space_src, H5S_SELECT_SET, start_src, NULL,
+start\_src[0] = 1; start\_src[1] = 1;
+count\_src[0] = 4; count\_src[1] = 4;
+status = H5Sselect\_hyperslab(space\_src, H5S\_SELECT\_SET, start\_src, NULL,
  
 
 Figure 1 shows a conceptual representation of dataset D with uncompressed data. The desired region and the chunks that contain it are shown in green and yellow, respectively.
@@ -127,16 +128,16 @@ int destA[4][4];
   ...
 
 /* define memory dataspace */
-dims_destA[0] = 4; dims_destA[1] = 4;
-space_destA = H5Screate_simple(2,dims_destA,NULL);
+dims\_destA[0] = 4; dims\_destA[1] = 4;
+space\_destA = H5Screate\_simple(2,dims\_destA,NULL);
 
 /* create data transfer property list and specify value transformation */ 
-dxpl_id_vtrans = H5Pcreate(H5P_DATASET_XFER); 
-H5Pset_data_transform(dxpl_id_vtrans,“x+2”);
+dxpl\_id\_vtrans = H5Pcreate(H5P\_DATASET\_XFER); 
+H5Pset\_data\_transform(dxpl\_id\_vtrans,“x+2”);
 
 /* call H5Dread */
-status = H5Dread (dataset, H5T_NATIVE_INT, space_destA, space_src, 
-      dxpl_id_vtrans, destA )
+status = H5Dread (dataset, H5T\_NATIVE\_INT, space\_destA, space\_src, 
+      dxpl\_id\_vtrans, destA )
 2.3   Example B
 In the second example, the application’s memory buffer is2 ax 16 array. The 16 elements read will be distributed non-sequentially in the application’s buffer, as described by a hyperslab selection in the memory dataspace parameter.
 
@@ -162,19 +163,19 @@ int destB[2][16];
 ...
 
 /* define memory dataspace */
-dims_destB[0] = 2; dims_destB[1] = 16;
-space_destB = H5Screate_simple(2,dims_destB,NULL);
+dims\_destB[0] = 2; dims\_destB[1] = 16;
+space\_destB = H5Screate\_simple(2,dims\_destB,NULL);
 
 /* define memory hyperslab selection */
-start_destB[0] = 0; start_destB[1] = 0;
-block_destB[0] = 2; block_destB[1] = 1;
-count_destB[0] = 1;	count_destB[1] = 8;
-stride_destB[0] = 2;	stride_destB[1] = 2;
-status = H5Sselect_hyperslab(space_destB, H5S_SELECT_SET, start_destB, 
-           stride_destB, count_destB, block_destB);
+start\_destB[0] = 0; start\_destB[1] = 0;
+block\_destB[0] = 2; block\_destB[1] = 1;
+count\_destB[0] = 1;	count\_destB[1] = 8;
+stride\_destB[0] = 2;	stride\_destB[1] = 2;
+status = H5Sselect\_hyperslab(space\_destB, H5S\_SELECT\_SET, start\_destB, 
+           stride\_destB, count\_destB, block\_destB);
 
 /* call H5Dread */
-status = H5Dread (dataset, H5T_NATIVE_INT, space_destB, space_src, H5P_DEFAULT, destB
+status = H5Dread (dataset, H5T\_NATIVE\_INT, space\_destB, space\_src, H5P\_DEFAULT, destB
 3. Data Flow Pipeline
 The HDF5 library performs a series of steps when H5Dread is called. For datasets with chunk storage, each chunk that contains data to be read is individually processed. After all of the chunks have been read and processed, the library returns from the H5Dread call.
 
@@ -188,7 +189,7 @@ If one or more filters were applied when the dataset was written, as they were i
 3.2   Step 2: Reverse filter(s)
 Filters in HDF5
 
-The HDF5 library allows applications to specify filters to apply when a dataset is written to an HDF5 file via the H5Pset_filter call. These filters perform operations such as compression, encryption, a checksum computation. Each filter operation applied when a dataset is written must be “reversed” when the dataset is read. For instance, if a dataset was compressed when written, it must be uncompressed when read.
+The HDF5 library allows applications to specify filters to apply when a dataset is written to an HDF5 file via the H5Pset\_filter call. These filters perform operations such as compression, encryption, a checksum computation. Each filter operation applied when a dataset is written must be “reversed” when the dataset is read. For instance, if a dataset was compressed when written, it must be uncompressed when read.
 
 If multiple filters are specified for the write, the application controls the order in which the filter operations are applied to the dataset. The read operation reverses the filter operations in the opposite order to the one used when the dataset was written. That is, the last filter applied when writing is the first filter reversed when reading, and so on.
 
@@ -199,7 +200,7 @@ Using memory in the application’s memory space (heap) that is managed by the H
 
 Checksum error detection
 
- Checksum error detection is enabled by default. H5Pset_edc_check can be used to disable checksum error detection 
+ Checksum error detection is enabled by default. H5Pset\_edc\_check can be used to disable checksum error detection 
 
 3.2.2     Uncompress data
 Again using memory in the application’s memory space (heap) that is managed by the HDF5 library, the DEFLATE filter is reversed and the current chunk is uncompressed.
@@ -209,7 +210,7 @@ HDF5 chunk cache
 
 Every HDF5 dataset with the chunked storage format has an HDF5 chunk cache associated with it. The HDF5 chunk cache for the dataset is allocated from the application’s memory and managed by the HDF5 library. As its name suggests, the cache remains allocated across multiple calls, and is used to provide performance optimizations in accessing data.
 
-The default size of each HDF5 chunk cache is 1 MB in HDF5 Releases 1.6.x and 1.8.x. H5Pset_chunk_cache, introduced in Release 1.8.3, allows control of the chunk cache size on a per‐dataset basis.
+The default size of each HDF5 chunk cache is 1 MB in HDF5 Releases 1.6.x and 1.8.x. H5Pset\_chunk\_cache, introduced in Release 1.8.3, allows control of the chunk cache size on a per‐dataset basis.
 
 If there is sufficient space in dataset D’s chunk cache, the data for the current chunk is stored there. Otherwise, it is temporarily stored on the heap in memory managed by the HDF5 library. Data in the chunk cache always has the disk datatype representation and is always in the “filters reversed” form.
 
@@ -233,7 +234,7 @@ For the purpose of explanation, assume the temporary buffer is 64 bytes. In the 
 
 Temporary buffer size
 
-The default size of the temporary buffer used for datatype conversion and/or value transformation is 1 MB in Release 1.8.2. The size can be controlled with H5Pset_buffer.
+The default size of the temporary buffer used for datatype conversion and/or value transformation is 1 MB in Release 1.8.2. The size can be controlled with H5Pset\_buffer.
 
 The following steps are taken for each chunk.
 

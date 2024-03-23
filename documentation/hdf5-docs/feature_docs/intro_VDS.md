@@ -1,8 +1,9 @@
 ---
 title: Introduction to the Virtual Dataset - VDS
-redirect_from:
+redirect\_from:
 
 ---
+##\*\*\* UNDER CONSTRUCTION \*\*\*
 
 # Introduction to the Virtual Dataset - VDS
 
@@ -22,7 +23,7 @@ The mapping between a VDS and the HDF5 source datasets is persistent and transpa
 
 See the Virtual (VDS) Documentation for complete details regarding the VDS feature.
 
-The VDS feature was implemented using hyperslab selection (H5S_SELECT_HYPERSLAB). See the tutorial on Reading From or Writing to a Subset of a Dataset for more information on selecting hyperslabs.
+The VDS feature was implemented using hyperslab selection (H5S\_SELECT\_HYPERSLAB). See the tutorial on Reading From or Writing to a Subset of a Dataset for more information on selecting hyperslabs.
 
 Programming Model
 To create a Virtual Dataset you simply follow the HDF5 programming model and add a few additional API calls to map the source code datasets to the VDS.
@@ -42,15 +43,15 @@ Access the VDS as a regular HDF5 dataset
 Close the VDS when finished
 
 Functions for Working with a VDS
-The H5P_SET_VIRTUAL API sets the mapping between virtual and source datasets. This is a dataset creation property list. Using this API will change the layout of the dataset to H5D_VIRTUAL. As with specifying any dataset creation property list, an instance of the property list is created, modified, passed into the dataset creation call and then closed:
+The H5P\_SET\_VIRTUAL API sets the mapping between virtual and source datasets. This is a dataset creation property list. Using this API will change the layout of the dataset to H5D\_VIRTUAL. As with specifying any dataset creation property list, an instance of the property list is created, modified, passed into the dataset creation call and then closed:
 
-  dcpl = H5Pcreate (H5P_DATASET_CREATE); 
+  dcpl = H5Pcreate (H5P\_DATASET\_CREATE); 
   
-  src_space = H5screate_simple ...
-  status = H5Sselect_hyperslab (space, ...       
-  status = H5Pset_virtual (dcpl, space, SRC_FILE[i], SRC_DATASET[i], src_space);
+  src\_space = H5screate\_simple ...
+  status = H5Sselect\_hyperslab (space, ...       
+  status = H5Pset\_virtual (dcpl, space, SRC\_FILE[i], SRC\_DATASET[i], src\_space);
 
-  dset = H5Dcreate2 (file, DATASET, H5T_NATIVE_INT, space, H5P_DEFAULT, dcpl, H5P_DEFAULT);
+  dset = H5Dcreate2 (file, DATASET, H5T\_NATIVE\_INT, space, H5P\_DEFAULT, dcpl, H5P\_DEFAULT);
  
   status = H5Pclose (dcpl);
 There are several other APIs introduced with Virtual Datasets, including query functions. For details see the complete list of HDF5 library APIs that support Virtual Datasets
@@ -71,12 +72,12 @@ This example creates three HDF5 files, each with a one-dimensional dataset of 6 
 
 In this example the three source datasets are mapped to the VDS with this code:
 
-    src_space = H5Screate_simple (RANK1, dims, NULL);
+    src\_space = H5Screate\_simple (RANK1, dims, NULL);
     for (i = 0; i < 3; i++) {
-	start[0] = (hsize_t)i;
+	start[0] = (hsize\_t)i;
 	/* Select i-th row in the virtual dataset; selection in the source datasets is the same. */
-	status = H5Sselect_hyperslab (space, H5S_SELECT_SET, start, NULL, count, block);
-	status = H5Pset_virtual (dcpl, space, SRC_FILE[i], SRC_DATASET[i], src_space);
+	status = H5Sselect\_hyperslab (space, H5S\_SELECT\_SET, start, NULL, count, block);
+	status = H5Pset\_virtual (dcpl, space, SRC\_FILE[i], SRC\_DATASET[i], src\_space);
     }
 After the VDS is created and closed, it is reopened. The property list is then queried to determine the layout of the dataset and its mappings, and the data in the VDS is read and printed.
 
@@ -87,11 +88,11 @@ C Example
 For details on compiling an HDF5 application: [ Compiling HDF5 Applications ]
 
 Example 2
-This example shows how to use a C-style printf statement for specifying multiple source datasets as one virtual dataset. Only one mapping is required. In other words only one H5P_SET_VIRTUAL call is needed to map multiple datasets. It creates a 2-dimensional unlimited VDS. Then it re-opens the file, makes queries, and reads the virtual dataset.
+This example shows how to use a C-style printf statement for specifying multiple source datasets as one virtual dataset. Only one mapping is required. In other words only one H5P\_SET\_VIRTUAL call is needed to map multiple datasets. It creates a 2-dimensional unlimited VDS. Then it re-opens the file, makes queries, and reads the virtual dataset.
 
 The source datasets are specified as A-0, A-1, A-2, and A-3. These are mapped to the virtual dataset with one call:
 
-    status = H5Pset_virtual (dcpl, vspace, SRCFILE, "/A-%b", src_space);
+    status = H5Pset\_virtual (dcpl, vspace, SRCFILE, "/A-%b", src\_space);
 
 The %b indicates that the block count of the selection in the dimension should be used.
 
