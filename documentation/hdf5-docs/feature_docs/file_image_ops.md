@@ -18,26 +18,26 @@ redirect_from:
 
    [2.1. Low-level C API Routines](#low-level-c-api-routines)
 
-   [2.1.1. H5Pset\_file\_image](#h5pset_file_image) <br>
-   [2.1.2. H5Pget\_file\_image](#h5pget_file_image) <br>
-   [2.1.3. H5Pset\_file\_image\_callbacks](#h5pset_file_image_callbacks) <br>
-   [2.1.4. H5Pget\_file\_image\_callbacks](#h5pget_file_image_callbacks) <br>
-   [2.1.5. Virtual File Driver Feature Flags](#virtual-file-driver-feature-flags) <br>
-   [2.1.6. H5Fget\_file\_image](#h5fget_file_image)
+   * [H5Pset\_file\_image](#h5pset_file_image) <br>
+   * [H5Pget\_file\_image](#h5pget_file_image) <br>
+   * [H5Pset\_file\_image\_callbacks](#h5pset_file_image_callbacks) <br>
+   * [H5Pget\_file\_image\_callbacks](#h5pget_file_image_callbacks) <br>
+   * [Virtual File Driver Feature Flags](#virtual-file-driver-feature-flags) <br>
+   * [H5Fget\_file\_image](#h5fget_file_image)
 
    [2.2. High-level C API Routine](#high-level-c-api-routine])<br>
-   [2.2.1. H5LTopen\_file\_image](#h5ltopen_file_image)
+   * [H5LTopen\_file\_image](#h5ltopen_file_image)
 
 **[3. C API Call Semantics](#c-api-call-semantics)**
 
    [3.1. File Image Callback Semantics](#file-image-callback-semantics)
 
-   [3.1.1. Buffer Ownership](#buffer-ownership) <br>
-   [3.1.2. Sharing a File image Buffer with the HDF5 Library](#sharing-a-file-image-buffer-with-the-hdf5-library) <br>
-   [3.1.3. File Driver Considerations](#file-driver-considerations)
+   * [Buffer Ownership](#buffer-ownership) <br>
+   * [Sharing a File image Buffer with the HDF5 Library](#sharing-a-file-image-buffer-with-the-hdf5-library) <br>
+   * [File Driver Considerations](#file-driver-considerations)
 
    [3.2. Initial File Image Semantics](#initial-file-image-semantics) <br>
-   [3.2.1 Applying Initial File Image Semantics to the Core File Driver](#applying-initial-file-image-semantics)
+   * [Applying Initial File Image Semantics to the Core File Driver](#applying-initial-file-image-semantics)
 
 **[4. Examples](#examples)**
 
@@ -52,16 +52,16 @@ redirect_from:
 
    [6.1. Low-level Fortran API Routines](#)
 
-   [6.1.1. H5Pset\_file\_image\_f](#)<br>
-   [6.1.2. H5Pget\_file\_image\_f](#)<br>
-   [6.1.3. H5Pset\_file\_image\_callbacks\_f](#)<br>
-   [6.1.4. H5Pget\_file\_image\_callbacks\_f](#)<br>
-   [6.1.5. Fortran Virtual File Driver Feature Flags](#)<br>
-   [6.1.6. H5Fget\_file\_image\_f](#)
+   * [H5Pset\_file\_image\_f](#)<br>
+   * [H5Pget\_file\_image\_f](#)<br>
+   * [H5Pset\_file\_image\_callbacks\_f](#)<br>
+   * [H5Pget\_file\_image\_callbacks\_f](#)<br>
+   * [Fortran Virtual File Driver Feature Flags](#)<br>
+   * [H5Fget\_file\_image\_f](#)
 
    [6.2. High-level Fortran API Routine](#)
 
-   [6.2.1. H5LTopen\_file\_image\_f](#)
+   * [H5LTopen\_file\_image\_f](#)
 
 
 ## 1. Introduction to HDF5 File Image Operations 
