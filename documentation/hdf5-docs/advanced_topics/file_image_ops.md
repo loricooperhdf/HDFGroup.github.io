@@ -1,9 +1,9 @@
 ---
 title: HDF5 File Image Operations
 redirect_from:
-  - /display/HDF5/Migrating+from+HDF5+1.10+to+HDF5+1.12.html
+  - /display/HDF5/HDF5+File+Image+Operations
 ---
-##\*\*\* UNDER CONSTRUCTION \*\*\*
+## \*\*\* UNDER CONSTRUCTION \*\*\*
 
 # HDF5 File Image Operations
 
