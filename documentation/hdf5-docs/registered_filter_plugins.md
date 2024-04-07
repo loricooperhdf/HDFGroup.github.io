@@ -79,7 +79,7 @@ http://www.pytables.org
 Francesc Alted
 Email: faltet at pytables dot org
 
-##
+---
 
 <h2 id="bzip2">BZIP2 Filter</h2>
 
@@ -96,7 +96,7 @@ http://www.pytables.org
 Francesc Alted
 Email: faltet at pytables dot org
 
-##
+---
 
 <h2 id="lzf">LZF Filter</h2>
 
@@ -124,7 +124,7 @@ The LZF library homepage: http://home.schmorp.de/marc/liblzf.html
 Andrew Collette
 Web: http://h5py.org
 
-##
+---
 
 <h2 id="blosc">Blosc Filter</h2>
 
@@ -145,7 +145,7 @@ http://www.pytables.org
 Francesc Alted
 Email: faltet at pytables dot org
 
-##
+---
 
 <h2 id="mafisc">MAFISC Filter</h2>
 
@@ -165,7 +165,7 @@ http://wr.informatik.uni-hamburg.de/research/projects/icomex/mafisc
 Nathanael Huebbe 
 Email: nathanael.huebbe at informatik dot uni-hamburg dot de 
 
-##
+---
 
 <h2 id="snappy">Snappy Filter</h2>
 
@@ -184,7 +184,7 @@ https://github.com/google/snappy
 Lucas C. Villa Real
 Email: lucasvr at gmail dot com
 
-##
+---
 
 <h2 id="lz4">LZ4 Filter</h2>
 
@@ -207,7 +207,7 @@ Although the LZ4 software is not supported by The HDF Group, it is included in T
 Michael Rissi (Dectris Ltd.)
 Email: michael dot rissi at dectris dot com
 
-##
+---
 
 <h2 id="apax">APAX</h2>
 
@@ -215,7 +215,7 @@ Email: michael dot rissi at dectris dot com
 
 Appears to be no longer available
 
-##
+---
 
 <h2 id="cbf">CBF</h2>
 
@@ -230,7 +230,7 @@ License Information: GPL and LGPL
 Herbert J. Bernstein
 Email: yayahjb at gmail dot com
 
-##
+---
 
 <h2 id="jpeg-xr">JPEG-XR</h2>
 
@@ -249,7 +249,7 @@ JPEG-XR Filter for HDF5
 Marvin Albert 
 Email: marvin dot albert at gmail dot com
 
-##
+---
 
 <h2 id="bitshuffle">bitshuffle</h2>
 
@@ -268,7 +268,7 @@ CHIME
 Kiyoshi Masui
 Email: kiyo at physics dot ubc dot ca
 
-##
+---
 
 <h2 id="spdp">SPDP</h2>
 
@@ -286,7 +286,7 @@ http://cs.txstate.edu/~burtscher/research/SPDP/
 Martin Burtscher
 Email: burtscher at txstate dot edu
 
-##
+---
 
 <h2 id="lpc-rice">LPC-Rice</h2>
 
@@ -307,7 +307,7 @@ Email: fvdbergh at csir dot co dot za
 Derick Swanepoel
 Email: dswanepoel at gmail dot com
 
-##
+---
 
 <h2 id="ccsds-123">CCSDS-123</h2>
 
@@ -328,7 +328,7 @@ Email: fvdbergh at csir dot co dot za
 Derick Swanepoel
 Email: dswanepoel at gmail dot com
 
-##
+---
 
 <h2 id="jpeg-ls">JPEG-LS</h2>
 
@@ -349,7 +349,7 @@ Email: fvdbergh at csir dot co dot za
 Derick Swanepoel
 Email: dswanepoel at gmail dot com
 
-##
+---
 
 <h2 id="zfp">zfp</h2>
 
@@ -372,7 +372,7 @@ Email: miller86 at llnl dot gov
 Peter Lindstrom
 Email: pl at llnl dot gov
 
-##
+---
 
 <h2 id="fpzip">fpzip</h2>
 
@@ -390,7 +390,7 @@ For more information see: http://computation.llnl.gov/projects/floating-point-co
 Peter Lindstrom
 Email: pl at llnl dot gov
 
-##
+---
 
 <h2 id="zstandard">Zstandard</h2>
 
@@ -408,7 +408,7 @@ https://github.com/aparamon/HDF5Plugin-Zstandard
 Andrey Paramonov
 Email: paramon at acdlabs dot ru
 
-##
+---
 
 <h2 id="b³d">B³D</h2>
 
@@ -419,7 +419,7 @@ B³D is a fast (~1 GB/s), GPU based image compression method, developed for ligh
 
 [Information](http://www.biorxiv.org/content/early/2017/07/21/164624)
 
-##
+---
 
 <h2 id="sz">SZ</h2>
 
@@ -442,7 +442,7 @@ Email: sdi1 at anl dot gov
 Franck Cappello
 Email: cappello at mcs dot anl dot gov
 
-##
+---
 
 <h2 id="fcidecomp">FCIDECOMP</h2>
 
@@ -462,7 +462,7 @@ ftp://ftp.eumetsat.int/pub/OPS/out/test-data/Test-data-for-External-Users/MTG_FC
 Dr. Daniel Lee
 Email: daniel dot lee at eumetsat dot int
 
-##
+---
 
 <h2 id="jpeg">JPEG</h2>
 
@@ -506,7 +506,7 @@ Common h5repack parameter: UD=32019,0,4,q,c,r,t
 
 Mark Rivers , University of Chicago (rivers at cars.uchicago.edu)
 
-##
+---
 
 <h2 id="vbz">VBZ</h2>
 
@@ -523,7 +523,7 @@ zstd  (https://github.com/facebook/zstd)
 
 George Pimm
 
-##
+---
 
 <h2 id="fapec">FAPEC</h2>
 
@@ -551,7 +551,7 @@ Jordi Portell i de Mora (DAPCOM Data Services S.L.)
 
 fapec at dapcom dot es
 
-##
+---
 
 <h2 id="bitgroom">BitGroom</h2>
 
@@ -571,7 +571,7 @@ The filter is documented and maintained in the Community Codec Repository (https
 
 Charlie Zender  (University of California, Irvine)
 
-##
+---
 
 <h2 id="gbr">Granular BitRound (GBR)</h2>
 
@@ -591,7 +591,7 @@ This filter is documented, implemented, and maintained in the Community Codec Re
 
 Charlie Zender  (University of California, Irvine)
 
-##
+---
 
 <h2 id="sz3">SZ3</h2>
 
@@ -615,7 +615,7 @@ Email: sdi1 at anl dot gov
 Franck Cappello
 Email: cappello at mcs dot anl dot gov
 
-##
+---
 
 <h2 id="delta-rice">Delta-Rice</h2>
 
@@ -634,7 +634,7 @@ This filter is documented, implemented, and maintained at: https://gitlab.com/dg
 David Mathews
 Email: david dot mathews dot 1994 at gmail dot com 
 
-##
+---
 
 <h2 id="blosc2">Blosc2 Filter</h2>
 
@@ -659,7 +659,7 @@ License: https://github.com/Blosc/c-blosc2/blob/main/LICENSE.txt
 Francesc Alted
 Email: faltet at gmail dot org (BDFL for the Blosc project)
 
-##
+---
 
 <h2 id="flac">FLAC Filter</h2>
 
@@ -680,7 +680,7 @@ libFLAC has BSD-like license: https://github.com/xiph/flac/blob/master/CONTRIBUT
 Laurie Stephey
 Email: lastephey at lbl dot gov
 
-##
+---
 
 <h2 id="h5z-sperr">H5Z-SPERR Filter</h2>
 
