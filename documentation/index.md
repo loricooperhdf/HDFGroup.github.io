@@ -23,6 +23,9 @@ Look for more content here soon.
 
 Can't find what you're looking for? Visit [docs.hdfgroup.org](https://docs.hdfgroup.org/hdf5/v1_14/index.html) for many other documents that previously resided on the portal.
 
+## HDF5 Plugins
+* [Registered Filter Plugins](https://github.com/HDFGroup/hdf5_plugins/blob/master/docs/RegisteredFilterPlugins.md)
+
 ## HDF4 
 * [Reference Manual](/documentation/hdf4-docs/HDF4_Reference_Manual.pdf)
 * [User Guide](/documentation/hdf4-docs/HDF4_Users_Guide.pdf)
