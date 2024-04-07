@@ -1,9 +1,11 @@
 Registered Filter Plugins
 -------------------------
+
 Please be sure to see HDF5 Filter Plugins, a convenience software that packages together many of the commonly used filters that users have created and registered.
 
 Information on Registered Filter Plugins
 ----------------------------------------
+
 Members of the HDF5 user community can create and register Third-Party (compression or other) filters for use with HDF5.
 
 To register a filter please contact The HDF Helpdesk with the following information:
@@ -19,6 +21,7 @@ Please contact the maintainer of a filter for help with the filter/compression s
 
 List of Filters Registered with The HDF Group
 ---------------------------------------------
+
 |Filter  |Identifier Name |Short Description|
 |--------|----------------|---------------------|
 |305     |<a href="#lzo">LZO</a> |LZO lossless compression used by PyTables|
