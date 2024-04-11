@@ -14,7 +14,7 @@ Look for more content here soon.
 * [Documentation - 1.12.x](https://docs.hdfgroup.org/hdf5/v1_12/index.html)
 * [Documentation - 1.10.x](https://docs.hdfgroup.org/hdf5/v1_10/index.html)
 * [Documentation - 1.8.x](https://docs.hdfgroup.org/hdf5/v1_8/index.html)
-* [Registered Filter Plugins](/documentation/hdf5-docs/registered_filter_plugins.html)
+* [Registered Filter Plugins](https://github.com/HDFGroup/hdf5_plugins/blob/master/docs/RegisteredFilterPlugins.md)
 * [Registered Virtual File Drivers (VFDs)](/documentation/hdf5-docs/registered_virtual_file_drivers_vfds.html)
 * [Registered VOL Connectors](/documentation/hdf5-docs/registered_vol_connectors.html)
 * [Chunking in HDF5](hdf5-docs/chunking_in_hdf5.md)
