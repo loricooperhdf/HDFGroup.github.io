@@ -1,11 +1,9 @@
 Registered Filter Plugins
 -------------------------
-
 Please be sure to see HDF5 Filter Plugins, a convenience software that packages together many of the commonly used filters that users have created and registered.
 
 Information on Registered Filter Plugins
 ----------------------------------------
-
 Members of the HDF5 user community can create and register Third-Party (compression or other) filters for use with HDF5.
 
 To register a filter please contact The HDF Helpdesk with the following information:
@@ -21,7 +19,6 @@ Please contact the maintainer of a filter for help with the filter/compression s
 
 List of Filters Registered with The HDF Group
 ---------------------------------------------
-
 |Filter  |Identifier Name |Short Description|
 |--------|----------------|---------------------|
 |305     |<a href="#lzo">LZO</a> |LZO lossless compression used by PyTables|
@@ -72,14 +69,14 @@ Distributed under the terms of the GNU General Public License (GPL v2+). Commerc
 Military-grade stability and robustness.
 
 #### Filter Information:
-http://www.oberhumer.com/opensource/lzo/
-http://www.pytables.org
+[http://www.oberhumer.com/opensource/lzo/](http://www.oberhumer.com/opensource/lzo/)
+[http://www.pytables.org](http://www.pytables.org)
 
 #### Contact Information:
 Francesc Alted
 Email: faltet at pytables dot org
 
----
+##
 
 <h2 id="bzip2">BZIP2 Filter</h2>
 
@@ -89,14 +86,14 @@ Email: faltet at pytables dot org
 bzip2 is a freely available, patent free, high-quality data compressor. It typically compresses files to within 10% to 15% of the best available techniques (the PPM family of statistical compressors), whilst being around twice as fast at compression and six times faster at decompression.
 
 #### Filter Information:
-http://www.bzip.org
-http://www.pytables.org
+[http://www.bzip.org](http://www.bzip.org)
+[http://www.pytables.org](http://www.pytables.org)
 
 #### Contact Information:
 Francesc Alted
 Email: faltet at pytables dot org
 
----
+##
 
 <h2 id="lzf">LZF Filter</h2>
 
@@ -107,7 +104,7 @@ The LZF filter is an alternative DEFLATE-style compressor for HDF5 datasets, usi
 
 LZF can be used to compress any data type, and requires no compile-time or run-time configuration. HDF5 versions 1.6.5 through 1.8.3 are supported. The filter is written in C and can be included directly in C or C++ applications; it has no external dependencies. The license is 3-clause BSD (virtually unrestricted, including commercial applications).
 
-More information, downloads, and benchmarks, are available at the http://h5py.org/lzf/.
+More information, downloads, and benchmarks, are available at the [http://h5py.org/lzf/](http://h5py.org/lzf).
 
 Additional Information:
 
@@ -115,16 +112,16 @@ The LZF filter was developed as part of the h5py project, which implements a gen
 
 #### Filter Information:
 
-The h5py homepage: http://h5py.org
+The [h5py homepage](http://h5py.org)
 
-The LZF library homepage: http://home.schmorp.de/marc/liblzf.html
+The [LZF library homepage](http://home.schmorp.de/marc/liblzf.html)
 
 #### Contact Information:
 
 Andrew Collette
-Web: http://h5py.org
+Web: [http://h5py.org](http://h5py.org)
 
----
+##
 
 <h2 id="blosc">Blosc Filter</h2>
 
@@ -137,15 +134,15 @@ It uses advanced cache-efficient techniques to reduce activity on the memory bus
 
 #### Filter Information:
 
-http://blosc.org/
-http://www.pytables.org
+[http://blosc.org/](http://blosc.org/)
+[http://www.pytables.org](http://www.pytables.org)
 
 #### Contact Information:
 
 Francesc Alted
 Email: faltet at pytables dot org
 
----
+##
 
 <h2 id="mafisc">MAFISC Filter</h2>
 
@@ -158,14 +155,14 @@ The software is currently under a rather unrestrictive two clause BSD style lice
 
 #### Filter Information:
 
-http://wr.informatik.uni-hamburg.de/research/projects/icomex/mafisc
+[http://wr.informatik.uni-hamburg.de/research/projects/icomex/mafisc](http://wr.informatik.uni-hamburg.de/research/projects/icomex/mafisc)
 
 #### Contact Information:
 
 Nathanael Huebbe 
 Email: nathanael.huebbe at informatik dot uni-hamburg dot de 
 
----
+##
 
 <h2 id="snappy">Snappy Filter</h2>
 
@@ -176,15 +173,15 @@ Snappy-CUDA is a compression/decompression library that leverages GPU processing
 
 #### Filter Information:
 
-https://github.com/lucasvr/snappy-cuda
-https://github.com/google/snappy
+[https://github.com/lucasvr/snappy-cuda](https://github.com/lucasvr/snappy-cuda)
+[https://github.com/google/snappy](https://github.com/google/snappy)
 
 #### Contact Information:
 
 Lucas C. Villa Real
 Email: lucasvr at gmail dot com
 
----
+##
 
 <h2 id="lz4">LZ4 Filter</h2>
 
@@ -195,7 +192,7 @@ LZ4 is a very fast lossless compression algorithm, providing compression speed a
 
 #### Filter Information:
 
-LZ4 Algorithm:   https://github.com/nexusformat/HDF5-External-Filter-Plugins/tree/master/LZ4
+[LZ4 Algorithm](https://github.com/nexusformat/HDF5-External-Filter-Plugins/tree/master/LZ4)
 
 LZ4 Code:
 
@@ -207,7 +204,7 @@ Although the LZ4 software is not supported by The HDF Group, it is included in T
 Michael Rissi (Dectris Ltd.)
 Email: michael dot rissi at dectris dot com
 
----
+##
 
 <h2 id="apax">APAX</h2>
 
@@ -215,7 +212,7 @@ Email: michael dot rissi at dectris dot com
 
 Appears to be no longer available
 
----
+##
 
 <h2 id="cbf">CBF</h2>
 
@@ -230,7 +227,7 @@ License Information: GPL and LGPL
 Herbert J. Bernstein
 Email: yayahjb at gmail dot com
 
----
+##
 
 <h2 id="jpeg-xr">JPEG-XR</h2>
 
@@ -249,7 +246,7 @@ JPEG-XR Filter for HDF5
 Marvin Albert 
 Email: marvin dot albert at gmail dot com
 
----
+##
 
 <h2 id="bitshuffle">bitshuffle</h2>
 
@@ -268,7 +265,7 @@ CHIME
 Kiyoshi Masui
 Email: kiyo at physics dot ubc dot ca
 
----
+##
 
 <h2 id="spdp">SPDP</h2>
 
@@ -279,14 +276,14 @@ SPDP is a fast, lossless, unified compression/decompression algorithm designed f
 
 #### Filter Information:
 
-http://cs.txstate.edu/~burtscher/research/SPDP/
+[http://cs.txstate.edu/~burtscher/research/SPDP/](http://cs.txstate.edu/~burtscher/research/SPDP/)
 
 #### Contact Information:
 
 Martin Burtscher
 Email: burtscher at txstate dot edu
 
----
+##
 
 <h2 id="lpc-rice">LPC-Rice</h2>
 
@@ -297,7 +294,7 @@ LPC-Rice is a fast lossless compression codec that employs Linear Predictive Cod
 
 #### Filter Information:
 
-https://sourceforge.net/projects/lpcrice/
+[https://sourceforge.net/projects/lpcrice/](https://sourceforge.net/projects/lpcrice/)
 
 #### Contact Information:
 
@@ -307,7 +304,7 @@ Email: fvdbergh at csir dot co dot za
 Derick Swanepoel
 Email: dswanepoel at gmail dot com
 
----
+##
 
 <h2 id="ccsds-123">CCSDS-123</h2>
 
@@ -318,7 +315,7 @@ CCSDS-123 is a multi-threaded HDF5 compression filter using the ESA CCSDS-123 im
 
 #### Filter Information:
 
-https://sourceforge.net/projects/ccsds123-hdf-filter/
+[https://sourceforge.net/projects/ccsds123-hdf-filter/](https://sourceforge.net/projects/ccsds123-hdf-filter/)
 
 #### Contact Information:
 
@@ -328,7 +325,7 @@ Email: fvdbergh at csir dot co dot za
 Derick Swanepoel
 Email: dswanepoel at gmail dot com
 
----
+##
 
 <h2 id="jpeg-ls">JPEG-LS</h2>
 
@@ -339,7 +336,7 @@ JPEG-LS is a multi-threaded HDF5 compression filter using the CharLS JPEG-LS imp
 
 #### Filter Information:
 
-https://sourceforge.net/projects/jpegls-hdf-filter/
+[https://sourceforge.net/projects/jpegls-hdf-filter/](https://sourceforge.net/projects/jpegls-hdf-filter/)
 
 #### Contact Information:
 
@@ -349,7 +346,7 @@ Email: fvdbergh at csir dot co dot za
 Derick Swanepoel
 Email: dswanepoel at gmail dot com
 
----
+##
 
 <h2 id="zfp">zfp</h2>
 
@@ -360,9 +357,9 @@ zfp is a BSD licensed open source C++ library for compressed floating-point arra
 
 #### Filter Information:
 
-https://github.com/LLNL/H5Z-ZFP
+[https://github.com/LLNL/H5Z-ZFP](https://github.com/LLNL/H5Z-ZFP)
 
-For more information see: http://computation.llnl.gov/projects/floating-point-compression/
+For more information see: [http://computation.llnl.gov/projects/floating-point-compression/](For more information see: http://computation.llnl.gov/projects/floating-point-compression/)
 
 #### Contact Information:
 
@@ -372,7 +369,7 @@ Email: miller86 at llnl dot gov
 Peter Lindstrom
 Email: pl at llnl dot gov
 
----
+##
 
 <h2 id="fpzip">fpzip</h2>
 
@@ -383,14 +380,14 @@ fpzip is a library for lossless or lossy compression of 2D or 3D floating-point 
 
 #### Filter Information:
 
-For more information see: http://computation.llnl.gov/projects/floating-point-compression/
+For more information see: [http://computation.llnl.gov/projects/floating-point-compression/](For more information see: http://computation.llnl.gov/projects/floating-point-compression/)
 
 #### Contact Information:
 
 Peter Lindstrom
 Email: pl at llnl dot gov
 
----
+##
 
 <h2 id="zstandard">Zstandard</h2>
 
@@ -401,14 +398,14 @@ Zstandard is a real-time compression algorithm, providing high compression ratio
 
 #### Filter Information:
 
-https://github.com/aparamon/HDF5Plugin-Zstandard
+[https://github.com/aparamon/HDF5Plugin-Zstandard](https://github.com/aparamon/HDF5Plugin-Zstandard)
 
 #### Contact Information:
 
 Andrey Paramonov
 Email: paramon at acdlabs dot ru
 
----
+##
 
 <h2 id="b³d">B³D</h2>
 
@@ -419,7 +416,7 @@ B³D is a fast (~1 GB/s), GPU based image compression method, developed for ligh
 
 [Information](http://www.biorxiv.org/content/early/2017/07/21/164624)
 
----
+##
 
 <h2 id="sz">SZ</h2>
 
@@ -442,7 +439,7 @@ Email: sdi1 at anl dot gov
 Franck Cappello
 Email: cappello at mcs dot anl dot gov
 
----
+##
 
 <h2 id="fcidecomp">FCIDECOMP</h2>
 
@@ -462,7 +459,7 @@ ftp://ftp.eumetsat.int/pub/OPS/out/test-data/Test-data-for-External-Users/MTG_FC
 Dr. Daniel Lee
 Email: daniel dot lee at eumetsat dot int
 
----
+##
 
 <h2 id="jpeg">JPEG</h2>
 
@@ -477,7 +474,7 @@ Information
 Github
 License
 
-libjpeg: This library is available as a package for most Linux distributions, and source code is available from https://www.ijg.org/.
+libjpeg: This library is available as a package for most Linux distributions, and source code is available from [https://www.ijg.org/](https://www.ijg.org).
 
 Restrictions:
 
@@ -506,7 +503,7 @@ Common h5repack parameter: UD=32019,0,4,q,c,r,t
 
 Mark Rivers , University of Chicago (rivers at cars.uchicago.edu)
 
----
+##
 
 <h2 id="vbz">VBZ</h2>
 
@@ -515,15 +512,14 @@ Mark Rivers , University of Chicago (rivers at cars.uchicago.edu)
 #### Filter Description:
 This filter is used by Oxford Nanopore specifically to compress raw dna signal data (signed integer). To achieve this it uses both:
 
-streamvbyte (https://github.com/lemire/streamvbyte)
-
-zstd  (https://github.com/facebook/zstd) 
+[streamvbyte](https://github.com/lemire/streamvbyte)
+[zstd](https://github.com/facebook/zstd) 
 
 #### Contact Information:
 
 George Pimm
 
----
+##
 
 <h2 id="fapec">FAPEC</h2>
 
@@ -541,9 +537,9 @@ The FAPEC library and CLI runs on Linux, Windows and Mac. The HDF5 user must req
 
 #### Filter Information:
 
-https://www.dapcom.es/fapec/
-https://www.dapcom.es/get-fapec/
-https://www.dapcom.es/resources/FAPEC_EndUserLicenseAgreement.pdf
+[https://www.dapcom.es/fapec/](https://www.dapcom.es/fapec/)
+[https://www.dapcom.es/get-fapec/](https://www.dapcom.es/get-fapec/)
+[https://www.dapcom.es/resources/FAPEC_EndUserLicenseAgreement.pdf](https://www.dapcom.es/resources/FAPEC_EndUserLicenseAgreement.pdf)
 
 #### Contact Information:
 
@@ -551,7 +547,7 @@ Jordi Portell i de Mora (DAPCOM Data Services S.L.)
 
 fapec at dapcom dot es
 
----
+##
 
 <h2 id="bitgroom">BitGroom</h2>
 
@@ -565,13 +561,13 @@ Zender, C. S. (2016), Bit Grooming: Statistically accurate precision-preserving 
 
 #### Filter Information:
 
-The filter is documented and maintained in the Community Codec Repository (https://github.com/ccr/ccr).
+The filter is documented and maintained in the [Community Codec Repository](https://github.com/ccr/ccr).
 
 #### Contact Information:
 
 Charlie Zender  (University of California, Irvine)
 
----
+##
 
 <h2 id="gbr">Granular BitRound (GBR)</h2>
 
@@ -585,13 +581,13 @@ Zender, C. S. (2016), Bit Grooming: Statistically accurate precision-preserving 
 
 #### Filter Information:
 
-This filter is documented, implemented, and maintained in the Community Codec Repository (https://github.com/ccr/ccr).
+This filter is documented, implemented, and maintained in the [Community Codec Repository](https://github.com/ccr/ccr).
 
 #### Contact Information:
 
 Charlie Zender  (University of California, Irvine)
 
----
+##
 
 <h2 id="sz3">SZ3</h2>
 
@@ -603,9 +599,9 @@ SZ3 is a modular error-bounded lossy compression framework for scientific datase
 
 #### Filter Information:
 
-This filter is documented, implemented, and maintained in github: https://github.com/szcompressor/SZ3.
+This filter is documented, implemented, and maintained in github: [https://github.com/szcompressor/SZ3](https://github.com/szcompressor/SZ3).
 
-License: https://github.com/szcompressor/SZ/blob/master/copyright-and-BSD-license.txt 
+[License](https://github.com/szcompressor/SZ/blob/master/copyright-and-BSD-license.txt )
 
 #### Contact Information:
 
@@ -615,7 +611,7 @@ Email: sdi1 at anl dot gov
 Franck Cappello
 Email: cappello at mcs dot anl dot gov
 
----
+##
 
 <h2 id="delta-rice">Delta-Rice</h2>
 
@@ -627,14 +623,14 @@ Lossless compression algorithm optimized for digitized analog signals based on d
 
 #### Filter Information:
 
-This filter is documented, implemented, and maintained at: https://gitlab.com/dgma224/deltarice.
+This filter is documented, implemented, and maintained at: [https://gitlab.com/dgma224/deltarice](https://gitlab.com/dgma224/deltarice).
 
 #### Contact Information:
 
 David Mathews
 Email: david dot mathews dot 1994 at gmail dot com 
 
----
+##
 
 <h2 id="blosc2">Blosc2 Filter</h2>
 
@@ -648,18 +644,18 @@ C-Blosc2 is the new major version of C-Blosc, and tries hard to be backward comp
 
 #### Filter Information:
 
-Blosc project: https://www.blosc.org
+[Blosc project](https://www.blosc.org)
 
-C-Blosc2 docs: https://www.blosc.org/c-blosc2/c-blosc2.html
+[C-Blosc2 docs](https://www.blosc.org/c-blosc2/c-blosc2.html)
 
-License: https://github.com/Blosc/c-blosc2/blob/main/LICENSE.txt
+[License](https://github.com/Blosc/c-blosc2/blob/main/LICENSE.txt)
 
 #### Contact Information:
 
 Francesc Alted
 Email: faltet at gmail dot org (BDFL for the Blosc project)
 
----
+##
 
 <h2 id="flac">FLAC Filter</h2>
 
@@ -667,20 +663,20 @@ Email: faltet at gmail dot org (BDFL for the Blosc project)
 
 #### Filter Description:
 
-FLAC is an audio compression filter in HDF5. (Our ultimate goal is to use it via h5py in the hdf5plugin library: https://github.com/silx-kit/hdf5plugin).
+FLAC is an audio compression filter in HDF5. (Our ultimate goal is to use it via h5py in the [hdf5plugin library](https://github.com/silx-kit/hdf5plugin).
 
 #### Filter Information:
 
-The FLAC filter is open source: https://github.com/xiph/flac
+The FLAC filter is open source: [https://github.com/xiph/flac](https://github.com/xiph/flac)
 
-libFLAC has BSD-like license: https://github.com/xiph/flac/blob/master/CONTRIBUTING.md
+libFLAC has BSD-like [license](https://github.com/xiph/flac/blob/master/CONTRIBUTING.md)
 
 #### Contact Information:
 
 Laurie Stephey
 Email: lastephey at lbl dot gov
 
----
+##
 
 <h2 id="h5z-sperr">H5Z-SPERR Filter</h2>
 
@@ -688,11 +684,11 @@ Email: lastephey at lbl dot gov
 
 #### Filter Description:
 
-SPERR is a wavelet-based lossy compressor for floating-point scientific data; it achieves one of the best compression ratios given a user-prescribed error tolerance (i.e., maximum point-wise error). SPERR also supports two distinctive decoding modes, namely "flexible-rate decoding" and "multi-resolution decoding," that facilitate data analysis with various constraints. More details are available on SPERR Github repository: https://github.com/NCAR/SPERR.
+SPERR is a wavelet-based lossy compressor for floating-point scientific data; it achieves one of the best compression ratios given a user-prescribed error tolerance (i.e., maximum point-wise error). SPERR also supports two distinctive decoding modes, namely "flexible-rate decoding" and "multi-resolution decoding," that facilitate data analysis with various constraints. More details are available on SPERR Github repository: [https://github.com/NCAR/SPERR](https://github.com/NCAR/SPERR).
 
 #### Filter Information:
 
-H5Z-SPERR is the HDF5 filter for SPERR. It's also available on Github: https://github.com/NCAR/H5Z-SPERR.
+H5Z-SPERR is the HDF5 filter for SPERR. It's also available on Github: [https://github.com/NCAR/H5Z-SPERR](https://github.com/NCAR/H5Z-SPERR)
 
 #### Contact Information:
 Samuel Li
