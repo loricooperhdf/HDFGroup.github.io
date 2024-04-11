@@ -80,36 +80,26 @@ Functions used in file image operations are listed below.
 
 Function Listing 1. File image operations functions
 
-H5Pset\_file\_image
-
-Allows an application to specify an initial file image. For more information, see section 2.1.1.
-H5Pget\_file\_image	Allows an application to retrieve a copy of the file image designated for a VFD to use as the initial contents of a file. For more information, see section 2.1.2.
-H5Pset\_file\_image\_callbacks	Allows an application to manage file image buffer allocation, copying, reallocation, and release. For more information, see section 2.1.3.
-H5Pget\_file\_image\_callbacks	Allows an application to obtain the current file image callbacks from a file access property list. For more information, see section 2.1.4.
-H5Fget\_file\_image	Provides a simple way to retrieve a copy of the image of an existing, open file. For more information, see section 2.1.6.
-H5LTopen\_file\_image	Provides a convenient way to open an initial file image with the Core VFD. For more information, see section 2.2.1.
+| C Function | Purpose   |
+| ---------- | --------- |
+| H5Pset\_file\_image    | Allows an application to specify an initial file image. For more information, see section 2.1.1. |
+| H5Pget\_file\_image    | Allows an application to retrieve a copy of the file image designated for a VFD to use as the initial contents of a file. For more information, see section 2.1.2. |
+| H5Pset\_file\_image\_callbacks | Allows an application to manage file image buffer allocation, copying, reallocation, and release. For more information, see section 2.1.3. |
+| H5Pget\_file\_image\_callbacks | Allows an application to obtain the current file image callbacks from a file access property list. For more information, see section 2.1.4. |
+| H5Fget\_file\_image | Provides a simple way to retrieve a copy of the image of an existing, open file. For more information, see section 2.1.6. |
+| H5LTopen\_file\_image | Provides a convenient way to open an initial file image with the Core VFD. For more information, see section 2.2.1. |
 
 ### 1.2. Abbreviations
 
-The following abbreviations are used in this document:
-
-
+The abbreviations in Table 1 are used in this document.
 
 Table 1. Abbreviations
 
-
-
-FAPL or fapl
-
-File Access Property List. In code samples, fapl is used.
-
-VFD
-
-Virtual File Driver
-
-VFL
-
-Virtual File Layer
+| Abbreviation | This abbreviation is short for |
+| ------------ | ------------------------------ |
+| FAPL or fapl | File Access Property List. In code samples, fapl is used. |
+| VFD          | Virtual File Driver |
+| VFL          | Virtual File Layer |
 
 ### 1.3. Developer Prerequisites
 Developers who use the file image operations described in this document should be proficient and experienced users of the HDF5 C Library APIs. More specifically, developers should have a working knowledge of property lists, callbacks, and virtual file drivers.
@@ -117,13 +107,13 @@ Developers who use the file image operations described in this document should b
 ### 1.4. Resources
 See the following for more information.
 
-The “RFC: File Image Operations” is the primary source for the information in this document.
+The [RFC: File Image Operations](https://docs.hdfgroup.org/hdf5/rfc/HDF5FileImageOperations.pdf) is the primary source for the information in this document.
 
-The “Alternate File Storage Layouts and Low-level File Drivers” section is in “The HDF5 File” chapter of the HDF5 User’s Guide .
+The [Alternate File Storage Layouts and Low-level File Drivers](https://docs.hdfgroup.org/hdf5/develop/_h5_f__u_g.html#subsec_file_alternate_drivers) section is in “The HDF5 File” chapter of the [HDF5 User’s Guide](https://docs.hdfgroup.org/hdf5/develop/_u_g.html).
 
 The H5P\_SET\_FAPL\_CORE function call can be used to modify the file access property list so that the Memory virtual file driver, H5FD\_ CORE, is used. The Memory file driver is also known as the Core file driver.
 
-Links to the Virtual File Layer and List of VFL Functions documents can be found in the HDF5 Technical Notes.
+Links to the [Virtual File Layer](https://docs.hdfgroup.org/hdf5/develop/_v_f_l.html) and List of VFL Functions documents can be found in the HDF5 Technical Notes.
 
 ## 2. C API Call Syntax
 The C API function calls described in this chapter fall into two categories: low-level routines that are part of the main HDF5 C Library and one high-level routine that is part of the “lite” API in the high-level wrapper library. The high-level routine uses the low-level routines and presents frequently requested functionality conveniently packaged for application developers’ use.
