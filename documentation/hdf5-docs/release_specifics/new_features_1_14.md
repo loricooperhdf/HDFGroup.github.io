@@ -8,19 +8,13 @@ redirect_from:
 
 The new features in the HDF4 1.14 series include:
 
-* [16 bit floating point and Complex number datatypes](https://docs.hdfgroup.org/hdf5/rfc/RFC__Adding_support_for_16_bit_floating_point_and_Complex_number_datatypes_to_HDF5.pdf)
-Better support for 16-bit floating-point data was added to HDF5 for platforms where the
-\_Float16 C datatype is available. On platforms where this support is available, this can
-enable more efficient storage of floating-point data when an application doesn't require
-the precision of larger floating-point datatypes. It can also allow for improved performance
-when converting between 16-bit floating-point data and data of another HDF5 datatype.
-Additionally, several optimizations were made to HDF5 to increase the performance of
-data conversion operations in general. These optimizations resulted in a 3x to 10x increase
-in performance of compound-type data conversions on average, as well as a 100x increase
-in performance in specific cases when converting floating-point data to integer data. Further,
-several fixes were made to HDF5 for software bugs that could cause accesses of invalid
-memory and application crashes or could return incorrect data when working with 16-bit
-floating-point data.
+* [16 bit floating point and Complex number datatypes](https://github.com/HDFGroup/hdf5doc/blob/master/RFCs/HDF5_Library/Float16/RFC__Adding_support_for_16_bit_floating_point_and_Complex_number_datatypes_to_HDF5.pdf)
+Support for the 16-bit floating-point \_Float16 C type has been added to
+HDF5. On platforms where this type is available, this can enable more
+efficient storage of floating-point data when an application doesn't
+need the precision of larger floating-point datatypes. It can also allow
+for improved performance when converting between 16-bit floating-point
+data and data of another HDF5 datatype.
 
 * [Asynchronous I/O operations](asyn_ops_wHDF5_VOL_connectors.md)
 HDF5 provides asynchronous APIs for the HDF5 VOL connectors that
