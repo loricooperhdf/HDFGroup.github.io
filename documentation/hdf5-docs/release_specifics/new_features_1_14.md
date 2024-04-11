@@ -6,7 +6,21 @@ redirect_from:
 
 # New Features in HDF5 1.14
 
-HDF5 Release 1.14.0 is the final released version of all the features that were released in 1.13.0-1.13.3.  Thus, the new features in the HDF4 1.14 release include:
+The new features in the HDF4 1.14 series include:
+
+* [16 bit floating point and Complex number datatypes](https://docs.hdfgroup.org/hdf5/rfc/RFC__Adding_support_for_16_bit_floating_point_and_Complex_number_datatypes_to_HDF5.pdf)
+Better support for 16-bit floating-point data was added to HDF5 for platforms where the
+\_Float16 C datatype is available. On platforms where this support is available, this can
+enable more efficient storage of floating-point data when an application doesn't require
+the precision of larger floating-point datatypes. It can also allow for improved performance
+when converting between 16-bit floating-point data and data of another HDF5 datatype.
+Additionally, several optimizations were made to HDF5 to increase the performance of
+data conversion operations in general. These optimizations resulted in a 3x to 10x increase
+in performance of compound-type data conversions on average, as well as a 100x increase
+in performance in specific cases when converting floating-point data to integer data. Further,
+several fixes were made to HDF5 for software bugs that could cause accesses of invalid
+memory and application crashes or could return incorrect data when working with 16-bit
+floating-point data.
 
 * [Asynchronous I/O operations](asyn_ops_wHDF5_VOL_connectors.md)
 HDF5 provides asynchronous APIs for the HDF5 VOL connectors that
@@ -14,7 +28,7 @@ support asynchronous HDF5 operations using the HDF5 Event Set (H5ES)
 API. This allows I/O to proceed in the background while the application
 is performing other tasks.
 
-* [Subfiling VFD](http://docs.hdfgroup.org/hdf5/rfc/RFC_VFD_subfiling_200424.pdf)
+* [Subfiling VFD](https://docs.hdfgroup.org/hdf5/rfc/RFC_VFD_subfiling_200424.pdf)
 The basic idea behind sub-filing is to find the middle ground between
 single shared file and one file per process - thereby avoiding some
 of the complexity of one file per process, and minimizing the locking
@@ -44,3 +58,5 @@ also including critical logging capabilities to capture outputs from
 applying the serial tools over large collections of HDF5 files.
 
  
+Note that the HDF5 Release 1.14.0 is the final released version of all the features
+that were released in 1.13.0-1.13.3.
