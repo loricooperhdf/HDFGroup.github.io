@@ -1,1 +1,0 @@
-Destination of FTP contents? 
