@@ -13,7 +13,7 @@ See [API Compatibility Macros](api_comp_macros.html) in HDF5 for details on usin
 
 * [Compatibility report for Release 1.14.4 versus Release 1.14.3](https://github.com/HDFGroup/hdf5/releases/download/hdf5_1.14.4.2/hdf5-1.14.4-2.html.abi.reports.tar.gz)
 * [Compatibility report for Release 1.14.3 versus Release 1.14.2](https://htmlpreview.github.io/?https://raw.githubusercontent.com/HDFGroup/hdf5doc/master/html/ADGuide/Compatibility_Report/hdf5-1.14.2-vs-hdf5-1.14.3-interface_compatibility_report.html)
-* [Compatibility report for Release 1.14.2 versus Release 1.14.1](https://htmlpreview.github.io/?https://raw.githubusercontent.com/HDFGroup/hdf5doc/master/html/ADGuide/Compatibility_Report/hdf5-1.14.1-vs-hdf5-1.14.2-interface_compatibility_report.html)
+* [Compatibility report for Release 1.14.2 versus Release 1.14.1](https://htmlpreview.github.io/?https://raw.githubusercontent.com/HDFGroup/hdf5doc/master/html/ADGuide/Compatibility_Report/hdf5-1.14.1-2-vs-hdf5-1.14.2-interface_compatibility_report.html)
 * [Compatibility report for Release 1.14.1 versus Release 1.14.0](https://htmlpreview.github.io/?https://raw.githubusercontent.com/HDFGroup/hdf5doc/master/html/ADGuide/Compatibility_Report/hdf5-1.14.0-vs-hdf5-1.14.1-interface_compatibility_report.html)
 * [Compatibility report for Release 1.14.0 versus Release 1.12.2](https://htmlpreview.github.io/?https://raw.githubusercontent.com/HDFGroup/hdf5doc/master/html/ADGuide/Compatibility_Report/hdf5-1.12.2-vs-hdf5-1.14.0-interface_compatibility_report.html)
 
@@ -51,7 +51,7 @@ Following are the new APIs/macros introduced in HDF5-1.14.4.
 | ------------------ | ----------------------------------- |
 | H5T_IEEE_F16BE     | 16-bit big-endian IEEE floating-point numbers |
 | H5T_IEEE_F16LE     | 16-bit little-endian IEEE floating-point numbers |
-| H5T_NATIVE_FLOAT16 | C-style <code>\_Float16</code> |
+| H5T_NATIVE_FLOAT16 | C-style `_Float16` |
 
 * [Compatibility report for Release 1.14.4 versus Release 1.14.3](https://github.com/HDFGroup/hdf5/releases/download/hdf5_1.14.4.2/hdf5-1.14.4-2.html.abi.reports.tar.gz)
 
@@ -66,26 +66,26 @@ Following are the new APIs introduced in HDF5-1.14.3.
 
 | Function                           | Description                         |
 | ---------------------------------- | ----------------------------------- |
-| H5Pget_actual_selection_io_mode()  | Retrieves actual selection I/O mode |
+| H5Pget_actual_selection_io_mode()  | Retrieves the type(s) of I/O performed on raw data |
 
 #### In the Fortran Interface
 
 | Function                           | Description                         |
 | ---------------------------------- | ----------------------------------- |
-| h5get_free_list_sizes_f | Retrieves actual selection I/O mode |
-| h5dwrite_chunk_f | Retrieves actual selection I/O mode |
-| h5dread_chunk_f | Retrieves actual selection I/O mode |
-| h5fget_info_f | Retrieves actual selection I/O mode |
-| h5lvisit_f | Retrieves actual selection I/O mode |
-| h5lvisit_by_name_f | Retrieves actual selection I/O mode |
-| h5pget_no_selection_io_cause_f | Retrieves actual selection I/O mode |
-| h5pget_mpio_no_collective_cause_f | Retrieves actual selection I/O mode |
-| h5sselect_shape_same_f | Retrieves actual selection I/O mode |
-| h5sselect_intersect_block_f | Retrieves actual selection I/O mode |
-| h5pget_file_space_page_size_f | Retrieves actual selection I/O mode |
-| h5pset_file_space_page_size_f | Retrieves actual selection I/O mode |
-| h5pget_file_space_strategy_f | Retrieves actual selection I/O mode |
-| h5pset_file_space_strategy_f | Retrieves actual selection I/O mode |
+| h5get_free_list_sizes_f | Gets the current size of the free lists used to manage memory |
+| h5dwrite_chunk_f | Writes a raw data chunk from a buffer directly to a dataset in a file |
+| h5dread_chunk_f | Reads a raw data chunk directly from a dataset in a file into a buffer |
+| h5fget_info_f | Retrieves global file information |
+| h5lvisit_f | Recursively visits all links starting from a specified group |
+| h5lvisit_by_name_f | Recursively visits all links starting from a specified group |
+| h5pget_no_selection_io_cause_f | Retrieves the cause for not performing selection or vector I/O on the last parallel I/O call |
+| h5pget_mpio_no_collective_cause_f | Retrieves local and global causes that broke collective I/O on the last parallel I/O call |
+| h5sselect_shape_same_f | Checks if two selections are the same shape |
+| h5sselect_intersect_block_f | Checks if current selection intersects with a block |
+| h5pget_file_space_page_size_f | Gets the file space page size for a file creation property list |
+| h5pset_file_space_page_size_f | Sets the file space page size for a file creation property list |
+| h5pget_file_space_strategy_f | Gets the file space handling strategy and persisting free-space values for a file creation property list |
+| h5pset_file_space_strategy_f | Sets the file space handling strategy and persisting free-space values for a file creation property list |
 
 In addition, there are other new Fortran functions including the Fortran async APIs
 and the Fortran VOL capability definitions.
