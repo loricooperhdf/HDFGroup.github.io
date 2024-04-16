@@ -11,8 +11,10 @@ redirect_from:
 See [API Compatibility Macros](api_comp_macros.html) in HDF5 for details on using HDF5 version 1.14 with previous releases.
 
 
+* [Compatibility report for Release 1.14.4 versus Release 1.14.3](https://github.com/HDFGroup/hdf5/releases/download/hdf5_1.14.4.2/hdf5-1.14.4-2.html.abi.reports.tar.gz)
+* [Compatibility report for Release 1.14.3 versus Release 1.14.2](https://htmlpreview.github.io/?https://raw.githubusercontent.com/HDFGroup/hdf5doc/master/html/ADGuide/Compatibility_Report/hdf5-1.14.2-vs-hdf5-1.14.3-interface_compatibility_report.html)
+* [Compatibility report for Release 1.14.2 versus Release 1.14.1](https://htmlpreview.github.io/?https://raw.githubusercontent.com/HDFGroup/hdf5doc/master/html/ADGuide/Compatibility_Report/hdf5-1.14.1-vs-hdf5-1.14.2-interface_compatibility_report.html)
 * [Compatibility report for Release 1.14.1 versus Release 1.14.0](https://htmlpreview.github.io/?https://raw.githubusercontent.com/HDFGroup/hdf5doc/master/html/ADGuide/Compatibility_Report/hdf5-1.14.0-vs-hdf5-1.14.1-interface_compatibility_report.html)
-
 * [Compatibility report for Release 1.14.0 versus Release 1.12.2](https://htmlpreview.github.io/?https://raw.githubusercontent.com/HDFGroup/hdf5doc/master/html/ADGuide/Compatibility_Report/hdf5-1.12.2-vs-hdf5-1.14.0-interface_compatibility_report.html)
 
  
@@ -34,6 +36,24 @@ The following information is included below.
 The release notes also list changes made to the library, but these notes tend to be more at a more detail-oriented level. The release notes may include new features, bugs fixed, supported configuration features, platforms on which the library has been tested, and known problems. The release note files are listed in each release section and can be found at the top level of the HDF5 source code tree in the release\_docs directory.
 
 <h2 id="4versus3">Release 1.14.4 versus Release 1.14.3</h2>
+
+### New and Changed Functions, Classes, Subroutines, Wrappers, and Macros
+Following are the new APIs/macros introduced in HDF5-1.14.4.
+
+#### In the C Interface (main library)
+
+| Function                             | Description                                  |
+| ------------------------------------ | -------------------------------------------- |
+| H5Pget_relax_file_integrity_checks() | Retrieves relaxed file integrity check flags |
+| H5Pset_relax_file_integrity_checks() | Relaxes certain file integrity checks        |
+
+| Macro              | Description                         |
+| ------------------ | ----------------------------------- |
+| H5T_IEEE_F16BE     | 16-bit big-endian IEEE floating-point numbers |
+| H5T_IEEE_F16LE     | 16-bit little-endian IEEE floating-point numbers |
+| H5T_NATIVE_FLOAT16 | C-style <code>\_Float16</code> |
+
+* [Compatibility report for Release 1.14.4 versus Release 1.14.3](https://github.com/HDFGroup/hdf5/releases/download/hdf5_1.14.4.2/hdf5-1.14.4-2.html.abi.reports.tar.gz)
 
 <h2 id="3versus2">Release 1.14.3 versus Release 1.14.2</h2>
 
