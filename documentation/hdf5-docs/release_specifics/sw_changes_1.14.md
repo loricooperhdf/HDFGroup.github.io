@@ -8,7 +8,7 @@ redirect_from:
 
 ## API Compatibility
 
-See [API Compatibility Macros](api_comp_macros.html) in HDF5 for details on using HDF5 version 1.14 with previous releases.
+See [API Compatibility Macros](https://docs.hdfgroup.org/hdf5/develop/api-compat-macros.html) in HDF5 for details on using HDF5 version 1.14 with previous releases.
 
 
 * [Compatibility report for Release 1.14.4 versus Release 1.14.3](https://github.com/HDFGroup/hdf5/releases/download/hdf5_1.14.4.2/hdf5-1.14.4-2.html.abi.reports.tar.gz)
