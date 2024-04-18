@@ -17,7 +17,7 @@ For further information, see:
 
 * [New Features in 1.12](new_features_1_12.md)
 * [Software Changes from release to release](sw_changes_1.12.md)
-* [API Compatibility Macros in HDF5](api_comp_macros.md)
+* [API Compatibility Macros in HDF5](https://docs.hdfgroup.org/hdf5/develop/api-compat-macros.html)
 
 ## Compiling 1.10 and earlier applications with 1.12
 
@@ -28,7 +28,7 @@ Applications that were created with earlier HDF5 releases may not compile with 1
 ~~~
 Autotools:   h5cc -DH5_USE_110_API (C)
 
-CMake:       cmake -DCMAKE_C_FLAGS="-DH5_USE_110_API" (and likewise for other CMAKE_<LANG>_FLAGS)
+CMake:       cmake `-DCMAKE_C_FLAGS="-DH5_USE_110_API"` (and likewise for other `CMAKE_<LANG>_FLAGS`)
 ~~~
 
 * To build an HDF5 library with the 1.10 APIs specify --with-default-api-version=v110 (Autotools) or -DDEFAULT_API_VERSION:STRING=v110 (CMake).
