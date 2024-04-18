@@ -1,11 +1,11 @@
 ---
-title: Introduction to Single-Writer\\_Multiple-Reader (SWMR)
+title: Introduction to Single-Writer\_Multiple-Reader (SWMR)
 redirect\_from:
 
 ---
-##\*\*\* UNDER CONSTRUCTION \*\*\*
+##\*\*\* Work-in-Progress \*\*\*
 
-# Introduction to Single-Writer\\_Multiple-Reader (SWMR)
+# Introduction to Single-Writer\_Multiple-Reader (SWMR)
 
 Introduction to SWMR
 The Single-Writer / Multiple-Reader (SWMR) feature enables multiple processes to read an HDF5 file while it is being written to (by a single process) without using locks or requiring communication between processes.

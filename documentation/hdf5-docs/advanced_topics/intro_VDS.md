@@ -3,7 +3,7 @@ title: Introduction to the Virtual Dataset - VDS
 redirect\_from:
 
 ---
-##\*\*\* UNDER CONSTRUCTION \*\*\*
+##\*\*\* Work-in-Progress \*\*\*
 
 # Introduction to the Virtual Dataset - VDS
 

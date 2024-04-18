@@ -3,7 +3,7 @@ title: Copying Committed Datatypes with H5Ocopy
 redirect\_from:
 
 ---
-##\*\*\* UNDER CONSTRUCTION \*\*\*
+##\*\*\* Work-in-Progress \*\*\*
 
 # Copying Committed Datatypes with H5Ocopy
 
