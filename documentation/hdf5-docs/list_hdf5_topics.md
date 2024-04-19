@@ -7,10 +7,8 @@ title: HDF5 Features
 ##\*\*\* Work-in-Progress \*\*\*
 
 ### [Chunking in HDF5](hdf5_topics/chunking_in_hdf5.md)
-* Detailed information regarding chunking in HDF5
 ### [HDF5 Dimension Scale Specification and Design Notes](hdf5_topics/H5DS_Spec.pdf)
-### [Improving I/O Performance When Working with HDF5 Compressed Datasets](hdf5_topics/HDF5-ImprovingIOPerformanceCompressedDatasets.pdf)
-* A description of the factors that should be considered when storing compressed data in HDF5 files and how to tune those parameters to optimize the I/O performance of an HDF5 application when working with compressed datasets (PDF)
+### [Improving I/O Performance When Working with HDF5 Compressed Datasets](hdf5_topics/HDF5ImprovingIOPerformanceCompressedDatasets.pdf)
 
 
 <!---
