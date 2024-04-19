@@ -11,7 +11,6 @@ redirect_from: display/HDF5/Advanced+Topics+in+HDF5
 ### [HDF5 Data Flow Pipeline for H5Dread](advanced_topics/data_flow_pline_H5Dread.md)
 ### [Introduction to Single-Writer_Multiple-Reader (SWMR)](advanced_topics/intro_SWMR.md)
 ### [Introduction to the Virtual Dataset - VDS](advanced_topics/intro_VDS.md)
-### [H5DS_Spec](advanced_topics/H5DS_Spec.pdf)
 ### [Modified Region Writes](advanced_topics/ModifiedRegionWrites.pdf)
 <!---
 ### [New Features](advanced_topics/feature.md)
