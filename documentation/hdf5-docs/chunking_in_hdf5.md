@@ -216,9 +216,9 @@ Luckily, because each slot in the hash table only occupies the size of the point
 
 ## Additional Resources
 
-The slide set “HDF5 Advanced Topics: Chunking in HDF5” (PDF), a tutorial from HDF and HDF-EOS Workshop XIII (2009) provides additional HDF5 chunking use cases and examples.
+The slide set [HDF5 Advanced Topics: Chunking in HDF5 (PDF)](Chunking_Tutorial_EOS13_2009.pdf), a tutorial from HDF and HDF-EOS Workshop XIII (2009) provides additional HDF5 chunking use cases and examples.
 
-The page HDF5 Examples lists many code examples that are regularly tested with the HDF5 library. Several illustrate the use of chunking in HDF5, particularly “Read/Write Chunked Dataset” and any examples demonstrating filters.
+The page [HDF5 Examples](https://docs.hdfgroup.org/hdf5/develop/_h_d_f5_examples.html) lists many code examples that are regularly tested with the HDF5 library. Several illustrate the use of chunking in HDF5, particularly “Read/Write Chunked Dataset” and any examples demonstrating filters.
 
 “Dataset Chunking Issues” provides additional information regarding chunking that has not yet been incorporated into this document.
 
