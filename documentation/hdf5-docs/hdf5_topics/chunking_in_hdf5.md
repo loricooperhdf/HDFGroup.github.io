@@ -62,7 +62,7 @@ int main() {
 
 The chunks of a chunked dataset are split along logical boundaries in the dataset's representation as an array, not along boundaries in the serialized form. Suppose a dataset has a chunk size of 2x2. In this case, the first chunk would go from (0,0) to (2,2), the second from (0,2) to (2,4), and so on. By selecting the chunk size carefully, it is possible to fine tune I/O to maximize performance for any access pattern. Chunking is also required to use advanced features such as compression and dataset resizing.
 
-![Contiguous and chunked datasets](images/chunking1and2.PNG)
+![Contiguous and chunked datasets](../images/chunking1and2.PNG){: height=450}
 
 ## Data Storage Order
 To understand the effects of chunking on I/O performance it is necessary to understand the order in which data is actually stored on disk. When using the C interface, data elements are stored in "row-major" order, meaning that, for a 2- dimensional dataset, rows of data are stored in-order on the disk. This is equivalent to the storage order of C arrays in memory.
@@ -70,7 +70,7 @@ To understand the effects of chunking on I/O performance it is necessary to unde
 Suppose we have a 10x10 contiguous dataset B. The first element stored on disk is B[0][0], the second B[0][1], the eleventh B[1][0], and so on. If we want to read the elements from B[2][3] to B[2][7], we have to read the elements in the 24th, 25th, 26th, 27th, and 28th positions. Since all of these positions are contiguous, or next to each other, this can be done in a single read operation: read 5 elements starting at the 24th position. This operation is illustrated in figure 3: the pink cells represent elements to be read and the solid line represents a read operation. Now suppose we want to read the elements in the column from B[3][2] to B[7][2]. In this case we must read the elements in the 33rd, 43rd, 53rd, 63rd, and 73rd positions. Since these positions are not contiguous, this must be done in 5 separate read operations. This operation is illustrated in figure 4: the solid lines again represent read operations, and the dotted lines represent seek operations. An alternative would be to perform a single large read operation , in this case 41 elements starting at the 33rd position. This is called a sieve buffer and is supported by HDF5 for contiguous datasets, but not for chunked datasets. By setting the chunk sizes correctly, it is possible to greatly exceed the performance of the sieve buffer scheme.
 
  
-![Reading part of row and reading part of column from a contiguous dataset](images/chunking3and4.PNG)
+![Reading part of row and reading part of column from a contiguous dataset](../images/chunking3and4.PNG){: height=450}
 
 Likewise, in higher dimensions, the last dimension specified is the fastest changing on disk. So if we have a four dimensional dataset A, then the first element on disk would be A[0][0][0][0], the second A[0][0][0][1], the third A[0][0][0][2], and so on.
 
@@ -81,7 +81,7 @@ Chunking allows the user to modify the conditions for maximum performance by cha
 
 Using this strategy, we can greatly improve the performance of the operation shown in figure 4. If we create the dataset with a chunk size of 10x1, each column of the dataset will be stored separately and contiguously. The read of a partial column can then be done is a single operation. This is illustrated in figure 5, and the code to implement a similar operation is shown in example 2. For simplicity, example 2 implements writing to this dataset instead of reading from it.
 
-![Reading part of a column from a chunked dataset](images/chunking5.PNG) 
+![Reading part of a column from a chunked dataset](../images/chunking5.PNG){: height=450}
 
 
 Example 2: Writing part of a column to a chunked dataset
@@ -144,9 +144,9 @@ When a selection is read from a chunked dataset, the chunks containing the selec
 
 This process is illustrated in figures 6 and 7. In figure 6, the application requests a row of values, and the library responds by bringing the chunks containing that row into cache, and retrieving the values from cache. In figure 7, the application requests a different row that is covered by the same chunks, and the library retrieves the values directly from cache without touching the disk.
 
-![Reading a row from a chunked dataset with the chunk cache enabled](images/chunking6.PNG) 
- 
-![Reading a row from a chunked dataset with the chunks already cached](images/chunking7.PNG)
+![Reading a row from a chunked dataset with the chunk cache enabled](../images/chunking6.PNG){: height=450}
+
+![Reading a row from a chunked dataset with the chunks already cached](../images/chunking7.PNG){: height=450}
 
 In order to allow the chunks to be looked up quickly in cache, each chunk is assigned a unique hash value that is used to look up the chunk. The cache contains a simple array of pointers to chunks, which is called a hash table. A chunk's hash value is simply the index into the hash table of the pointer to that chunk. While the pointer at this location might instead point to a different chunk or to nothing at all, no other locations in the hash table can contain a pointer to the chunk in question. Therefore, the library only has to check this one location in the hash table to tell if a chunk is in cache or not. This also means that if two or more chunks share the same hash value, then only one of those chunks can be in the cache at the same time. When a chunk is brought into cache and another chunk with the same hash value is already in cache, the second chunk must be evicted first. Therefore it is very important to make sure that the size of the hash table, also called the nslots parameter in H5Pset\_cache and H5Pset\_chunk\_cache, is large enough to minimize the number of hash value collisions.
 
@@ -154,23 +154,27 @@ Prior to 1.10, the library determines the hash value for a chunk by assigning a 
 
 For example, the algorithm prior to 1.10 simply incremented the index by one along the fastest growing dimension. The diagram below illustrates the indices for a 5 x 3 chunk prior to HDF5 1.10:
 
-0 1 2
-3 4 5
-6 7 8
-9 10 11
-12 13 14
+<pre>
+0   1   2 
+3   4   5 
+6   7   8 
+9   10  11 
+12  13  14 
+</pre>
 
 As of HDF5 1.10, the library uses a more complicated way to determine the chunk index. Each dimension gets a fixed number of bits for the number of chunks in that dimension. When creating the dataset, the library first determines the number of bits needed to encode the number of chunks in each dimension individually by using the log2 function. It then partitions the chunk index into bitfields, one for each dimension, where the size of each bitfield is as computed above. The fastest changing dimension is the least significant bit. To compute the chunk index for an individual chunk, for each dimension, the coordinates of that chunk in an array of chunks is placed into the corresponding bitfield. The 5 x 3 chunk example above needs 5 bits for its indices (as shown below, the 3 bits in blue are for the row, and the 2 bits in green are for the column):
 
-![5 bits](images/chunking8.PNG)
+![5 bits](../images/chunking8.PNG){: height=100}
 
 Therefore, the indices for the 5 x 3 chunks become like this:
 
-0 1 2
-4 5 6
-8 9 10
-12 13 14
-16 17 18
+<pre>
+0   1   2 
+4   5   6 
+8   9   10 
+12  13  14 
+16  17  18 
+</pre>
 
 This index is then divided by the size of the hash table, nslots, and the remainder, or modulus, is the hash value. Because this scheme can result in regularly spaced indices being used frequently, it is important that nslots be a prime number to minimize the chance of collisions. In general, nslots should probably be set to a number approximately 100 times the number of chunks that can fit in nbytes bytes, unless memory is extremely limited. There is of course no advantage in setting nslots to a number larger than the total number of chunks in the dataset.
 
@@ -216,13 +220,13 @@ Luckily, because each slot in the hash table only occupies the size of the point
 
 ## Additional Resources
 
-The slide set “HDF5 Advanced Topics: Chunking in HDF5” (PDF), a tutorial from HDF and HDF-EOS Workshop XIII (2009) provides additional HDF5 chunking use cases and examples.
+The slide set [HDF5 Advanced Topics: Chunking in HDF5 (PDF)](Chunking_Tutorial_EOS13_2009.pdf), a tutorial from HDF and HDF-EOS Workshop XIII (2009) provides additional HDF5 chunking use cases and examples.
 
-The page HDF5 Examples lists many code examples that are regularly tested with the HDF5 library. Several illustrate the use of chunking in HDF5, particularly “Read/Write Chunked Dataset” and any examples demonstrating filters.
+The page [HDF5 Examples](https://docs.hdfgroup.org/hdf5/develop/_h_d_f5_examples.html) lists many code examples that are regularly tested with the HDF5 library. Several illustrate the use of chunking in HDF5, particularly [Read/Write Chunked Dataset](https://docs.hdfgroup.org/hdf5/develop/_ex_a_p_i.html) and any examples demonstrating filters.
 
-“Dataset Chunking Issues” provides additional information regarding chunking that has not yet been incorporated into this document.
+[Dataset Chunking Issues](DSChunkingIssues.md) provides additional information regarding chunking that has not yet been incorporated into this document.
 
-Directions for Future Development
+## Directions for Future Development
 As seen above, the HDF5 chunk cache currently requires careful control of the parameters in order to achieve optimal performance. In the future, we plan to improve the chunk cache to be more foolproof in many ways, and deliver acceptable performance in most cases even when no thought is given to the chunking parameters.
 
 One way to make the chunk cache more user-friendly is to automatically resize the chunk cache as needed for each operation. The cache should be able to detect when the cache should be skipped or when it needs to be enlarged based on the pattern of I/O operations. At a minimum, it should be able to detect when the cache would severely hurt performance for a single operation and disable the cache for that operation. This would of course be optional.
