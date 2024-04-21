@@ -49,5 +49,5 @@ Using Identifiers   Description of how identifiers work
 ### [New Features](hdf5_topics/feature.md)
 -->
 
-## [Advanced Topics in HDF5](advanced_topics_list.md)
+For more advanced features, see [Advanced Topics in HDF5](advanced_topics_list.md)
 
