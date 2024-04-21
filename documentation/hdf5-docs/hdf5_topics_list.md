@@ -15,7 +15,6 @@ redirect_from:
 
 | Topic                         | Description                                                  |
 | ----------------------------- | ------------------------------------------------------------ |
-| [Chunking in HDF5](hdf5_topics/chunking_in_hdf5.md) | Detailed information regarding chunking in HDF5 |
 | [Environment Variables Used by HDF5]() | Environment variables that can be used when building or using HDF5 |
 | [Using Compression in HDF5]() | Resources regarding compression |
 | [Improving I/O Performance When Working with HDF5 Compressed Datasets](hdf5_topics/HDF5ImprovingIOPerformanceCompressedDatasets.pdf) | A description of the factors that should be considered when storing compressed data in HDF5 files and how to tune those parameters to optimize the I/O performance of an HDF5 application when working with compressed datasets (PDF) |
