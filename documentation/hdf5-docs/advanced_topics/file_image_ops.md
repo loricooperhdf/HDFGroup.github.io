@@ -3,7 +3,6 @@ title: HDF5 File Image Operations
 redirect_from:
   - /display/HDF5/HDF5+File+Image+Operations
 ---
-## \*\*\* Work-in-Progress \*\*\*
 
 # HDF5 File Image Operations
 

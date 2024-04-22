@@ -1,14 +1,20 @@
+---
+title: Introduction to the Virtual Dataset - VDS
+redirect_from:
+  - /display/HDF5/Virtual+Dataset++-+VDS
+---
+
 Introduction to the Virtual Dataset - VDS
 
 The HDF5 Virtual Dataset (VDS) feature enables users to access data in a collection of HDF5 files as a single HDF5 dataset and to use the HDF5 APIs to work with that dataset.
 
 For example, your data may be collected into four files:
 
-![tutrvds-multimgs.png](tutrvds-multimgs.png)
+![tutrvds-multimgs.png](../images/tutrvds-multimgs.png){: height=700}
 
 You can map the datasets in the four files into a single VDS that can be accessed just like any other dataset:
 
-![tutrvds-snglimg.png](tutrvds-snglimg.png)
+![tutrvds-snglimg.png](../images/tutrvds-snglimg.png){: height=500}
 
 The mapping between a VDS and the HDF5 source datasets is persistent and transparent to an application. If a source file is missing the fill value will be displayed.
 
@@ -38,7 +44,7 @@ Limitations This feature requires HDF5-1.10. The number of source datasets is un
 
 Programming Examples Example 1 This example creates three HDF5 files, each with a one-dimensional dataset of 6 elements. The datasets in these files are the source datasets that are then used to create a 4 x 6 Virtual Dataset with a fill value of -1. The first three rows of the VDS are mapped to the data from the three source datasets as shown below:
 
-![tutrvds-ex.png](tutrvds-ex.png)
+![tutrvds-ex.png](../images/tutrvds-ex.png){: height=400}
 
 In this example the three source datasets are mapped to the VDS with this code:
 
@@ -76,3 +82,4 @@ Using h5dump with a VDS The h5dump utility can be used to view a VDS. The h5dump
 
 You can determine that a dataset is a VDS by looking at its properties with h5dump -p. It will display each source dataset mapping, beginning with Mapping 0. Below is an excerpt of the output of h5dump -p on the vds.h5 file created in Example 1.You can see that the entire source file a.h5 is mapped to the first row of the /VDS dataset:
 
+![tutrvds-map.png](../images/tutrvds-map.png){: height=400}

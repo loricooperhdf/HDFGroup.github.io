@@ -1,11 +1,15 @@
-Introduction to Single-Writer\_Multiple-Reader (SWMR)
+---
+title: Introduction to Single-Writer_Multiple-Reader (SWMR)
+redirect_from:
+  - /display/HDF5/HDF5+File+Image+Operations
+---
 
 Introduction to SWMR
 --------------------
 
 The Single-Writer / Multiple-Reader (SWMR) feature enables multiple processes to read an HDF5 file while it is being written to (by a single process) without using locks or requiring communication between processes.
 
-![tutr-swmr1.png](tutr-swmr1.png)
+![tutr-swmr1.png](../images/tutr-swmr1.png){: height=400}
 
 All communication between processes must be performed via the HDF5 file. The HDF5 file under SWMR access must reside on a system that complies with POSIX write() semantics.
 
@@ -13,11 +17,11 @@ The basic engineering challenge for this to work was to ensure that the readers 
 
 The issue is that when writing data there is information in the metadata cache in addition to the physical file on disk:
 
-![tutr-swmr2.png](tutr-swmr2.png)
+![tutr-swmr2.png](../images/tutr-swmr2.png){: height=400}
 
 However, the readers can only see the state contained in the physical file:
 
-![tutr-swmr3.png](tutr-swmr3.png)
+![tutr-swmr3.png](../images/tutr-swmr3.png){: height=400}
 
 The SWMR solution implements dependencies on when the metadata can be flushed to the file. This ensures that metadata cache flush operations occur in the proper order, so that there will never be internal file pointers in the physical file that point to invalid (unflushed) file addresses.
 
