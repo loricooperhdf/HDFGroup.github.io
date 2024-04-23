@@ -95,15 +95,15 @@ status = H5Sselect\_hyperslab(space\_src, H5S\_SELECT\_SET, start\_src, NULL,
  
 Figure 1 shows a conceptual representation of dataset D with uncompressed data. The desired region and the chunks that contain it are shown in green and yellow, respectively.
 
-![Figure 1: Conceptual representation of dataset D](../images/DataFlow_H5Dread-figure1.jpg){: height="400px"}
+![Figure 1: Conceptual representation of dataset D](../images/DataFlow_H5Dread-figure1.jpg){: height="50%"}
 
 In Figure 1, the chunks and region of interest are represented by the yellow and green areas of the diagram. Figure 2 shows an enlarged view of the region and chunks, with labels added. The dashed lines delineate individual elements in the dataset. Elements in the region of interest have been labeled so they can be traced through the pipeline process.
 
-![Figure 2: Conceptual representation of region and chunks in dataset D](../images/DataReadPipeline-4Chunks.png){: height="300px"}
+![Figure 2: Conceptual representation of region and chunks in dataset D](../images/DataReadPipeline-4Chunks.png){: height="50%"}
 
 Figure 3 shows a more accurate depiction of the chunks and elements in the region as they could be laid out on disk. Note that data in each chunk is stored contiguously on disk, and that the chunks have unequal sizes due to compression of the data.
 
-![Figure 3: Conceptual representation of chunks and region elements on disk](../images/DataFlow_H5Dread-figure3.jpg){: height="400px"}
+![Figure 3: Conceptual representation of chunks and region elements on disk](../images/DataFlow_H5Dread-figure3.jpg){: height="50%"}
 
 <h3 id="exampleA">Example A</h3>
 In the first example, the application’s memory buffer is a 4 x 4 array. Every element in the array will be filled with elements read from dataset D, so no hyperslab selection is needed for the destination dataspace.
@@ -276,7 +276,7 @@ The HDF library scatters elements from the temporary buffer into the application
 Figure 7 represents the contents of the application’s memory buffer for Example A after this step completes the first time. The elements in the application’s memory buffer have been converted into the memory datatype and have had the value transformation applied.
 
 
-![Figure 7: Application's memory buffer after first pass through Step 8 for Example A](../images/DataReadPipeline-Step8.png){: height="300px"}
+![Figure 7: Application's memory buffer after first pass through Step 8 for Example A](../images/DataReadPipeline-Step8.png){: height="50%"}
 
 Figure 8 represents the contents of the application’s memory buffer for Example B after Step 8 completes the first time. The elements in the application’s memory buffer have been converted into the memory datatype. No value transformation is applied in Example B.
 
@@ -306,7 +306,7 @@ With the requested data in the application’s memory buffer, and the memory use
 
 Figure 9 shows the contents of the application’s memory buffer when H5Dread returns for Example A, and Figure 10 shows the results for Example B.
 
-![Figure 9: Application's memory buffer when H5Dread returns for Example A](../images/DataReadPipeline-Step9.png){: height="300px"}
+![Figure 9: Application's memory buffer when H5Dread returns for Example A](../images/DataReadPipeline-Step9.png){: height="50%"}
 
 
 ![Figure 10: Application's memory buffer when H5Dread returns for Example B](../images/DataReadPipeline-Step9-2.png){: height="200px"}
@@ -314,7 +314,7 @@ Figure 9 shows the contents of the application’s memory buffer when H5Dread re
 <h2 id="activity-diagram">H5Dread Activity Diagram</h2>
 Figure 11 shows a UML activity diagram for the H5Dread call when a dataset with chunked storage layout is being read. The diagram shows the activities involved fulfilling the read request, without the step­‐by­‐step detail given in Section 3.
 
-![Figure 11: H5Dread activity diagram](../images/DataReadPipeline-ActivityDiagram.png){: height="800px"}
+![Figure 11: H5Dread activity diagram](../images/DataReadPipeline-ActivityDiagram.png){: height="100%"}
 
 <h2 id="acknowledgement">Acknowledgements</h2>
 This document was written as background material for a specific project. The principal author was Ruth Aydt. Quincey Koziol provided information about the HDF5 library’s behavior, patiently answering questions, and correcting technical errors in the document. Mike Folk provided advice on document structure and presentation.
