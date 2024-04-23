@@ -99,7 +99,7 @@ Figure 1 shows a conceptual representation of dataset D with uncompressed data. 
 
 In Figure 1, the chunks and region of interest are represented by the yellow and green areas of the diagram. Figure 2 shows an enlarged view of the region and chunks, with labels added. The dashed lines delineate individual elements in the dataset. Elements in the region of interest have been labeled so they can be traced through the pipeline process.
 
-![Figure 2: Conceptual representation of region and chunks in dataset D](../images/DataReadPipeline-4Chunks.png){: height=400}
+![Figure 2: Conceptual representation of region and chunks in dataset D](../images/DataReadPipeline-4Chunks.png){: height=300}
 
 Figure 3 shows a more accurate depiction of the chunks and elements in the region as they could be laid out on disk. Note that data in each chunk is stored contiguously on disk, and that the chunks have unequal sizes due to compression of the data.
 
@@ -276,7 +276,7 @@ The HDF library scatters elements from the temporary buffer into the application
 Figure 7 represents the contents of the application’s memory buffer for Example A after this step completes the first time. The elements in the application’s memory buffer have been converted into the memory datatype and have had the value transformation applied.
 
 
-![Figure 7: Application's memory buffer after first pass through Step 8 for Example A](../images/DataReadPipeline-Step8.png){: height=400}
+![Figure 7: Application's memory buffer after first pass through Step 8 for Example A](../images/DataReadPipeline-Step8.png){: height=300}
 
 Figure 8 represents the contents of the application’s memory buffer for Example B after Step 8 completes the first time. The elements in the application’s memory buffer have been converted into the memory datatype. No value transformation is applied in Example B.
 
@@ -306,7 +306,7 @@ With the requested data in the application’s memory buffer, and the memory use
 
 Figure 9 shows the contents of the application’s memory buffer when H5Dread returns for Example A, and Figure 10 shows the results for Example B.
 
-![Figure 9: Application's memory buffer when H5Dread returns for Example A](../images/DataReadPipeline-Step9.png){: height=400}
+![Figure 9: Application's memory buffer when H5Dread returns for Example A](../images/DataReadPipeline-Step9.png){: height=300}
 
 
 ![Figure 10: Application's memory buffer when H5Dread returns for Example B](../images/DataReadPipeline-Step9-2.png){: height=200}
