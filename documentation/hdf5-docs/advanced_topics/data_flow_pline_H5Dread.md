@@ -115,30 +115,6 @@ Therefore:
 In this example, the application includes a value transformation in the data transfer property list for the H5Dread call. The transformation specifies that the integer value “2” should be added to each element in the region of interest before it is copied to the application’s memory buffer.
 
 <img src="../images/DataReadPipeline-ExampleA.png" alt="Example A">
-#### Example A: H5Dread setup and call
-
-***
-~~~
-The application’s memory buffer and dataspace are both 4 x 4. A value transformation is used to add “2” to each element that is read. The C code to allocate the memory buffer, define the memory dataspace, specify the value transformation operation, and make the read call is shown here:
-
-/* memory buffer */
-int destA[4][4];
-
-  ...
-
-/* define memory dataspace */
-dims_destA[0] = 4; dims_destA[1] = 4;
-space_destA = H5Screate_simple(2,dims_destA,NULL);
-
-/* create data transfer property list and specify value transformation */ 
-dxpl_id_vtrans = H5Pcreate(H5P_DATASET_XFER); 
-H5Pset_data_transform(dxpl_id_vtrans,“x+2”);
-
-/* call H5Dread */
-status = H5Dread (dataset, H5T_NATIVE_INT, space_destA, space_src, 
-      dxpl_id_vtrans, destA )
-~~~
-***
 
 <h3 id="exampleB">Example B</h3>
 In the second example, the application’s memory buffer is2 ax 16 array. The 16 elements read will be distributed non-sequentially in the application’s buffer, as described by a hyperslab selection in the memory dataspace parameter.
@@ -156,33 +132,6 @@ Size of array is: 32 * 8 bytes = 256 bytes
 No value transformation is applied in this example.
 
 <img src="../images/DataReadPipeline-ExampleB.png" alt="Example B">
-#### Example B: H5Dread setup and call
-
-***
-~~~
-The application’s memory buffer and dataspace are both 2 x 16. A hyperslab selection on the memory dataspace specifies the 16 elements that will be updated by the read. The C code to allocate the memory buffer, define the dataspace, select the hyperslab, and make the read call is shown here:
-
-/* memory buffer */
-int destB[2][16];
-
-...
-
-/* define memory dataspace */
-dims_destB[0] = 2; dims_destB[1] = 16;
-space_destB = H5Screate_simple(2,dims_destB,NULL);
-
-/* define memory hyperslab selection */
-start_destB[0] = 0; start_destB[1] = 0;
-block_destB[0] = 2; block_destB[1] = 1;
-count_destB[0] = 1;    count_destB[1] = 8;
-stride_destB[0] = 2;    stride_destB[1] = 2;
-status = H5Sselect_hyperslab(space_destB, H5S_SELECT_SET, start_destB, 
-           stride_destB, count_destB, block_destB);
-
-/* call H5Dread */
-status = H5Dread (dataset, H5T_NATIVE_INT, space_destB, space_src, H5P_DEFAULT, destB)
-~~~
-***
 
 <h2 id="data-flow-pline"> Data Flow Pipeline</h2>
 The HDF5 library performs a series of steps when H5Dread is called. For datasets with chunk storage, each chunk that contains data to be read is individually processed. After all of the chunks have been read and processed, the library returns from the H5Dread call.
@@ -197,11 +146,6 @@ If one or more filters were applied when the dataset was written, as they were i
 <h3 id="step-2">Step 2: Reverse filter(s)</h3>
 
 <img src="../images/DataReadPipeline-Filters.png" alt="Filters in HDF5">
-**Filters in HDF5**
-
-<p background-color:powderblue>The HDF5 library allows applications to specify filters to apply when a dataset is written to an HDF5 file via the H5Pset\_filter call. These filters perform operations such as compression, encryption, a checksum computation. Each filter operation applied when a dataset is written must be “reversed” when the dataset is read. For instance, if a dataset was compressed when written, it must be uncompressed when read.
-<br>
-If multiple filters are specified for the write, the application controls the order in which the filter operations are applied to the dataset. The read operation reverses the filter operations in the opposite order to the one used when the dataset was written. That is, the last filter applied when writing is the first filter reversed when reading, and so on.</p>
 
 In dataset D, two filters were applied when the data was written. The DEFLATE compression filter was applied first, followed by the Fletcher 32 checksum filters. The last filter applied when the dataset was written, the checksum filter, is reversed first in the H5Dread processing pipeline.
 
@@ -209,9 +153,6 @@ In dataset D, two filters were applied when the data was written. The DEFLATE co
 Using memory in the application’s memory space (heap) that is managed by the HDF5 library, the HDF5 library computes the checksum for the current chunk and compares it to the saved value. If there is a checksum mismatch and error detection is enabled, the H5Dread call will return an error at this point. Otherwise, processing continues.
 
 <img src="../images/DataReadPipeline-Checksum.png" alt="Checksum error detection">
-Checksum error detection
-
- Checksum error detection is enabled by default. H5Pset\_edc\_check can be used to disable checksum error detection 
 
 <h4 id="uncompress">Uncompress data</h4>
 Again using memory in the application’s memory space (heap) that is managed by the HDF5 library, the DEFLATE filter is reversed and the current chunk is uncompressed.
@@ -219,11 +160,6 @@ Again using memory in the application’s memory space (heap) that is managed by
 <h3 id="step-3">Step 3: Put chunk in cache or heap</h3>
 
 <img src="../images/DataReadPipeline-ChunkCache.png" alt="HDF5 chunk cache">
-HDF5 chunk cache
-
-Every HDF5 dataset with the chunked storage format has an HDF5 chunk cache associated with it. The HDF5 chunk cache for the dataset is allocated from the application’s memory and managed by the HDF5 library. As its name suggests, the cache remains allocated across multiple calls, and is used to provide performance optimizations in accessing data.
-
-The default size of each HDF5 chunk cache is 1 MB in HDF5 Releases 1.6.x and 1.8.x. H5Pset\_chunk\_cache, introduced in Release 1.8.3, allows control of the chunk cache size on a per‐dataset basis.
 
 If there is sufficient space in dataset D’s chunk cache, the data for the current chunk is stored there. Otherwise, it is temporarily stored on the heap in memory managed by the HDF5 library. Data in the chunk cache always has the disk datatype representation and is always in the “filters reversed” form.
 
@@ -247,9 +183,6 @@ The number of bytes needed to process one dataset array element depends on the �
 For the purpose of explanation, assume the temporary buffer is 64 bytes. In the given examples, up to eight elements of the dataset (64 bytes in buffer/ 8 bytes per element) can be resident in the temporary buffer at any given time.
 
 <img src="../images/DataReadPipeline-TmpBufSz.png" alt="Temporary buffer size">
-Temporary buffer size
-
-The default size of the temporary buffer used for datatype conversion and/or value transformation is 1 MB in Release 1.8.2. The size can be controlled with H5Pset\_buffer.
 
 The following steps are taken for each chunk.
 
@@ -281,13 +214,11 @@ The HDF library scatters elements from the temporary buffer into the application
 
 Figure 7 represents the contents of the application’s memory buffer for Example A after this step completes the first time. The elements in the application’s memory buffer have been converted into the memory datatype and have had the value transformation applied.
 
-
 <img src="../images/DataReadPipeline-Step8.png" height="400" alt="Figure 7">
 
 Figure 7: Application's memory buffer after first pass through Step 8 for Example A
 
 Figure 8 represents the contents of the application’s memory buffer for Example B after Step 8 completes the first time. The elements in the application’s memory buffer have been converted into the memory datatype. No value transformation is applied in Example B.
-
 
 <img src="../images/DataReadPipeline-Step8-2.png" alt="Figure 8">
 
