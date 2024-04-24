@@ -18,7 +18,7 @@ redirect_from: display/HDF5/Advanced+Topics+in+HDF5
 | [File Space Management](advanced_topics/) | Describes mechanisms to manage space in an HDF5 file |
 | [Fine-tuning the Metadata Cache](advanced_topics/) | Describes how to provide better control of the metadata cache |
 | [Freeing Memory Allocated by the HDF5 Library](https://docs.hdfgroup.org/hdf5/rfc/RFC%20H5free_memory%20v2.pdf) | Describes how inconsistent memory management can cause heap corruption or resource leaks and possible solutions |
-| [HDF5 Data Flow Pipeline for H5Dread](https://github.com/HDFGroup/hdf5doc/blob/master/html/Advanced/DataFlow_H5Dread/DataFlow_H5Dread.pdf) | Describes data flow when reading raw data from an HDF5 dataset |
+| [HDF5 Data Flow Pipeline for H5Dread](advanced_topics/data_flow_pline_H5Dread.md) | Describes data flow when reading raw data from an HDF5 dataset |
 | [HDF5 Metadata](advanced_topics/) | Provides a comprehensive overview of the types of metadata used in HDF5 |
 | [Introduction to Single-Writer_Multiple-Reader (SWMR)](advanced_topics/intro_SWMR.md) | Enables writing to a file while multiple readers are accessing it |
 | [Introduction to the Virtual Dataset - VDS](advanced_topics/intro_VDS.md) | Describes how to present data stored in several HDF5 datasets and files as a single dataset and access the data using HDF5 APIs |
