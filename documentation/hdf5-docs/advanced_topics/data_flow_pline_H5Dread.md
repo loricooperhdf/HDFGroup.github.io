@@ -81,20 +81,18 @@ Therefore:
 
 Figure 1 shows a conceptual representation of dataset D with uncompressed data. The desired region and the chunks that contain it are shown in green and yellow, respectively.
 
-<img src="../images/DataFlow_H5Dread-figure1.png" height="80%" alt="Figure1">
+<img src="../images/DataFlow_H5Dread-figure1.png" height="60%" alt="Figure1">
 
 Figure 1: Conceptual representation of dataset D
 
 In Figure 1, the chunks and region of interest are represented by the yellow and green areas of the diagram. Figure 2 shows an enlarged view of the region and chunks, with labels added. The dashed lines delineate individual elements in the dataset. Elements in the region of interest have been labeled so they can be traced through the pipeline process.
 
-<img src="../images/DataReadPipeline-4Chunks.png" height="50%" alt="Figure 2">
+<img src="../images/DataReadPipeline-4Chunks.png" height="30%" alt="Figure 2">
 
 Figure 2: Conceptual representation of region and chunks in dataset D
 
 Figure 3 shows a more accurate depiction of the chunks and elements in the region as they could be laid out on disk. Note that data in each chunk is stored contiguously on disk, and that the chunks have unequal sizes due to compression of the data.
 
-<img src="../images/DataFlow_H5Dread-figure3.png" height="50%" alt="Figure 3">
-<br>
 <img src="../images/DataFlow_H5Dread-figure3.png" height="100%" alt="Figure 3">
 
 Figure 3: Conceptual representation of chunks and region elements on disk
@@ -231,7 +229,7 @@ If there is sufficient space in dataset D’s chunk cache, the data for the curr
 
 In the given examples, the uncompressed data for the current chunk will be stored. A chunk cache of at least 64 bytes is needed to hold a single chunk of uncompressed data for dataset D.
 
-<img src="../images/DataReadPipeline-Steps1-3.png" height="50%" alt="Figure 4"
+<img src="../images/DataReadPipeline-Steps1-3.png" height="50%" alt="Figure 4">
 
 Figure 4: Steps 1-3 of data flow pipeline
 
@@ -284,7 +282,7 @@ The HDF library scatters elements from the temporary buffer into the application
 Figure 7 represents the contents of the application’s memory buffer for Example A after this step completes the first time. The elements in the application’s memory buffer have been converted into the memory datatype and have had the value transformation applied.
 
 
-<img src="../images/DataReadPipeline-Step8.png" height="50%" alt="Figure 7">
+<img src="../images/DataReadPipeline-Step8.png" height="30%" alt="Figure 7">
 
 Figure 7: Application's memory buffer after first pass through Step 8 for Example A
 
@@ -318,7 +316,7 @@ With the requested data in the application’s memory buffer, and the memory use
 
 Figure 9 shows the contents of the application’s memory buffer when H5Dread returns for Example A, and Figure 10 shows the results for Example B.
 
-<img src="../images/DataReadPipeline-Step9.png" height="50%" alt="Figure 9">
+<img src="../images/DataReadPipeline-Step9.png" height="30%" alt="Figure 9">
 
 Figure 9: Application's memory buffer when H5Dread returns for Example A
 
@@ -329,7 +327,7 @@ Figure 10: Application's memory buffer when H5Dread returns for Example B
 <h2 id="activity-diagram">H5Dread Activity Diagram</h2>
 Figure 11 shows a UML activity diagram for the H5Dread call when a dataset with chunked storage layout is being read. The diagram shows the activities involved fulfilling the read request, without the step­‐by­‐step detail given in Section 3.
 
-<img src="../images/DataReadPipeline-ActivityDiagram.png" height="100%" alt="Figure 11">
+<img src="../images/DataReadPipeline-ActivityDiagram.png" height="80%" alt="Figure 11">
 
 Figure 11: H5Dread activity diagram
 
