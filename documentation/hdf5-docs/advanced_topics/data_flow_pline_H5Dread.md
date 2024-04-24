@@ -327,7 +327,7 @@ Figure 10: Application's memory buffer when H5Dread returns for Example B
 <h2 id="activity-diagram">H5Dread Activity Diagram</h2>
 Figure 11 shows a UML activity diagram for the H5Dread call when a dataset with chunked storage layout is being read. The diagram shows the activities involved fulfilling the read request, without the step­‐by­‐step detail given in Section 3.
 
-<img src="../images/DataReadPipeline-ActivityDiagram.png" height="80%" alt="Figure 11">
+<img src="../images/DataReadPipeline-ActivityDiagram.png" height="60%" alt="Figure 11">
 
 Figure 11: H5Dread activity diagram
 
