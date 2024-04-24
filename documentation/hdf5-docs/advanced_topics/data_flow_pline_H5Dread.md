@@ -77,33 +77,25 @@ Therefore:
 * Total cells in region of interest equals: 4 * 4 = 16
 * Size of region of interest (uncompressed) is : 16 * 4 bytes = 64 bytes
 
-#### Hyperslab selection for source
+<img src="../images/DataReadPipeline-Hyperslab.png" height="60%" alt="Hyperslab selection for source">
 
-***
-~~~
-A hyperslab selection is used to specify the region from dataset D that will be transferred with the H5Dread call. A 4 x 4 array of elements, positioned at <1,1> will be read. The C code to do the selection of the hyperslab in the file dataspace is shown here:
-
-/* get the file dataspace */
-space\_src = H5Dget\_space(dataset);
-
-/* define hyperslab in the dataset */
-start\_src[0] = 1; start\_src[1] = 1;
-count\_src[0] = 4; count\_src[1] = 4;
-status = H5Sselect\_hyperslab(space\_src, H5S\_SELECT\_SET, start\_src, NULL,
-~~~
-***
- 
 Figure 1 shows a conceptual representation of dataset D with uncompressed data. The desired region and the chunks that contain it are shown in green and yellow, respectively.
 
-![Figure 1: Conceptual representation of dataset D](../images/DataFlow_H5Dread-figure1.jpg)
+<img src="../images/DataFlow_H5Dread-figure1.png" height="250" alt="Figure1">
+
+Figure 1: Conceptual representation of dataset D
 
 In Figure 1, the chunks and region of interest are represented by the yellow and green areas of the diagram. Figure 2 shows an enlarged view of the region and chunks, with labels added. The dashed lines delineate individual elements in the dataset. Elements in the region of interest have been labeled so they can be traced through the pipeline process.
 
-![Figure 2: Conceptual representation of region and chunks in dataset D](../images/DataReadPipeline-4Chunks.png)
+<img src="../images/DataReadPipeline-4Chunks.png" height="250" alt="Figure 2">
+
+Figure 2: Conceptual representation of region and chunks in dataset D
 
 Figure 3 shows a more accurate depiction of the chunks and elements in the region as they could be laid out on disk. Note that data in each chunk is stored contiguously on disk, and that the chunks have unequal sizes due to compression of the data.
 
-![Figure 3: Conceptual representation of chunks and region elements on disk](../images/DataFlow_H5Dread-figure3.jpg){: height="50%"}
+![Figure 3](../images/DataFlow_H5Dread-figure3.png)
+
+Figure 3: Conceptual representation of chunks and region elements on disk
 
 <h3 id="exampleA">Example A</h3>
 In the first example, the application’s memory buffer is a 4 x 4 array. Every element in the array will be filled with elements read from dataset D, so no hyperslab selection is needed for the destination dataspace.
@@ -122,6 +114,7 @@ Therefore:
 
 In this example, the application includes a value transformation in the data transfer property list for the H5Dread call. The transformation specifies that the integer value “2” should be added to each element in the region of interest before it is copied to the application’s memory buffer.
 
+<img src="../images/DataReadPipeline-ExampleA.png" height="250" alt="Example A">
 #### Example A: H5Dread setup and call
 
 ***
@@ -162,6 +155,7 @@ Total cells in array equals: 2 * 16 = 32
 Size of array is: 32 * 8 bytes = 256 bytes
 No value transformation is applied in this example.
 
+<img src="../images/DataReadPipeline-ExampleB.png" height="250" alt="Example B">
 #### Example B: H5Dread setup and call
 
 ***
@@ -202,6 +196,7 @@ If one or more filters were applied when the dataset was written, as they were i
 
 <h3 id="step-2">Step 2: Reverse filter(s)</h3>
 
+<img src="../images/DataReadPipeline-Filters.png" height="250" alt="Filters in HDF5">
 **Filters in HDF5**
 
 <p background-color:powderblue>The HDF5 library allows applications to specify filters to apply when a dataset is written to an HDF5 file via the H5Pset\_filter call. These filters perform operations such as compression, encryption, a checksum computation. Each filter operation applied when a dataset is written must be “reversed” when the dataset is read. For instance, if a dataset was compressed when written, it must be uncompressed when read.
@@ -213,6 +208,7 @@ In dataset D, two filters were applied when the data was written. The DEFLATE co
 <h4 id="compute-verify-chsum">Compute and verify checksum</h4>
 Using memory in the application’s memory space (heap) that is managed by the HDF5 library, the HDF5 library computes the checksum for the current chunk and compares it to the saved value. If there is a checksum mismatch and error detection is enabled, the H5Dread call will return an error at this point. Otherwise, processing continues.
 
+<img src="../images/DataReadPipeline-Checksum.png" height="250" alt="Checksum error detection">
 Checksum error detection
 
  Checksum error detection is enabled by default. H5Pset\_edc\_check can be used to disable checksum error detection 
@@ -221,6 +217,8 @@ Checksum error detection
 Again using memory in the application’s memory space (heap) that is managed by the HDF5 library, the DEFLATE filter is reversed and the current chunk is uncompressed.
 
 <h3 id="step-3">Step 3: Put chunk in cache or heap</h3>
+
+<img src="../images/DataReadPipeline-ChunkCache.png" height="250" alt="HDF5 chunk cache">
 HDF5 chunk cache
 
 Every HDF5 dataset with the chunked storage format has an HDF5 chunk cache associated with it. The HDF5 chunk cache for the dataset is allocated from the application’s memory and managed by the HDF5 library. As its name suggests, the cache remains allocated across multiple calls, and is used to provide performance optimizations in accessing data.
@@ -231,7 +229,9 @@ If there is sufficient space in dataset D’s chunk cache, the data for the curr
 
 In the given examples, the uncompressed data for the current chunk will be stored. A chunk cache of at least 64 bytes is needed to hold a single chunk of uncompressed data for dataset D.
 
-![Figure 4: Steps 1-3 of data flow pipeline](../images/DataReadPipeline-Steps1-3.png){: height="90%"}
+<img src="../images/DataReadPipeline-Steps1-3.png" height="250" alt="Figure 4"
+
+Figure 4: Steps 1-3 of data flow pipeline
 
 Steps 1, 2, and 3 are represented graphically in Figure 4. At this point, all filters have been reversed (checksum and decompression in the given examples), and the datatype matches its representation in the file (32-bit little­‐endian integer in this case).
 
@@ -246,6 +246,7 @@ The number of bytes needed to process one dataset array element depends on the �
 
 For the purpose of explanation, assume the temporary buffer is 64 bytes. In the given examples, up to eight elements of the dataset (64 bytes in buffer/ 8 bytes per element) can be resident in the temporary buffer at any given time.
 
+<img src="../images/DataReadPipeline-TmpBufSz.png" height="250" alt="Temporary buffer size">
 Temporary buffer size
 
 The default size of the temporary buffer used for datatype conversion and/or value transformation is 1 MB in Release 1.8.2. The size can be controlled with H5Pset\_buffer.
@@ -257,14 +258,18 @@ Unprocessed elements in the region of interest are gathered from the chunk cache
 
 Considering chunk A in the examples, eight of the nine elements that are of interest will fit into the temporary buffer. Figure 5 depicts the temporary buffer at this stage of the pipeline.
 
-![Figure 5: Temporary buffer with first eight elements in region](../images/DataReadPipeline-Step5.png){: height="90%"}
+<img src="../images/DataReadPipeline-Step5.png" height="250" alt="Figure 5">
+
+Figure 5: Temporary buffer with first eight elements in region
 
 <h3 id="step-6">Step 6: Perform datatype conversion</h3>
 If the memory representation is not the same as the disk representation, datatype conversion is performed by the HDF5 library on the values in the temporary buffer.
 
 In the examples, the values will be converted from 32-bit little-endian integers into 64­‐bit big­‐endian integers. Figure 6 illustrates the contents of the temporary buffer after the datatype conversion.
 
-![Figure 6: Temporary buffer with first eight elements after datatype conversion](../images/DataReadPipeline-Step6.png){: height="90%"}
+<img src="../images/DataReadPipeline-Step6.png" height="250" alt="Figure 6">
+
+Figure 6: Temporary buffer with first eight elements after datatype conversion
 
 <h3 id="step-7">Step 7: Perform value transformation</h3>
 If the property list used in H5Dread includes a data transformation, as it does in Example A, the algebraic operation specified in the transformation is applied to each element in the temporary buffer by the HDF library.
@@ -277,12 +282,16 @@ The HDF library scatters elements from the temporary buffer into the application
 Figure 7 represents the contents of the application’s memory buffer for Example A after this step completes the first time. The elements in the application’s memory buffer have been converted into the memory datatype and have had the value transformation applied.
 
 
-![Figure 7: Application's memory buffer after first pass through Step 8 for Example A](../images/DataReadPipeline-Step8.png){: height="5%"}
+<img src="../images/DataReadPipeline-Step8.png" height="250" alt="Figure 7">
+
+Figure 7: Application's memory buffer after first pass through Step 8 for Example A
 
 Figure 8 represents the contents of the application’s memory buffer for Example B after Step 8 completes the first time. The elements in the application’s memory buffer have been converted into the memory datatype. No value transformation is applied in Example B.
 
 
-![Figure 8: Application's memory buffer after first pass through step 8 in Example B](../images/DataReadPipeline-Step8-2.png){: height="50%"}
+<img src="../images/DataReadPipeline-Step8-2.png" height="250" alt="Figure 8">
+
+Figure 8: Application's memory buffer after first pass through step 8 in Example B
 
 Steps 5-8 are repeated until all elements in the region of interest for the current chunk have been processed and copied into the application’s memory buffer.
 
@@ -307,15 +316,20 @@ With the requested data in the application’s memory buffer, and the memory use
 
 Figure 9 shows the contents of the application’s memory buffer when H5Dread returns for Example A, and Figure 10 shows the results for Example B.
 
-![Figure 9: Application's memory buffer when H5Dread returns for Example A](../images/DataReadPipeline-Step9.png){: height="10%"}
+<img src="../images/DataReadPipeline-Step9.png" height="250" alt="Figure 9">
 
+Figure 9: Application's memory buffer when H5Dread returns for Example A
 
-![Figure 10: Application's memory buffer when H5Dread returns for Example B](../images/DataReadPipeline-Step9-2.png){: height="90%"}
+<img src="../images/DataReadPipeline-Step9-2.png" height="250" alt="Figure 10">
+
+Figure 10: Application's memory buffer when H5Dread returns for Example B
 
 <h2 id="activity-diagram">H5Dread Activity Diagram</h2>
 Figure 11 shows a UML activity diagram for the H5Dread call when a dataset with chunked storage layout is being read. The diagram shows the activities involved fulfilling the read request, without the step­‐by­‐step detail given in Section 3.
 
-![Figure 11: H5Dread activity diagram](../images/DataReadPipeline-ActivityDiagram.png){: height="100%"}
+<img src="../images/DataReadPipeline-ActivityDiagram.png" height="250" alt="Figure 11">
+
+Figure 11: H5Dread activity diagram
 
 <h2 id="acknowledgement">Acknowledgements</h2>
 This document was written as background material for a specific project. The principal author was Ruth Aydt. Quincey Koziol provided information about the HDF5 library’s behavior, patiently answering questions, and correcting technical errors in the document. Mike Folk provided advice on document structure and presentation.
