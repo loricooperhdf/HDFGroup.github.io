@@ -1,6 +1,6 @@
 ---
 title: HDF5 Data Flow Pipeline for H5Dread
-redirect\_from:
+redirect_from: display/HDF5/HDF5+Data+Flow+Pipeline+for+H5Dread
 ---
 
 # HDF5 Data Flow Pipeline for H5Dread
@@ -95,11 +95,11 @@ status = H5Sselect\_hyperslab(space\_src, H5S\_SELECT\_SET, start\_src, NULL,
  
 Figure 1 shows a conceptual representation of dataset D with uncompressed data. The desired region and the chunks that contain it are shown in green and yellow, respectively.
 
-![Figure 1: Conceptual representation of dataset D](../images/DataFlow_H5Dread-figure1.jpg){: height="40%"}
+![Figure 1: Conceptual representation of dataset D](../images/DataFlow_H5Dread-figure1.jpg)
 
 In Figure 1, the chunks and region of interest are represented by the yellow and green areas of the diagram. Figure 2 shows an enlarged view of the region and chunks, with labels added. The dashed lines delineate individual elements in the dataset. Elements in the region of interest have been labeled so they can be traced through the pipeline process.
 
-![Figure 2: Conceptual representation of region and chunks in dataset D](../images/DataReadPipeline-4Chunks.png){: height="30%"}
+![Figure 2: Conceptual representation of region and chunks in dataset D](../images/DataReadPipeline-4Chunks.png)
 
 Figure 3 shows a more accurate depiction of the chunks and elements in the region as they could be laid out on disk. Note that data in each chunk is stored contiguously on disk, and that the chunks have unequal sizes due to compression of the data.
 
