@@ -1,7 +1,7 @@
 ---
 title: Introduction to Single-Writer_Multiple-Reader (SWMR)
 redirect_from:
-  - /display/HDF5/HDF5+File+Image+Operations
+  - /display/HDF5/Introduction+to+the+Virtual+Dataset++-+VDS
 ---
 
 Introduction to SWMR
