@@ -14,13 +14,12 @@ Look for more content here soon.
 * [Documentation - 1.12.x](https://docs.hdfgroup.org/hdf5/v1_12/index.html)
 * [Documentation - 1.10.x](https://docs.hdfgroup.org/hdf5/v1_10/index.html)
 * [Documentation - 1.8.x](https://docs.hdfgroup.org/hdf5/v1_8/index.html)
-* [Registered Filter Plugins](https://github.com/HDFGroup/hdf5_plugins/blob/master/docs/RegisteredFilterPlugins.md)
 * [Registered Virtual File Drivers (VFDs)](/documentation/hdf5-docs/registered_virtual_file_drivers_vfds.html)
 * [Registered VOL Connectors](/documentation/hdf5-docs/registered_vol_connectors.html)
-* [Release Specific Information](hdf5-docs/release_specific_info.md)
-* [HDF5 Application Developer's Guide](hdf5-docs/hdf5_appdev_guide.md) - \*\*\* WIP \*\*\*
+* [Release Specific Information](hdf5-docs/release_specific_info.md) - Information specific to each release series
+* [HDF5 Application Topics](hdf5-docs/hdf5_topics_list.md) - General and advanced topics in HDF5 for application developers
 
-Can't find what you're looking for? Visit [docs.hdfgroup.org](https://docs.hdfgroup.org/hdf5/v1_14/index.html) for many other documents that previously resided on the portal.
+Can't find what you're looking for? Visit [docs.hdfgroup.org](https://docs.hdfgroup.org/hdf5/develop/index.html) for other documents such as Technical Notes, Specifications, RFCs,...
 
 ## HDF5 Plugins
 * [Registered Filter Plugins](https://github.com/HDFGroup/hdf5_plugins/blob/master/docs/RegisteredFilterPlugins.md)

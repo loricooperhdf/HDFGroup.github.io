@@ -1,10 +1,10 @@
 ---
 title: HDF5 Advanced Topics
-redirect_from: display/HDF5/Advanced+Topics+in+HDF5
-
+redirect_from:
+  - display/HDF5/Advanced+Topics+in+HDF5
 ---
 
-##\*\*\* Work-in-Progress \*\*\*
+\*\*\* Work-in-Progress \*\*\*
 
 ## Advanced Topics in HDF5
 
