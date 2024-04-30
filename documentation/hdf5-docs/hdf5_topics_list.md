@@ -10,8 +10,8 @@ redirect_from:
 
 | Topic                         | Description                                                  |
 | ----------------------------- | ------------------------------------------------------------ |
-| [Environment Variables Used by HDF5]() | Environment variables that can be used when building or using HDF5 |
-| [Using Compression in HDF5]() | Resources regarding compression |
+| [Environment Variables Used by HDF5](hdf5_topics/EnvVarsUsedByHDF5.md) | Environment variables that can be used when building or using HDF5 |
+| [Using Compression in HDF5](hdf5_topics/UsingCompressionInHDF5.md) | Resources regarding compression |
 | [Improving I/O Performance When Working with HDF5 Compressed Datasets](hdf5_topics/HDF5ImprovingIOPerformanceCompressedDatasets.pdf) | A description of the factors that should be considered when storing compressed data in HDF5 files and how to tune those parameters to optimize the I/O performance of an HDF5 application when working with compressed datasets (PDF) |
 | [Parallel HDF5]() | Information on Parallel HDF5 |
 | [Fill Value and Space Allocation Behavior]() | A table summarizing of the behavioral interactions of HDF5 fill value and storage allocation settings  |
