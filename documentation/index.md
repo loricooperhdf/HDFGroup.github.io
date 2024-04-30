@@ -9,11 +9,10 @@ redirect_from:
 Look for more content here soon.
 
 ## HDF5 Library and Tools 
-* [Documentation - Develop](https://docs.hdfgroup.org/hdf5/develop/)
-* [Documentation - 1.14.x](https://docs.hdfgroup.org/hdf5/v1_14/index.html)
-* [Documentation - 1.12.x](https://docs.hdfgroup.org/hdf5/v1_12/index.html)
-* [Documentation - 1.10.x](https://docs.hdfgroup.org/hdf5/v1_10/index.html)
-* [Documentation - 1.8.x](https://docs.hdfgroup.org/hdf5/v1_8/index.html)
+* [Documentation - 1.14.4](https://docs.hdfgroup.org/hdf5/v1_14/v1_14_4/index.html)
+* [Documentation - 1.12.1](https://docs.hdfgroup.org/hdf5/v1_12/index.html)
+* [Documentation - 1.10.9](https://docs.hdfgroup.org/hdf5/v1_10/index.html)
+* [Documentation - 1.8.23](https://docs.hdfgroup.org/hdf5/v1_8/index.html)
 * [Registered Virtual File Drivers (VFDs)](/documentation/hdf5-docs/registered_virtual_file_drivers_vfds.html)
 * [Registered VOL Connectors](/documentation/hdf5-docs/registered_vol_connectors.html)
 * [Release Specific Information](hdf5-docs/release_specific_info.md) - Information specific to each release series

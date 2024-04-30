@@ -2,6 +2,7 @@
 title: Chunking in HDF5
 redirect_from:
   - display/HDF5/Chunking+in+HDF5
+  - documentation/hdf5-docs/chunking_in_hdf5.html
 ---
 
 # Chunking in HDF5
