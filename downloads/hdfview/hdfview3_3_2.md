@@ -6,7 +6,7 @@ title: HDFView 3.3.2
 
 # HDFView 3.3.2
 
-* \*\*\* UNDER CONSTRUCTION \*\*\*
+\*\*\* UNDER CONSTRUCTION \*\*\*
 
 ## Release Information
 
@@ -17,7 +17,11 @@ title: HDFView 3.3.2
 | | Documentation | 
 | | [Known Problems](#known-problems-in-this-release) |
 
-## Download                                                                                                                                                                                                                                                                       | File | Type |                                                                                                                          | ---- | ---- |                                                                                                                          | [hdfview-3.3.2.tar.gz](https://github.com/HDFGroup/hdf5/releases/download/hdfview/hdfview-3.3.2.tar.gz) <br> | Source Release for Unix |
+## Download
+
+| File | Type |
+| ---- | ---- |
+| [hdfview-3.3.2.tar.gz](https://github.com/HDFGroup/hdf5/releases/download/hdfview/hdfview-3.3.2.tar.gz) <br> | Source Release for Unix |
 | [hdfview-3.3.2.zip](https://github.com/HDFGroup/hdf5/releases/download/hdfview/hdfview-3.3.2.zip) <br> |  Source Release for Windows |
 | HDFView User's Guide <br> (sha256) | Documentation (PDF) | | 
 | [UsersGuide.tar.gz](https://hdf-wordpress-1.s3.amazonaws.com/wp-content/uploads/manual/HDFView/3.3.1/docs/UsersGuide.tar.gz) <br> [(sha256)](https://hdf-wordpress-1.s3.amazonaws.com/wp-content/uploads/manual/HDFView/3.3.1/docs/UsersGuide.tar.gz.sha256) | Documentation (HTML, Unix) | | 
