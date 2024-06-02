@@ -24,9 +24,9 @@ title: HDFView 3.3.2
 | [hdfview-3.3.2.tar.gz](https://github.com/HDFGroup/hdf5/releases/download/hdfview/hdfview-3.3.2.tar.gz) <br> | Source Release for Unix |
 | [hdfview-3.3.2.zip](https://github.com/HDFGroup/hdf5/releases/download/hdfview/hdfview-3.3.2.zip) <br> |  Source Release for Windows |
 | HDFView User's Guide <br> (sha256) | Documentation (PDF) | | 
+| [Pre-built binaries](https://support.hdfgroup.org/ftp/HDF5/releases/HDF-JAVA/hdfview-3.3.2/bin/) | Unix and Windows | All pre-built HDFView binary distributions provided
 | [UsersGuide.tar.gz](https://hdf-wordpress-1.s3.amazonaws.com/wp-content/uploads/manual/HDFView/3.3.1/docs/UsersGuide.tar.gz) <br> [(sha256)](https://hdf-wordpress-1.s3.amazonaws.com/wp-content/uploads/manual/HDFView/3.3.1/docs/UsersGuide.tar.gz.sha256) | Documentation (HTML, Unix) | | 
 | [UsersGuide.zip](https://hdf-wordpress-1.s3.amazonaws.com/wp-content/uploads/manual/HDFView/3.3.1/docs/UsersGuide.zip) <br> [(sha256)](https://hdf-wordpress-1.s3.amazonaws.com/wp-content/uploads/manual/HDFView/3.3.1/docs/UsersGuide.zip.sha256) | Documentation (HTML, Windows) | | |
-| [Pre-built binaries](https://support.hdfgroup.org/ftp/HDF5/releases/HDF-JAVA/hdfview-3.3.2/bin/) | Unix and Windows | All pre-built HDFView binary distributions provided
 
 HDFView 3.3.2 was built and tested with HDF5-1.14.4-3, HDF 4.3.0, and openjdk 21. 
 
