@@ -11,7 +11,7 @@ Instructions for installing HDF5 can be found in the INSTALL_parallel file in th
 There are several HDF5 tutorials and presentations that will help in learning Parallel HDF5:
 
 * [Learning the Basics](https://hdfgroup.github.io/hdf5/develop/_learn_basics.html)
-:New users to HDF5 should work through this tutorial first. It does not cover parallel programming but contains basic information needed in order to use Parallel HDF5. For example, subsetting is not a parallel feature but it is commonly used in Parallel HDF5 and important to understand.
+: New users to HDF5 should work through this tutorial first. It does not cover parallel programming but contains basic information needed in order to use Parallel HDF5. For example, subsetting is not a parallel feature but it is commonly used in Parallel HDF5 and important to understand.
 
 * [Introduction to Parallel HDF5](https://hdfgroup.github.io/hdf5/develop/_intro_par_h_d_f5.html)
 : This tutorial is for users who are familiar with HDF5. It provides information on creating and writing to files with Parallel HDF5.
@@ -42,4 +42,4 @@ Taming Parallel I/O Complexity with Auto-Tuning
 Hints to using Parallel HDF5
 
 ## PHDF5 Design Documents
-Enabling a Strict Consistency Semantics Model in Parallel HDF5[PDF](https://docs.hdfgroup.org/hdf5/rfc/RFC%20PHDF5%20Consistency%20Semantics%20MC%20120328.docx.pdf)
+Enabling a Strict Consistency Semantics Model in Parallel HDF5([PDF](https://docs.hdfgroup.org/hdf5/rfc/RFC%20PHDF5%20Consistency%20Semantics%20MC%20120328.docx.pdf))
