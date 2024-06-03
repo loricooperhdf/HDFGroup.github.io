@@ -10,16 +10,13 @@ Instructions for installing HDF5 can be found in the INSTALL_parallel file in th
 ## Tutorials and Presentations
 There are several HDF5 tutorials and presentations that will help in learning Parallel HDF5:
 
-* Learning the Basics(https://portal.hdfgroup.org/hdf5/develop/_learn_basics.html)
-
-: New users to HDF5 should work through this tutorial first. It does not cover parallel programming but contains basic information needed in order to use Parallel HDF5. For example, subsetting is not a parallel feature but it is commonly used in Parallel HDF5 and important to understand.
+* [Learning the Basics](https://hdfgroup.github.io/hdf5/develop/_learn_basics.html)
+:New users to HDF5 should work through this tutorial first. It does not cover parallel programming but contains basic information needed in order to use Parallel HDF5. For example, subsetting is not a parallel feature but it is commonly used in Parallel HDF5 and important to understand.
 
 * [Introduction to Parallel HDF5](https://hdfgroup.github.io/hdf5/develop/_intro_par_h_d_f5.html)
-
 : This tutorial is for users who are familiar with HDF5. It provides information on creating and writing to files with Parallel HDF5.
 
 * Presentations:
-
 : [Parallel HDF5 Short Course](HDF5-PARALLEL_ShortCourse.pdf)
 : [Parallel HDF5 Performance Tuning](Parallel-HDF5-Performance-Tuning.pdf)
 : [ECP Tutorial](20200206_ECPTutorial-final.pdf)
@@ -30,21 +27,19 @@ Users may also be interested in the [Introduction to Scientific I/O (PDF)](2016_
 Further information on using Parallel HDF5 can be found here:
 
 Frequently Asked Questions (under construction)
+: These are questions that came from helping users.
 
-These are questions that came from helping users.
-
-Collective Calling Requirements in Parallel HDF5 Applications
-
-This page contains information on how HDF5 functions must be called (collectively or independently) and properties used in Parallel HDF5.
+[Collective Calling Requirements](CollectiveCallsInParallel.md) in Parallel HDF5 Applications
+: This page contains information on how HDF5 functions must be called (collectively or independently) and properties used in Parallel HDF5.
 
 ## Information on Performance
 Information on performance can be found in the following documents and frequently asked question:
 
-An I/O Study of ECP Applications
+[An I/O Study of ECP Applications](https://www.hdfgroup.org/2020/10/an-i-o-study-of-ecp-applications)
 How to improve performance with Parallel HDF5
 Tuning HDF5 for Lustre File Systems 
 Taming Parallel I/O Complexity with Auto-Tuning
 Hints to using Parallel HDF5
 
 ## PHDF5 Design Documents
-Enabling a Strict Consistency Semantics Model in Parallel HDF5
+Enabling a Strict Consistency Semantics Model in Parallel HDF5[PDF](https://docs.hdfgroup.org/hdf5/rfc/RFC%20PHDF5%20Consistency%20Semantics%20MC%20120328.docx.pdf)
