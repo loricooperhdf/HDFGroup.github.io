@@ -42,4 +42,4 @@ Taming Parallel I/O Complexity with Auto-Tuning
 Hints to using Parallel HDF5
 
 ## PHDF5 Design Documents
-Enabling a Strict Consistency Semantics Model in Parallel HDF5[PDF](https://docs.hdfgroup.org/hdf5/rfc/RFC%20PHDF5%20Consistency%20Semantics%20MC%20120328.docx.pdf)
+Enabling a Strict Consistency Semantics Model in Parallel HDF5([PDF](https://docs.hdfgroup.org/hdf5/rfc/RFC%20PHDF5%20Consistency%20Semantics%20MC%20120328.docx.pdf))
