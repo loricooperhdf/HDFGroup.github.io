@@ -57,7 +57,7 @@ Here are some general parameters that users should consider tuning when they see
 
 There are several MPI-I/O parameters to tune. Usually it is done by setting info keys in the info object passed to HDF5. Some implementations might allow other ways to pass those hints to the MPI library. The MPI standard reserves some key values. An implementation is not required to interpret these key values, but if it does interpret the key value, it must provide the functionality described. The best thing to do again here is to consult with the specific MPI implementation and system used documentation to see what parameters are available to tune. For example, ROMIO in MPICH provides a user guide with a section describing the hints that are available to tune:
 
-http://www.mcs.anl.gov/research/projects/romio/doc/users-guide.pdf
+[http://www.mcs.anl.gov/research/projects/romio/doc/users-guide.pdf](http://www.mcs.anl.gov/research/projects/romio/doc/users-guide.pdf)
 
 Here are some general parameters that are usually tunable:
 
