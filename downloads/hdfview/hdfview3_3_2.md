@@ -10,7 +10,7 @@ title: HDFView 3.3.2
 
 | Version | HDFView 3.3.2 |
 | Release Date | 06/03/2024 |
-| Additional Release Information | [Release Notes](https://github.com/HDFGroup/hdfview/blob/release/hdfview-3.3.2/docs/RELEASE.txt) |
+| Additional Release Information | [Release Notes](https://github.com/HDFGroup/hdfview/blob/v3.3.2/docs/RELEASE.txt) |
 | | [Release Announcement](https://www.hdfgroup.org/2024/05/release-of-hdfview-3-3-2-newsletter-203) | 
 | | [Known Problems](#known-problems-in-this-release) |
 
