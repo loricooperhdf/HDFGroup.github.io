@@ -18,7 +18,6 @@ title: HDFView 3.3.2
 
 | File | Type |
 | ---- | ---- |
-| HDFView User's Guide <br> (sha256) | Documentation (PDF) | | 
 | [UsersGuide.tar.gz](https://hdf-wordpress-1.s3.amazonaws.com/wp-content/uploads/manual/HDFView/3.3.1/docs/UsersGuide.tar.gz) <br> [(sha256)](https://hdf-wordpress-1.s3.amazonaws.com/wp-content/uploads/manual/HDFView/3.3.1/docs/UsersGuide.tar.gz.sha256) | Documentation (HTML, Unix) | | 
 | [UsersGuide.zip](https://hdf-wordpress-1.s3.amazonaws.com/wp-content/uploads/manual/HDFView/3.3.1/docs/UsersGuide.zip) <br> [(sha256)](https://hdf-wordpress-1.s3.amazonaws.com/wp-content/uploads/manual/HDFView/3.3.1/docs/UsersGuide.zip.sha256) | Documentation (HTML, Windows) | | |
 
