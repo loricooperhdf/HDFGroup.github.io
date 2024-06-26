@@ -106,6 +106,7 @@ The following is a list of those functions in the HDF5 library. This list is int
 | [H5Tclose]([2]/group___h5_t.html#gafcba4db244f6a4d71e99c6e72b8678f0) |
 |  |
 | [H5Zunregister]([2]/group___h5_z.html#ga6b8bcdde70c9256c50c7c62ba66380f8) |
+
 [2]/group___h5_z.html#ga6b8bcdde70c9256c50c7c62ba66380f8
 
 In addition, most deprecated functions fall into this category.
