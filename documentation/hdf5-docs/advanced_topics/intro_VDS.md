@@ -4,7 +4,7 @@ redirect_from:
   - /display/HDF5/Virtual+Dataset++-+VDS
 ---
 
-Introduction to the Virtual Dataset - VDS
+# Introduction to the Virtual Dataset - VDS
 
 The HDF5 Virtual Dataset (VDS) feature enables users to access data in a collection of HDF5 files as a single HDF5 dataset and to use the HDF5 APIs to work with that dataset.
 

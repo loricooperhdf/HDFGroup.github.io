@@ -1,6 +1,7 @@
 ---
 title: HDF5 Data Flow Pipeline for H5Dread
-redirect_from: display/HDF5/HDF5+Data+Flow+Pipeline+for+H5Dread
+redirect_from:
+- display/HDF5/HDF5+Data+Flow+Pipeline+for+H5Dread
 ---
 
 # HDF5 Data Flow Pipeline for H5Dread

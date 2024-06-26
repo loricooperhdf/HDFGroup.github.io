@@ -2,9 +2,8 @@
 title: HDF5 Advanced Topics
 redirect_from:
   - display/HDF5/Advanced+Topics+in+HDF5
+  - documentation/hdf5-docs/advanced_topics
 ---
-
-\*\*\* Work-in-Progress \*\*\*
 
 ## Advanced Topics in HDF5
 
@@ -15,8 +14,8 @@ redirect_from:
 | [Copying Committed Datatypes with H5Ocopy (PDF)](advanced_topics/CopyingCommittedDatatypesWithH5Ocopy.pdf) | Describes how to copy to another file a dataset that uses a committed datatype or an object with an attribute that uses a committed datatype so that the committed datatype in the destination file can be used by multiple objects|
 | [Collective Metadata I/O](advanced_topics/CollectiveMetadataIO.md) | Describes optimizing HDF5 by collecting metadata I/O |
 | [Enabling a Strict Consistency Semantics Model in Parallel HDF5 (PDF)](https://docs.hdfgroup.org/hdf5/rfc/RFC%20PHDF5%20Consistency%20Semantics%20MC%20120328.docx.pdf) | Describes how to improve file access consistency semantics with the Parallel HDF5 library |
-| [File Space Management]() | Describes mechanisms to manage space in an HDF5 file |
-| [Fine-tuning the Metadata Cache]() | Describes how to provide better control of the metadata cache |
+| [File Space Management](advanced_topics/FileSpaceManagement.md) | Describes mechanisms to manage space in an HDF5 file |
+| [Fine-tuning the Metadata Cache](advanced_topics/FineTuningMetadataCache.md) | Describes how to provide better control of the metadata cache |
 | [Freeing Memory Allocated by the HDF5 Library (PDF)](https://docs.hdfgroup.org/hdf5/rfc/RFC%20H5free_memory%20v2.pdf) | Describes how inconsistent memory management can cause heap corruption or resource leaks and possible solutions |
 | [HDF5 Data Flow Pipeline for H5Dread](advanced_topics/data_flow_pline_H5Dread.md) | Describes data flow when reading raw data from an HDF5 dataset |
 | [HDF5 Metadata](advanced_topics/) | Provides a comprehensive overview of the types of metadata used in HDF5 |
