@@ -45,10 +45,10 @@ The mechanisms used for this strategy are aggregators and virtual file drivers. 
 H5F_FSPACE_STRATEGY_NONE
 This strategy will request space from the virtual file driver. The only mechanism used is the virtual file driver. It does not use the free-space manager.
 
-# File Space Management User’s Guide
+## File Space Management User’s Guide
 (This document is not yet available.)
 
-# HDF5 Library APIs
+## HDF5 Library APIs
 The APIs listed below from the HDF5 Reference Manual provide a means for users to directly manage the file space management feature.
 
 [H5Fget_free_sections](https://docs.hdfgroup.org/hdf5/v1_14/group___h5_f.html#gab9cbf1a45f9dcda34b43f985b7848434) Retrieves free-space section information for a file
