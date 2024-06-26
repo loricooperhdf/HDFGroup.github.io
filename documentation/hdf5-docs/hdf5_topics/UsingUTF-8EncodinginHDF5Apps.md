@@ -26,7 +26,7 @@ More specific technical details will only become important if they affect the sp
 HDF5 uses characters in object names (which are actually link names, but that’s a story for a different article), dataset raw data, attribute names, and attribute raw data. Though the mechanisms differ, you can use either ASCII or UTF-8 character sets in all of these situations.
 
 ### Object and Attribute Names
-By default, HDF5 creates object and attribute names with ASCII character encoding. An object or attribute creation property list setting is required to create object names with UTF-8 characters. This uses the function H5Pset_char_encoding, which sets the character encoding used for object and attribute names.
+By default, HDF5 creates object and attribute names with ASCII character encoding. An object or attribute creation property list setting is required to create object names with UTF-8 characters. This uses the function [H5Pset_char_encoding](https://portal.hdfgroup.org/hdf5/develop/group___a_c_p_l.html#gad4fa8e2d17236786f770cf17eef908cc), which sets the character encoding used for object and attribute names.
 
 For example, the following call sequence could be used to create a dataset with its name encoded with the UTF-8 character set:
 

@@ -13,7 +13,7 @@ redirect_from:
 | [Chunking in HDF5](advanced_topics/chunking_in_hdf5.md) | Provides detailed information regarding chunking in HDF5 |
 | [HDF5 File Image Operations (PDF)](https://docs.hdfgroup.org/hdf5/rfc/HDF5FileImageOperations.pdf) | Describes how to work with HDF5 files in memory. Disk I/O is not required when file images are opened, created, read from, or written to |
 | [Copying Committed Datatypes with H5Ocopy (PDF)](advanced_topics/CopyingCommittedDatatypesWithH5Ocopy.pdf) | Describes how to copy to another file a dataset that uses a committed datatype or an object with an attribute that uses a committed datatype so that the committed datatype in the destination file can be used by multiple objects|
-| [Collective Metadata I/O]() | Describes optimizing HDF5 by collecting metadata I/O |
+| [Collective Metadata I/O](advanced_topics/CollectiveMetadataIO.md) | Describes optimizing HDF5 by collecting metadata I/O |
 | [Enabling a Strict Consistency Semantics Model in Parallel HDF5 (PDF)](https://docs.hdfgroup.org/hdf5/rfc/RFC%20PHDF5%20Consistency%20Semantics%20MC%20120328.docx.pdf) | Describes how to improve file access consistency semantics with the Parallel HDF5 library |
 | [File Space Management]() | Describes mechanisms to manage space in an HDF5 file |
 | [Fine-tuning the Metadata Cache]() | Describes how to provide better control of the metadata cache |
