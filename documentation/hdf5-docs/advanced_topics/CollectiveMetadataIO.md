@@ -105,11 +105,11 @@ The following is a list of those functions in the HDF5 library. This list is int
 | [H5Tget_create_plist]([2]/group___h5_t.html#ga6802c22c6e90216aa839a4a83909a54c) |
 | [H5Tclose]([2]/group___h5_t.html#gafcba4db244f6a4d71e99c6e72b8678f0) |
 |  |
-| [H5Zunregister]([2]/group___h5_z.html#ga6b8bcdde70c9256c50c7c62ba66380f8) |
+| [H5Zunregister](https://[2]/group___h5_z.html#ga6b8bcdde70c9256c50c7c62ba66380f8) |
 
 In addition, most deprecated functions fall into this category.
 
 The HDF Group may address the above limitation in a future major release, but no decision has been made at this time. Such a change might, for example, include adding new versions of some or all the above functions with an extra property list parameter to allow an individual setting for the collective calling requirement.
 
 [1]: https://docs.hdfgroup.org/hdf5/rfc
-[2]: https://portal.hdfgroup.org/hdf5/develop
+[2]: portal.hdfgroup.org/hdf5/develop
