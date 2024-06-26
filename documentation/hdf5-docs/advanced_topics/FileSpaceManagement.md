@@ -4,20 +4,22 @@ redirect_from:
   - display/HDF5/File%2BSpace%2BManagement
 ---
 
+# File Space Management
+
 This page briefly describes the documentation available to those who use the file space management feature found in the HDF5 library.
 
 The HDF5 library's file space management activities encompass both the allocation of file space and the management of free space. When an HDF5 object (group, dataset, etc.) is created and written, file space is allocated for storing its metadata and raw data. When an object is removed, the space associated with the object becomes free space.
 
 The following are the sections on this page:
 
-File Space Management Strategies
-File Space Management User’s Guide  (not yet available)
-HDF5 Library APIs
-Tools
-Differences between HDF5-1.10 and HDF5-1.8
-How to Remove the Free Space in an Existing File
+[File Space Management Strategies](#File-space-management-strategies)
+[File Space Management User’s Guide  (not yet available)
+[HDF5 Library APIs](#Hdf5-library-apis)
+[Tools](#Tools)
+[Differences between HDF5-1.10 and HDF5-1.8](#Differences-between-HDF5-1.10-and-HDF5-1.8)
+[How to Remove the Free Space in an Existing File](#How-to-Remove-the-Free-Space-in-an-Existing-File)
 
-File Space Management Strategies
+## File Space Management Strategies
 The HDF5 library uses three mechanisms to manage space in an HDF5 file. They are:
 
 Free-space managers that track free-space sections of various sizes in the file that are not currently allocated.
@@ -43,43 +45,46 @@ The mechanisms used for this strategy are aggregators and virtual file drivers. 
 H5F_FSPACE_STRATEGY_NONE
 This strategy will request space from the virtual file driver. The only mechanism used is the virtual file driver. It does not use the free-space manager.
 
-File Space Management User’s Guide
+## File Space Management User’s Guide
 (This document is not yet available.)
 
-HDF5 Library APIs
+## HDF5 Library APIs
 The APIs listed below from the HDF5 Reference Manual provide a means for users to directly manage the file space management feature.
 
-[H5Fget_free_sections](https://docs.hdfgroup.org/hdf5/v1_14/group___h5_f.html#gab9cbf1a45f9dcda34b43f985b7848434)Retrieves free-space section information for a file
+[H5Fget_free_sections](https://docs.hdfgroup.org/hdf5/v1_14/group___h5_f.html#gab9cbf1a45f9dcda34b43f985b7848434) Retrieves free-space section information for a file
 [H5Fget_freespace](https://docs.hdfgroup.org/hdf5/v1_14/group___h5_f.html#ga3ef2673183567543346668a8f1eca2e9) Returns the amount of free space in a file
 [H5Fget_info2](https://docs.hdfgroup.org/hdf5/v1_14/group___h5_f.html#gaced8c09c1559636a9c3f33dff3f4520e) Returns global information for a file
 [H5Pget_file_space_strategy](https://docs.hdfgroup.org/hdf5/v1_14/group___f_c_p_l.html#ga54cf6ca4f897ba9ee3695a15fe8e6029) Retrieves the File Space Strategy for a file creation property list
 [H5Pset_file_space_strategy](https://docs.hdfgroup.org/hdf5/v1_14/group___f_c_p_l.html#ga167ff65f392ca3b7f1933b1cee1b9f70) Sets the File Space Strategy for a file creation property list
 [H5Pget_file_space_page_size](https://docs.hdfgroup.org/hdf5/v1_14/group___f_c_p_l.html#gaab5e8c08e4f588e0af1d937fcebfc885) Retrieves the file space page size for paged aggregation
 [H5Pset_file_space_page_size](https://docs.hdfgroup.org/hdf5/v1_14/group___f_c_p_l.html#gad012d7f3c2f1e1999eb1770aae3a4963) Sets the file space page size for paged aggregation
-Tools
+
+## Tools
+
 The tools listed below have been modified to preserve or modify file freepace information appropriately when processing files employing this feature.
 
-h5dump	When printing the file creation property information for the superblock via the -B option, h5dump includes the block size obtained via H5Pget_file_space_page_size.
-h5stat	When printing the file space information via the -S option, h5stat includes the block size obtained via H5Pget_file_space_page_size.
-h5repack	The following options were added to h5repack:
--G FS_PAGESIZE,--fs_pagesize=FS_PAGESIZE enables the file space page size to be changed to FS_PAGESIZE.
+|             |                                                              |
+| ----------- | ------------------------------------------------------------ |
+| h5dump      | When printing the file creation property information for the superblock via the -B option, h5dump includes the block size obtained via H5Pget_file_space_page_size |
+| h5stat      | When printing the file space information via the -S option, h5stat includes the block size obtained via H5Pget_file_space_page_size |
+| h5repack    | The following options were added to h5repack: |
+|             | -G FS_PAGESIZE,--fs_pagesize=FS_PAGESIZE enables the file space page size to be changed to FS_PAGESIZE |
+|             | -P FS_PERSIST,--fs_persist=FS_PERSIST sets the persisting free space to persist (1) or to not persist (0) |
+|             | -S FS_STRATEGY, --fs_strategy=FS_STRATEGY sets the file space management strategy |
+|             | -T FS_THRESHOLD, --fs_threshold=FS_THRESHOLD sets the free-space section threshold |
 
--P FS_PERSIST,--fs_persist=FS_PERSIST sets the persisting free space to persist (1) or to not persist (0).
+## Differences between HDF5-1.10 vs HDF5-1.8
 
--S FS_STRATEGY, --fs_strategy=FS_STRATEGY sets the file space management strategy.
+### HDF5-1.10
 
--T FS_THRESHOLD, --fs_threshold=FS_THRESHOLD sets the free-space section threshold.
-
- 
-
-Differences between HDF5-1.10 vs HDF5-1.8
-HDF5-1.10
 File space management strategies were introduced via H5Pset_file_space_strategy to manage the unused space in a file.
 
 While a file is open, HDF5 tracks and re-uses the unused space in the file according to the strategy used. If using a strategy that uses the free space manager, then free space can be tracked across file opens by use of the "persist" flag and a minimum free space threshold can be specified. If not specifying a strategy that uses the free space manager, then when the file is closed, any free space is lost and will remain in the file.
 
-HDF5-1.8
+### HDF5-1.8
+
 File space management only occurs between the HDF5 file open and close, and the free space is NOT tracked beyond file closed. In other words, when you delete a dataset, the space used by the dataset becomes free space that can be re-used as long as the file is open. Once the file is closed, the free space is lost and will remain in the file.
 
-How to Remove the Free Space in an Existing File
+## How to Remove the Free Space in an Existing File
+
 The h5repack utility can be used to remove the unused space in a file, by writing the file to a new file. This utility comes with the HDF5 binary distribution.

@@ -1,13 +1,12 @@
 ---
 title: Fine Tuning Metadata Cache
----                                                                                                                                         title: File Space Management
 redirect_from:
-  - display/HDF5/File%2BSpace%2BManagement
+  - https://docs.hdfgroup.org/archive/support/HDF5/docNewFeatures/NewFeaturesFineTuningMetadataCacheDocs.html
 ---
 
-# Fine Tuning Metadata Cache in HDF5
+# Fine-tuning the Metadata Cache Documentation
 
-The page lists and briefly describes the documentation available for those who want to fine-tune how the metadata cache in HDF5 behaves.
+This page briefly describes the documentation available for those who want to fine-tune how the metadata cache in HDF5 behaves.
 
 ## HDF5 Library APIs
  
@@ -46,7 +45,7 @@ The page lists and briefly describes the documentation available for those who w
 [H5Fget_intent](https://docs.hdfgroup.org/hdf5/v1_14/group___h5_f.html#ga466179d7783d256329c2e3110055a16c) Determines the read/write or read-only status of a file.
  
  
-Logging APIs
+## Logging APIs
  
 [H5Pset_mdc_log_options](https://docs.hdfgroup.org/hdf5/v1_14/group___f_a_p_l.html#ga4d7206c5679d7243410058eceae59b2c) Sets metadata cache logging options.
  
@@ -75,8 +74,8 @@ Metadata Cache Evict on Close - This feature will cause all metadata for an obje
  
 [Flush Dependency Testing (PDF)](https://docs.hdfgroup.org/hdf5/rfc/Design-HDF5-FlushDependencyTesting-20130630-v1.1.pdf) - This document considers how to design tests for flush dependencies of metadata cache items for single-writer/multiple-reader (SWMR) access.
  
-
 ## Tools
 
 The following tool was modified to support the Metadata Cache Image feature.
+
 h5clear	The "-m" and "--image" flags were added to h5clear to close a cache image if it exists.

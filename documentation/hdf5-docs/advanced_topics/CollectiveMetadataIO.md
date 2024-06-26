@@ -1,3 +1,11 @@
+---
+title: Collective Metadata I/O
+redirect_from:
+  - 
+---
+
+# Collective Metadata I/O
+
 The purpose of this page is to briefly describe the new HDF5 Collective Metadata I/O feature and provide a gateway to available documentation. The page includes the following sections:
 
 * [Collective Metadata I/O Overview 
