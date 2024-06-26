@@ -1,7 +1,7 @@
 ---
-title: Chunking in HDF5
+title: Dataset Chunking Issues
 redirect_from:
-  - https://support.hdfgroup.org/HDF5/doc/H5.user/Chunking.html
+  - 
 ---
 
 # Dataset Chunking Issues
