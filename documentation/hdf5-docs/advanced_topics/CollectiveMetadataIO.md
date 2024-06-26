@@ -107,6 +107,7 @@ The following is a list of those functions in the HDF5 library. This list is int
 |  |
 | [H5Zunregister]([^2]/group___h5_z.html#ga6b8bcdde70c9256c50c7c62ba66380f8) |
 | H5Zunregister <[^2]/group___h5_z.html#ga6b8bcdde70c9256c50c7c62ba66380f8> |
+| <https://portal.hdfgroup.org/hdf5/develop/group___h5_z.html#ga6b8bcdde70c9256c50c7c62ba66380f8> |
 
 In addition, most deprecated functions fall into this category.
 
