@@ -107,8 +107,6 @@ The following is a list of those functions in the HDF5 library. This list is int
 |  |
 | [H5Zunregister]([2]/group___h5_z.html#ga6b8bcdde70c9256c50c7c62ba66380f8) |
 
-[2]/group___h5_z.html#ga6b8bcdde70c9256c50c7c62ba66380f8
-
 In addition, most deprecated functions fall into this category.
 
 The HDF Group may address the above limitation in a future major release, but no decision has been made at this time. Such a change might, for example, include adding new versions of some or all the above functions with an extra property list parameter to allow an individual setting for the collective calling requirement.
