@@ -20,7 +20,8 @@ This page is a temporary replacement for our download archive. We will be workin
  
 | Version | Usage | 
 | ---- | ----| 
-| [HDFView 3.3.1](/hdfview/hdfview3_3_1.md) | Most recent version; built and tested with HDF5-1.14.0, HDF 4.2.16-2, and openjdk 19.  | 
+| [HDFView 3.3.2](/hdfview/hdfview3_3_2.md) | Most recent version; built and tested with HDF5-1.14.4, HDF 4.3.0, and openjdk 21.  | 
+| [HDFView 3.3.1](/hdfview/hdfview3_3_1.md) | Older verison. Built and tested with HDF5-1.14.0, HDF 4.2.16-2, and openjdk 19. |
 
 ## HDF4 
 
