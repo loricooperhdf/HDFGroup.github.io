@@ -16,7 +16,7 @@ Please contact the maintainer of a VFD for help implementing the plugin.
 
 ## List of VFDs Registered with The HDF Group
 
-| Driver	| Driver Identifier| Search Name*	| Short Description	| URL	| Contacts| 
+| Driver	| Driver Identifier| Search Name\*	| Short Description	| URL	| Contacts| 
 | --- | --- | --- | --- | --- | --- | 
 | CUDA GPU	| 512	| gds	| The HDF5 GPUDirect Storage VFD is a Virtual File Driver (VFD) for HDF5 that can be used to interface with Nvidia's GPUDirect Storage (GDS) API. The driver is built as a plugin library that is external to HDF5.	| [https://github.com/hpc-io/vfd-gds](ttps://github.com/hpc-io/vfd-gds)	|  Suren Byna (sbyna at lbl dot gov)| 
 | GDAL vsil	| 513	| vsil	| The HDF5 GDAL vsil Storage VFD is a Virtual File Driver (VFD) for the GDAL HDF5 driver that can be used to access any file supported by the GDAL Virtual File System Interface ([https://gdal.org/user/virtual_file_systems.html](https://gdal.org/user/virtual_file_systems.html)). | [https://github.com/OSGeo/gdal/blob/master/frmts/hdf5/hdf5vfl.h](https://github.com/OSGeo/gdal/blob/master/frmts/hdf5/hdf5vfl.h) | Even Rouault (even dot rouault at spatialys dot com)| 
