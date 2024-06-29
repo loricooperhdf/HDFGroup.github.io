@@ -53,13 +53,13 @@ The APIs listed below from the HDF5 Reference Manual provide a means for users t
  
 |                   |                                                              |
 | ----------------- | ------------------------------------------------------------ |
-| [H5Fget_free_sections]([2]group___h5_f.html#gab9cbf1a45f9dcda34b43f985b7848434) | Retrieves free-space section information for a file |
-| [H5Fget_freespace]([2]group___h5_f.html#ga3ef2673183567543346668a8f1eca2e9) | Returns the amount of free space in a file |
-| [H5Fget_info2]([2]group___h5_f.html#gaced8c09c1559636a9c3f33dff3f4520e) | Returns global information for a file |
-| [H5Pget_file_space_strategy]([2]group___f_c_p_l.html#ga54cf6ca4f897ba9ee3695a15fe8e6029) | Retrieves the File Space Strategy for a file creation property list |
-| [H5Pset_file_space_strategy]([2]group___f_c_p_l.html#ga167ff65f392ca3b7f1933b1cee1b9f70) | Sets the File Space Strategy for a file creation property list |
-| [H5Pget_file_space_page_size]([2]group___f_c_p_l.html#gaab5e8c08e4f588e0af1d937fcebfc885) | Retrieves the file space page size for paged aggregation |
-| [H5Pset_file_space_page_size]([2]group___f_c_p_l.html#gad012d7f3c2f1e1999eb1770aae3a4963) | Sets the file space page size for paged aggregation |
+| [H5Fget_free_sections](https://docs.hdfgroup.org/hdf5/v1_14/group___h5_f.html#gab9cbf1a45f9dcda34b43f985b7848434) | Retrieves free-space section information for a file |
+| [H5Fget_freespace](https://docs.hdfgroup.org/hdf5/v1_14/group___h5_f.html#ga3ef2673183567543346668a8f1eca2e9) | Returns the amount of free space in a file |
+| [H5Fget_info2](https://docs.hdfgroup.org/hdf5/v1_14/group___h5_f.html#gaced8c09c1559636a9c3f33dff3f4520e) | Returns global information for a file |
+| [H5Pget_file_space_strategy](https://docs.hdfgroup.org/hdf5/v1_14/group___f_c_p_l.html#ga54cf6ca4f897ba9ee3695a15fe8e6029) | Retrieves the File Space Strategy for a file creation property list |
+| [H5Pset_file_space_strategy](https://docs.hdfgroup.org/hdf5/v1_14/group___f_c_p_l.html#ga167ff65f392ca3b7f1933b1cee1b9f70) | Sets the File Space Strategy for a file creation property list |
+| [H5Pget_file_space_page_size](https://docs.hdfgroup.org/hdf5/v1_14/group___f_c_p_l.html#gaab5e8c08e4f588e0af1d937fcebfc885) | Retrieves the file space page size for paged aggregation |
+| [H5Pset_file_space_page_size](https://docs.hdfgroup.org/hdf5/v1_14/group___f_c_p_l.html#gad012d7f3c2f1e1999eb1770aae3a4963) | Sets the file space page size for paged aggregation |
 
 <h2 id="tools"> Tools</h2>
 
