@@ -20,10 +20,10 @@ See [API Compatibility Macros](https://docs.hdfgroup.org/hdf5/develop/api-compat
  
 This page provides information on the changes that a maintenance developer needs to be aware of between successive releases of HDF5, such as:
 
-New or changed features or tools
-Syntax and behavioral changes in the existing application programming interface (the API)
-Certain types of changes in configuration or build processes
-Note that bug fixes and performance enhancements in the C library are automatically picked up by the C++, Fortran, and Java libraries.
+* New or changed features or tools
+* Syntax and behavioral changes in the existing application programming interface (the API)
+* Certain types of changes in configuration or build processes
+* Note that bug fixes and performance enhancements in the C library are automatically picked up by the C++, Fortran, and Java libraries.
 
 The following information is included below.
 
