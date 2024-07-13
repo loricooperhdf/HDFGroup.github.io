@@ -107,6 +107,7 @@ Following are the new APIs introduced in HDF5-1.14.2.
 | [H5FDread_vector_from_selection](https://docs.hdfgroup.org/hdf5/v1_14/_h5_f_ddevelop_8h.html#a04a29af1028d1db99edb765c80cf6f5c) | Performs a vector read if vector reads are supported, or a series of scalar reads, otherwise. |
 | [H5FDwrite_from_selection](https://docs.hdfgroup.org/hdf5/v1_14/_h5_f_ddevelop_8h.html#a0ba732516878e1a18f6244b43a4055cc) | Performs a series of scalar writes. |
 | [H5FDwrite_vector_from_selection](https://docs.hdfgroup.org/hdf5/v1_14/_h5_f_ddevelop_8h.html#adeed09246b8feb1a5a301e263e9236b2) | Performs a vector write if vector writes are supported, or a series of scalar writes, otherwise. |
+| [H5Pget_fapl_ros3_token](https://docs.hdfgroup.org/hdf5/v1_14/group___f_a_p_l.html#gafa91f06270a937cbbf20457ce0a7027e) | comment |
 | [H5Pget_fapl_ros3_token](https://docs.hdfgroup.org/hdf5/v1_14/group___f_a_p_l.html#gafa91f06270a937cbbf20457ce0a7027e) | Returns session/security token of the ros3 file access property list |
 | [H5Pset_fapl_ros3_token](https://docs.hdfgroup.org/hdf5/v1_14/group___f_a_p_l.html#ga42bc76c556951027e30c4d26394323c6) | Modifies the file access property list to use the H5FD_ROS3 driver |
 
