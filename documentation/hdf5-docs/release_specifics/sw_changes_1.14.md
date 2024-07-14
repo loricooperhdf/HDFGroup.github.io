@@ -103,12 +103,12 @@ Following are the new APIs introduced in HDF5-1.14.2.
 
 | Function                           | Description                                                  |
 | ---------------------------------- | ------------------------------------------------------------ |
-| [H5FDread\_from\_selection](https://docs.hdfgroup.org/hdf5/v1_14/_h5_f_ddevelop_8h.html#a562c69aaa9cd0cac7f2e81110c2fa04d) | Performs a series of scalar reads. |
-| [H5FDread\_vector\_from\_selection](https://docs.hdfgroup.org/hdf5/v1_14/_h5_f_ddevelop_8h.html#a04a29af1028d1db99edb765c80cf6f5c) | Performs a vector read if vector reads are supported, or a series of scalar reads, otherwise. |
-| [H5FDwrite\_from\_selection](https://docs.hdfgroup.org/hdf5/v1_14/_h5_f_ddevelop_8h.html#a0ba732516878e1a18f6244b43a4055cc) | Performs a series of scalar writes. |
-| [H5FDwrite\_vector\_from\_selection](https://docs.hdfgroup.org/hdf5/v1_14/_h5_f_ddevelop_8h.html#adeed09246b8feb1a5a301e263e9236b2) | Performs a vector write if vector writes are supported, or a series of scalar writes, otherwise. |
-| [H5Pget\_fapl\_ros3\_token](https://docs.hdfgroup.org/hdf5/v1_14/group___f_a_p_l.html#gafa91f06270a937cbbf20457ce0a7027e) | Returns session/security token of the ros3 file access property list |
-| [H5Pset\_fapl\_ros3\_token](https://docs.hdfgroup.org/hdf5/v1_14/group___f_a_p_l.html#ga42bc76c556951027e30c4d26394323c6) | Modifies the file access property list to use the H5FD_ROS3 driver |
+| [H5FDread_from_selection](https://docs.hdfgroup.org/hdf5/v1_14/_h5_f_ddevelop_8h.html#a562c69aaa9cd0cac7f2e81110c2fa04d) | Performs a series of scalar reads. |
+| [H5FDread_vector_from_selection](https://docs.hdfgroup.org/hdf5/v1_14/_h5_f_ddevelop_8h.html#a04a29af1028d1db99edb765c80cf6f5c) | Performs a vector read if vector reads are supported, or a series of scalar reads, otherwise. |
+| [H5FDwrite_from_selection](https://docs.hdfgroup.org/hdf5/v1_14/_h5_f_ddevelop_8h.html#a0ba732516878e1a18f6244b43a4055cc) | Performs a series of scalar writes. |
+| [H5FDwrite_vector_from_selection](https://docs.hdfgroup.org/hdf5/v1_14/_h5_f_ddevelop_8h.html#adeed09246b8feb1a5a301e263e9236b2) | Performs a vector write if vector writes are supported, or a series of scalar writes, otherwise. |
+| [H5Pget_fapl_ros3_token](https://docs.hdfgroup.org/hdf5/v1_14/group___f_a_p_l.html#gafa91f06270a937cbbf20457ce0a7027e) | Returns session/security token of the ros3 file access property list |
+| [H5Pset_fapl_ros3_token](https://docs.hdfgroup.org/hdf5/v1_14/group___f_a_p_l.html#ga42bc76c556951027e30c4d26394323c6) | Modifies the file access property list to use the H5FD_ROS3 driver |
 
 * [Compatibility report for Release 1.14.2 versus Release 1.14.1](https://htmlpreview.github.io/?https://raw.githubusercontent.com/HDFGroup/hdf5doc/master/html/ADGuide/Compatibility_Report/hdf5-1.14.1-2-vs-hdf5-1.14.2-interface_compatibility_report.html)
 
@@ -183,7 +183,7 @@ Following are the new APIs introduced in HDF5-1.14.0.
 | [H5Dread_multi_async](https://docs.hdfgroup.org/hdf5/v1_14/group___a_s_y_n_c.html#ga7434c55da618b62d2c20cde4e0e040fc) | N | Asynchronous version of H5Dread_multi |
 | [H5Dset_extent_async](https://docs.hdfgroup.org/hdf5/v1_14/group___a_s_y_n_c.html#gab8e6d326fabbad5683ef6d0f669bae75) | N | Asynchronous version of H5Dset_extent |
 | [H5Dwrite_async](https://docs.hdfgroup.org/hdf5/v1_14/group___a_s_y_n_c.html#ga7773f0c3503418421bcb535a95ee832e) | N | Asynchronous version of H5Dwrite |
-| [H5Dwrite_multi] (https://docs.hdfgroup.org/hdf5/v1_14/group___h5_d.html#gaf6213bf3a876c1741810037ff2bb85d8) | N | Writes raw data from a set buffers to a set of datasets |
+| [H5Dwrite_multi](https://docs.hdfgroup.org/hdf5/v1_14/group___h5_d.html#gaf6213bf3a876c1741810037ff2bb85d8) | N | Writes raw data from a set buffers to a set of datasets |
 | [H5Dwrite_multi_async](https://docs.hdfgroup.org/hdf5/v1_14/group___a_s_y_n_c.html#ga1efc4f95c82571ce3897002c76469fdc) | N | Asynchronous version of H5Dwrite_multi |
 | [H5Eappend_stack](https://docs.hdfgroup.org/hdf5/v1_14/group___h5_e.html#gaa35a1b27d704a90f2a933f9d41df35ec) | N | Appends one error stack to another, optionally closing the source stack |
 | [H5EScancel](https://docs.hdfgroup.org/hdf5/v1_14/group___h5_e_s.html#ga45ec0f886c4914f9503ab42e811a496a) | N | Attempt to cancel operations in an event set |
