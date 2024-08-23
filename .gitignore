@@ -1,2 +1,25 @@
-### macOS ###
+# Jekyll specific files
+_site/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
+Gemfile.lock
+
+# Temporary files
+*.tmp
+*.temp
+
+# Ignore vim files:
+*~
+*.swp
+*.swo
+
+# Log files
+*.log
+
+# System files
 .DS_Store
+Thumbs.db
+
+# VSCode specific files
+#.vscode/
