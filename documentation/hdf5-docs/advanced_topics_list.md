@@ -20,7 +20,7 @@ redirect_from:
 | [HDF5 Data Flow Pipeline for H5Dread](advanced_topics/data_flow_pline_H5Dread.html) | Describes data flow when reading raw data from an HDF5 dataset |
 | [HDF5 Metadata](advanced_topics/) | Provides a comprehensive overview of the types of metadata used in HDF5 |
 | [Introduction to Single-Writer_Multiple-Reader (SWMR)](advanced_topics/intro_SWMR.html) | Enables writing to a file while multiple readers are accessing it |
-| [Introduction to the Virtual Dataset - VDS](advanced_topics/intro_VDS.) | Describes how to present data stored in several HDF5 datasets and files as a single dataset and access the data using HDF5 APIs |
+| [Introduction to the Virtual Dataset - VDS](advanced_topics/intro_VDS.html) | Describes how to present data stored in several HDF5 datasets and files as a single dataset and access the data using HDF5 APIs |
 | [Modified Region Writes (PDF)](advanced_topics/ModifiedRegionWrites.pdf) | Describes how to set write operations for in-memory files so that only modified regions are written to storage. Available when the Core (Memory) VFD is used |
 | [Page Buffering (PDF)](https://docs.hdfgroup.org/hdf5/rfc/RFC-Page_Buffering.pdf) | Describes how to reduce the number of small accesses in HDF5 by buffering metadata and raw data accesses |
 | [Partial Edge Chunks]() | Describes how to control the filtering of partial edge chunks to improve performance when extending datasets |
