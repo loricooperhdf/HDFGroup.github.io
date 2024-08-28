@@ -224,7 +224,7 @@ The slide set [HDF5 Advanced Topics: Chunking in HDF5 (PDF)](Chunking_Tutorial_E
 
 The page [HDF5 Examples](https://hdfgroup.github.io/hdf5/develop/_h_d_f5_examples.html) lists many code examples that are regularly tested with the HDF5 library. Several illustrate the use of chunking in HDF5, particularly [Read/Write Chunked Dataset](https://hdfgroup.github.io/hdf5/develop/_ex_a_p_i.html) and any examples demonstrating filters.
 
-[Dataset Chunking Issues](DSChunkingIssues.md) provides additional information regarding chunking that has not yet been incorporated into this document.
+[Dataset Chunking Issues](DSChunkingIssues.html) provides additional information regarding chunking that has not yet been incorporated into this document.
 
 ## Directions for Future Development
 As seen above, the HDF5 chunk cache currently requires careful control of the parameters in order to achieve optimal performance. In the future, we plan to improve the chunk cache to be more foolproof in many ways, and deliver acceptable performance in most cases even when no thought is given to the chunking parameters.

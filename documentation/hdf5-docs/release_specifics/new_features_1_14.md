@@ -16,7 +16,7 @@ need the precision of larger floating-point datatypes. It can also allow
 for improved performance when converting between 16-bit floating-point
 data and data of another HDF5 datatype.
 
-* [Asynchronous I/O operations](asyn_ops_wHDF5_VOL_connectors.md)
+* [Asynchronous I/O operations](asyn_ops_wHDF5_VOL_connectors.html)
 HDF5 provides asynchronous APIs for the HDF5 VOL connectors that
 support asynchronous HDF5 operations using the HDF5 Event Set (H5ES)
 API. This allows I/O to proceed in the background while the application
