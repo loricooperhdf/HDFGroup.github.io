@@ -23,4 +23,4 @@ redirect_from:
 <!--- In doxygen/technical notes -->
 <!--- | [HDF5 Library Release Versions Numbers]() | A description of HDF5 library release version numbering | -->
 
-For more advanced features, see [Advanced Topics in HDF5](advanced_topics_list.md)
+For more advanced features, see [Advanced Topics in HDF5](advanced_topics_list.html)
