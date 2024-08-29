@@ -7,22 +7,20 @@ redirect_from:
 # HDF Software Documentation
 
 ## HDF5 Library, Tools, and Extensions
-* [Documentation (lastest)](https://docs.hdfgroup.org/releases/hdf5/latest-docs.html) - User Guide, Reference Manual, and other documentation
+* [Documentation (latest)](https://docs.hdfgroup.org/releases/hdf5/latest-docs.html) - User Guide, Reference Manual, and other documentation
 * [Release Specific Information](hdf5-docs/release_specific_info.html) - Information specific to each release series
-* [HDF5 Application Topics](hdf5-docs/hdf5_topics_list.md) - General and advanced topics in HDF5 for application developers
+* [HDF5 Application Topics](hdf5-docs/hdf5_topics_list.html) - General and advanced topics in HDF5 for application developers
 * [Registered Filter Plugins](https://github.com/HDFGroup/hdf5_plugins/blob/master/docs/RegisteredFilterPlugins.md) - List of registered filter plugins
 * [Registered Virtual File Drivers (VFDs)](/documentation/hdf5-docs/registered_virtual_file_drivers_vfds.html) - List of registered VFDs
 * [Registered Virtual Object Layer (VOL) Connectors](/documentation/hdf5-docs/registered_vol_connectors.html) - List of registered VOL connectors
 
 ## HDFView 
 
-* [User Guide (old)](https://docs.hdfgroup.org/releases/hdfview/v3_3/v3_3_2/documentation/UsersGuide/index.html)
 * [User Guide (lastest)](https://docs.hdfgroup.org/releases/hdfview/latest-docs.html)
 
 ## HDF5/JSON
 
-* [User Guide (latest)](https://docs.hdfgroup.org/releases/hdf5-json/latest-docs.html) 
-* [User Guide (full path)](https://docs.hdfgroup.org/releases/hdf5-json/v1_1/v1_1_3/documentation/hdf5-json/index.html) 
+* [User Guide (latest)](https://docs.hdfgroup.org/releases/hdf5-json/latest-docs.html)  
 
 
 ## Highly Scalable Data Service (HSDS)
