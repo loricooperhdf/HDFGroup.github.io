@@ -3,7 +3,7 @@ title: The HDF Group Support Site
 layout: default
 ---
 
-# The HDF Group
+# The HDF Group Support Site
 
 Our **non-profit mission** is to ensure efficient and equitable access to science and engineering data across platforms and environments, now and forever.
 
