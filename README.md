@@ -13,7 +13,7 @@ People around the world rely on open source HDF software and use it to solve som
  
 # Contribute 
 
-This repo provides the framework for the introductory pages (i.e. content for the top level pages) of The HDF Group's documentation for the above projects. These pages are build using Jeckyl and served via Github Pages. Feel free to contribute PRs and issues here, however if your contribution is specifically related to the documentation of those projects, those contributions belong in the repo for that project. Is it confusiong? Yes. Please edit this page if you have a better way to explain this. 
+This repo provides the framework for the introductory pages (i.e. content for the top level pages) of The HDF Group's documentation for the above projects. These pages are build using Jeckyl and served via Github Pages. Feel free to contribute PRs and issues here, however if your contribution is specifically related to the documentation of those projects, those contributions belong in the repo for that project. Is it confusing? Yes. Please edit this page if you have a better way to explain this. 
 
 # Testing Your Changes Before Submitting a PR 
 
