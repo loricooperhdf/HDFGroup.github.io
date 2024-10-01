@@ -8,7 +8,7 @@ redirect_from:
 
 The new features in the HDF4 1.14 series include:
 
-* [16 bit floating point and Complex number datatypes](https://github.com/HDFGroup/hdf5doc/blob/master/RFCs/HDF5_Library/Float16/RFC__Adding_support_for_16_bit_floating_point_and_Complex_number_datatypes_to_HDF5.pdf)
+* [16 bit floating point and Complex number datatypes](https://support.hdfgroup.org/releases/hdf5/documentation/rfc/RFC__Adding_support_for_16_bit_floating_point_and_Complex_number_datatypes_to_HDF5.pdf)
 Support for the 16-bit floating-point \_Float16 C type has been added to
 HDF5. On platforms where this type is available, this can enable more
 efficient storage of floating-point data when an application doesn't
@@ -22,13 +22,13 @@ support asynchronous HDF5 operations using the HDF5 Event Set (H5ES)
 API. This allows I/O to proceed in the background while the application
 is performing other tasks.
 
-* [Subfiling VFD](https://docs.hdfgroup.org/hdf5/rfc/RFC_VFD_subfiling_200424.pdf)
+* [Subfiling VFD](https://support.hdfgroup.org/releases/hdf5/documentation/rfc/RFC_VFD_subfiling_200424.pdf)
 The basic idea behind sub-filing is to find the middle ground between
 single shared file and one file per process - thereby avoiding some
 of the complexity of one file per process, and minimizing the locking
 issues of a single shared file on a parallel file system.
 
-* [Onion VFD](https://docs.hdfgroup.org/hdf5/rfc/Onion_VFD_RFC_211122.pdf)
+* [Onion VFD](https://support.hdfgroup.org/releases/hdf5/documentation/rfc/Onion_VFD_RFC_211122.pdf)
 There is a desire to introduce and track modifications to an HDF5 file
 while preserving or having access to the file as it existed prior to a
 particular set of modifications. To this end, this RFC proposes an Onion
@@ -39,7 +39,7 @@ revision. The name "Onion" derives from a mnemonic: the original file
 exists with data layered atop one another from an original file to the
 most recent revision
 
-* [Multi Dataset I/O](https://docs.hdfgroup.org/hdf5/rfc/H5HPC_MultiDset_RW_IO_RFC.pdf)
+* [Multi Dataset I/O](https://support.hdfgroup.org/releases/hdf5/documentation/rfc/H5HPC_MultiDset_RW_IO_RFC.pdf)
 The HDF5 library allows a data access operation to access one dataset at
 a time, whether access is collective or independent. However, accessing
 multiple datasets will require the user to issue an I/O call for each
