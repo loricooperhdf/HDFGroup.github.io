@@ -8,7 +8,7 @@ redirect_from:
 
 ## API Compatibility
 
-See [API Compatibility Macros](https://docs.hdfgroup.org/hdf5/develop/api-compat-macros.html) in HDF5 for details on using HDF5 version 1.14 with previous releases.
+See [API Compatibility Macros](https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/documentation/doxygen/api-compat-macros.html) in HDF5 for details on using HDF5 version 1.14 with previous releases.
 
 
 * [Compatibility report for Release 1.14.5 versus Release 1.14.4](https://github.com/HDFGroup/hdf5/releases/download/hdf5_1.14.5/hdf5-1.14.5.html.abi.reports.tar.gz)
@@ -180,13 +180,13 @@ Following are the new APIs introduced in HDF5-1.14.0.
 | ---------------------------------- | ------- | ---------------------------------------------------|
 | [H5Aclose_async](https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/documentation/doxygen/group___a_s_y_n_c.html#ga121fb36f6571bfaf17eb0a92f3275560) | N | Asynchronous version of H5Aclose |
 | [H5Acreate_async](https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/documentation/doxygen/group___a_s_y_n_c.html#ga9b3ce1af9b445a6381479e8f3b58e6d9) | N | Asynchronous version of H5Acreate |
-| [H5Acreate_by_name_async](uhttps://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/documentation/doxygen/group___a_s_y_n_c.html#ga13dd8779381c7834b59a4ac5521c83barl) | N | Asynchronous version of [H5Acreate_by_name](https://docs.hdfgroup.org/hdf5/v1_14/group___h5_a.html#ga004160c28e281455ec48aa7fe557ef8a) |
+| [H5Acreate_by_name_async](https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/documentation/doxygen/group___a_s_y_n_c.html#ga13dd8779381c7834b59a4ac5521c83barl) | N | Asynchronous version of [H5Acreate_by_name](https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/documentation/doxygen/group___h5_a.html#ga004160c28e281455ec48aa7fe557ef8a) |
 | [H5Aexists_async](https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/documentation/doxygen/group___a_s_y_n_c.html#gaeb69d6b6c9dcf8ee77481010c619d664) | N | Asynchronous version of H5Aexists |
-| [H5Aexists_by_name_async](https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/documentation/doxygen/group___a_s_y_n_c.html#ga42b804d43e11cc0db6e0e58be7b3bd3c) | N | Asynchronous version of [H5Aexists_by_name](https://docs.hdfgroup.org/hdf5/v1_14/group___h5_a.html#gaa1d2305651a4524f6aa0f8b56eec1a37) |
+| [H5Aexists_by_name_async](https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/documentation/doxygen/group___a_s_y_n_c.html#ga42b804d43e11cc0db6e0e58be7b3bd3c) | N | Asynchronous version of [H5Aexists_by_name](https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/documentation/doxygen/group___h5_a.html#gaa1d2305651a4524f6aa0f8b56eec1a37) |
 | [H5Aopen_async](https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/documentation/doxygen/group___a_s_y_n_c.html#ga8167b57603377742ae78a278dda27634) | N | Asynchronous version of H5Aopen |
-| [H5Aopen_by_idx_async](https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/documentation/doxygen/group___a_s_y_n_c.html#ga1bef4a2dce9cfc0ddaa7472ac1e2d1dd) | N | Asynchronous version of [H5Aopen_by_idx](https://docs.hdfgroup.org/hdf5/v1_14/group___h5_a.html#gab1451cdff4f77dcf9feaee83c8179b2d) |
-| [H5Aopen_by_name_async](https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/documentation/doxygen/group___a_s_y_n_c.html#ga42e2c5c72201f05b32e1c9dda6df0e30) | N | Asynchronous version of [H5Aopen_by_name](https://docs.hdfgroup.org/hdf5/v1_14/group___h5_a.html#gadb49a0b5b9798d2e944d877adba8ae10) |
-| [H5Aread_async](https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/documentation/doxygen/group___a_s_y_n_c.html#ga7a74c8bd935164e2d19d4b253cde815a) | N | Asynchronous version of [H5Aread](https://docs.hdfgroup.org/hdf5/v1_14/group___h5_a.html#gaacb27a997f7c98e8a833d0fd63b58f1c) |
+| [H5Aopen_by_idx_async](https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/documentation/doxygen/group___a_s_y_n_c.html#ga1bef4a2dce9cfc0ddaa7472ac1e2d1dd) | N | Asynchronous version of [H5Aopen_by_idx](https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/documentation/doxygen/group___h5_a.html#gab1451cdff4f77dcf9feaee83c8179b2d) |
+| [H5Aopen_by_name_async](https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/documentation/doxygen/group___a_s_y_n_c.html#ga42e2c5c72201f05b32e1c9dda6df0e30) | N | Asynchronous version of [H5Aopen_by_name](https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/documentation/doxygen/group___h5_a.html#gadb49a0b5b9798d2e944d877adba8ae10) |
+| [H5Aread_async](https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/documentation/doxygen/group___a_s_y_n_c.html#ga7a74c8bd935164e2d19d4b253cde815a) | N | Asynchronous version of [H5Aread](https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/documentation/doxygen/group___h5_a.html#gaacb27a997f7c98e8a833d0fd63b58f1c) |
 | [H5Arename_async](https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/documentation/doxygen/group___a_s_y_n_c.html#ga5eb1ec49226fd0ec8e6dedc608f134f8) | N | Asynchronous version of H5Arename |
 | [H5Arename_by_name_async](https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/documentation/doxygen/group___a_s_y_n_c.html#ga27e7336cbf2182a85d8fba3cdf476d8e) | N | Asynchronous version of H5Arename_by_name |
 | [H5Awrite_async](https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/documentation/doxygen/group___a_s_y_n_c.html#gae841dec1e2f4fecd88252307d20c1a59) | N | Asynchronous version of H5Awrite |
