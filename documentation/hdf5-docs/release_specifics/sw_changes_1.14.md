@@ -11,7 +11,7 @@ redirect_from:
 See [API Compatibility Macros](https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/documentation/doxygen/api-compat-macros.html) in HDF5 for details on using HDF5 version 1.14 with previous releases.
 
 
-* [Compatibility report for Release 1.14.5 versus Release 1.14.4](https://github.com/HDFGroup/hdf5/releases/download/hdf5_1.14.5/hdf5-1.14.5.html.abi.reports.tar.gz)
+* [Compatibility report for Release 1.14.5 versus Release 1.14.4](https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/downloads/compat_report/index.html)
 * [Compatibility report for Release 1.14.4 versus Release 1.14.3](https://github.com/HDFGroup/hdf5/releases/download/hdf5_1.14.4.2/hdf5-1.14.4-2.html.abi.reports.tar.gz)
 * [Compatibility report for Release 1.14.3 versus Release 1.14.2](https://htmlpreview.github.io/?https://raw.githubusercontent.com/HDFGroup/hdf5doc/master/html/ADGuide/Compatibility_Report/hdf5-1.14.2-vs-hdf5-1.14.3-interface_compatibility_report.html)
 * [Compatibility report for Release 1.14.2 versus Release 1.14.1](https://htmlpreview.github.io/?https://raw.githubusercontent.com/HDFGroup/hdf5doc/master/html/ADGuide/Compatibility_Report/hdf5-1.14.1-2-vs-hdf5-1.14.2-interface_compatibility_report.html)
