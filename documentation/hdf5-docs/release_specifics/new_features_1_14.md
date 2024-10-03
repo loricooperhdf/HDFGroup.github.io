@@ -6,7 +6,7 @@ redirect_from:
 
 # New Features in HDF5 1.14
 
-The new features in the HDF4 1.14 series include:
+The new features in the HDF5 1.14 series include:
 
 * [16 bit floating point and Complex number datatypes](https://support.hdfgroup.org/releases/hdf5/documentation/rfc/RFC__Adding_support_for_16_bit_floating_point_and_Complex_number_datatypes_to_HDF5.pdf)
 Support for the 16-bit floating-point \_Float16 C type has been added to
