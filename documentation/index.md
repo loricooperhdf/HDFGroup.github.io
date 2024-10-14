@@ -16,11 +16,11 @@ redirect_from:
 
 ## HDFView 
 
-* [User Guide (lastest)](https://support.hdfgroup.org/releases/hdfview/latest-docs.html)
+* [User Guide (lastest)](/documentation/hdfview/latest/) 
 
 ## HDF5/JSON
 
-* [User Guide (latest)](https://support.hdfgroup.org/releases/hdf5-json/latest-docs.html)  
+* [User Guide (latest)](/documentation/hdf5-json/latest/)  
 
 
 ## Highly Scalable Data Service (HSDS)
