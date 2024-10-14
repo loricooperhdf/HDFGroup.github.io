@@ -7,7 +7,7 @@ redirect_from:
 # HDF Software Documentation
 
 ## HDF5 Library, Tools, and Extensions
-* [Documentation (latest)](https://support.hdfgroup.org/releases/hdf5/latest-docs.html) - User Guide, Reference Manual, and other documentation
+* [Documentation (latest)](/documentation/hdf5/latest/) - User Guide, Reference Manual, and other documentation
 * [Release Specific Information](hdf5-docs/release_specific_info.html) - Information specific to each release series
 * [HDF5 Application Topics](hdf5-docs/hdf5_topics_list.html) - General and advanced topics in HDF5 for application developers
 * [Registered Filter Plugins](https://github.com/HDFGroup/hdf5_plugins/blob/master/docs/RegisteredFilterPlugins.md) - List of registered filter plugins
@@ -16,11 +16,11 @@ redirect_from:
 
 ## HDFView 
 
-* [User Guide (lastest)](https://support.hdfgroup.org/releases/hdfview/latest-docs.html)
+* [User Guide (lastest)](/documentation/hdfview/latest/) 
 
 ## HDF5/JSON
 
-* [User Guide (latest)](https://support.hdfgroup.org/releases/hdf5-json/latest-docs.html)  
+* [User Guide (latest)](/documentation/hdf5-json/latest/)  
 
 
 ## Highly Scalable Data Service (HSDS)
