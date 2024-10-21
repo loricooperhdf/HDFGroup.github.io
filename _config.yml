@@ -17,3 +17,5 @@ defaults:
       path: ""
     values:
       layout: default
+
+url: "https://support.hdfgroup.org"
