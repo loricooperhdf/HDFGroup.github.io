@@ -10,4 +10,3 @@ Disallow: /ftp/HDF5/documentation/
 Disallow: /ftp/HDF5/examples/
 Disallow: /ftp/HDF5/projects/
 Sitemap: https://support.hdfgroup.org/sitemap.xml
-Sitemap: https://support.hdfgroup.org/doxygen-content-sitemap.xml
