@@ -4,4 +4,10 @@ Disallow:
 Disallow: /cgi-bin/
 Disallow: /archive/
 Disallow: /releases/hdf5/v1_14/
+Disallow: /ftp/HDF/prev-Documentation/
+Disallow: /ftp/newsletters/
+Disallow: /ftp/HDF5/documentation/
+Disallow: /ftp/HDF5/examples/
+Disallow: /ftp/HDF5/projects/
 Sitemap: https://support.hdfgroup.org/sitemap.xml
+Sitemap: https://support.hdfgroup.org/doxygen-content-sitemap.xml
